@@ -1,7 +1,7 @@
 .PHONY: test.out run-test
 
 test.out:
-	@g++ \
+	@clang++ \
 		-std=c++11 \
 		-o test.out \
 		src/Device.cpp test.cpp
