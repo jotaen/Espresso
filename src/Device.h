@@ -12,9 +12,8 @@ public:
 
   void detach();
 
-  Device* next();
-
 private:
+  friend class _core;
   Device* nextDevice = 0;
   Device* previousDevice = 0;
 };

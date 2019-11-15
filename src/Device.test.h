@@ -1,9 +1,10 @@
 #include "../lib/catch.hpp"
+#include "core.h"
 #include "Device.h"
 
 TEST_CASE("[Device]") {
 
-  yps::reset();
+  _core::reset();
 
   SECTION("A new device is attached") {
     Device d = Device();
@@ -23,21 +24,21 @@ TEST_CASE("[Device]") {
   SECTION("An detached device doesn’t point anywhere") {
     Device d = Device();
     d.detach();
-    REQUIRE(d.next() == NULL);
+    REQUIRE(_core::next(d) == NULL);
   }
 
   SECTION("A single active device points to itself") {
     Device d = Device();
-    REQUIRE(d.next() == &d);
+    REQUIRE(_core::next(d) == &d);
   }
 
   SECTION("Attached devices point to each other subsequent order") {
     Device d1 = Device();
     Device d2 = Device();
     Device d3 = Device();
-    REQUIRE(d1.next() == &d2);
-    REQUIRE(d2.next() == &d3);
-    REQUIRE(d3.next() == &d1);
+    REQUIRE(_core::next(d1) == &d2);
+    REQUIRE(_core::next(d2) == &d3);
+    REQUIRE(_core::next(d3) == &d1);
   }
 
   SECTION("A detached device is no longer referenced") {
@@ -45,8 +46,8 @@ TEST_CASE("[Device]") {
     Device d2 = Device();
     Device d3 = Device();
     d2.detach();
-    REQUIRE(d1.next() == &d3);
-    REQUIRE(d3.next() == &d1);
+    REQUIRE(_core::next(d1) == &d3);
+    REQUIRE(_core::next(d3) == &d1);
   }
 
   SECTION("Re-attaching a device doesn’t change the chaining order") {
@@ -54,9 +55,9 @@ TEST_CASE("[Device]") {
     Device d2 = Device();
     Device d3 = Device();
     d2.attach();
-    REQUIRE(d1.next() == &d2);
-    REQUIRE(d2.next() == &d3);
-    REQUIRE(d3.next() == &d1);
+    REQUIRE(_core::next(d1) == &d2);
+    REQUIRE(_core::next(d2) == &d3);
+    REQUIRE(_core::next(d3) == &d1);
   }
 
   SECTION("Re-detaching is a no-op") {
@@ -64,14 +65,14 @@ TEST_CASE("[Device]") {
     Device d2 = Device();
     d1.detach();
     d1.detach();
-    REQUIRE(d2.next() == &d2);
+    REQUIRE(_core::next(d2) == &d2);
   }
 
   SECTION("Detaching the last (or: only) item cleans up properly") {
     Device d1 = Device();
     d1.detach();
     Device d2 = Device();
-    REQUIRE(d2.next() == &d2);
+    REQUIRE(_core::next(d2) == &d2);
   }
 
   SECTION("Destroying device objects also detaches them") {
@@ -79,7 +80,7 @@ TEST_CASE("[Device]") {
     {
       Device d2 = Device();
     }
-    REQUIRE(d1.next() == &d1);
+    REQUIRE(_core::next(d1) == &d1);
   }
 
 }
