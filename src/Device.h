@@ -4,6 +4,7 @@
 class Device {
 public:
   Device();
+  ~Device();
 
   bool isAttached();
 

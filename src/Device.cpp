@@ -5,6 +5,10 @@ Device::Device() {
   attach();
 }
 
+Device::~Device() {
+  detach();
+}
+
 bool Device::isAttached() {
   return nextDevice != 0;
 }

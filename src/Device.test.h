@@ -74,4 +74,12 @@ TEST_CASE("[Device]") {
     REQUIRE(d2.next() == &d2);
   }
 
+  SECTION("Destroying device objects also detaches them") {
+    Device d1 = Device();
+    {
+      Device d2 = Device();
+    }
+    REQUIRE(d1.next() == &d1);
+  }
+
 }
