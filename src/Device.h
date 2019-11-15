@@ -13,8 +13,6 @@ public:
 
   Device* next();
 
-  static Device* YPS_ROOT_DEVICE;
-
 private:
   Device* nextDevice = 0;
   Device* previousDevice = 0;

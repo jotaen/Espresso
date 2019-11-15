@@ -3,7 +3,7 @@
 
 TEST_CASE("[Device]") {
 
-  Device::YPS_ROOT_DEVICE = NULL;
+  yps::reset();
 
   SECTION("A new device is attached") {
     Device d = Device();

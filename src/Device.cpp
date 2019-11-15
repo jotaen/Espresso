@@ -1,4 +1,5 @@
 #include "Device.h"
+#include "yps.h"
 
 Device::Device() {
   attach();
@@ -16,15 +17,15 @@ void Device::attach(bool status) {
   if (isAttached()) {
     return;
   }
-  if (YPS_ROOT_DEVICE == 0) {
-    YPS_ROOT_DEVICE = this;
+  if (yps::rootDevice == 0) {
+    yps::rootDevice = this;
     nextDevice = this;
     previousDevice = this;
   } else {
-    previousDevice = YPS_ROOT_DEVICE->previousDevice;
-    YPS_ROOT_DEVICE->previousDevice->nextDevice = this;
-    nextDevice = YPS_ROOT_DEVICE;
-    YPS_ROOT_DEVICE->previousDevice = this;
+    previousDevice = yps::rootDevice->previousDevice;
+    yps::rootDevice->previousDevice->nextDevice = this;
+    nextDevice = yps::rootDevice;
+    yps::rootDevice->previousDevice = this;
   }
 }
 
@@ -34,8 +35,8 @@ void Device::detach() {
   }
   previousDevice->nextDevice = nextDevice;
   nextDevice = 0;
-  if (YPS_ROOT_DEVICE == this) {
-    YPS_ROOT_DEVICE = 0;
+  if (yps::rootDevice == this) {
+    yps::rootDevice = 0;
   }
 }
 
