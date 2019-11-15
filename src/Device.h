@@ -3,54 +3,21 @@
 
 class Device {
 public:
-  Device() {
-    attach();
-  }
+  Device();
 
-  bool isAttached() {
-    return nextDevice != NULL;
-  }
+  bool isAttached();
 
-  void attach(bool status = true) {
-    if (!status) {
-      detach();
-      return;
-    }
-    if (isAttached()) {
-      return;
-    }
-    if (YPS_ROOT_DEVICE == NULL) {
-      YPS_ROOT_DEVICE = this;
-      nextDevice = this;
-      previousDevice = this;
-    } else {
-      previousDevice = YPS_ROOT_DEVICE->previousDevice;
-      YPS_ROOT_DEVICE->previousDevice->nextDevice = this;
-      nextDevice = YPS_ROOT_DEVICE;
-      YPS_ROOT_DEVICE->previousDevice = this;
-    }
-  }
+  void attach(bool status = true);
 
-  void detach() {
-    if (!isAttached()) {
-      return;
-    }
-    previousDevice->nextDevice = nextDevice;
-    nextDevice = NULL;
-    if (YPS_ROOT_DEVICE == this) {
-      YPS_ROOT_DEVICE = NULL;
-    }
-  }
+  void detach();
 
-  Device* next() {
-    return nextDevice;
-  }
+  Device* next();
 
   static Device* YPS_ROOT_DEVICE;
 
 private:
-  Device* nextDevice = NULL;
-  Device* previousDevice = NULL;
+  Device* nextDevice = 0;
+  Device* previousDevice = 0;
 };
 
 #endif
