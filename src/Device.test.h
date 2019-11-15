@@ -1,17 +1,17 @@
 #include "../lib/catch.hpp"
-#include "InputDevice.h"
+#include "Device.h"
 
-TEST_CASE("[InputDevice]") {
+TEST_CASE("[Device]") {
 
-  InputDevice::YPS_ROOT_INPUTDEVICE = NULL;
+  Device::YPS_ROOT_DEVICE = NULL;
 
   SECTION("A new device is attached") {
-    InputDevice d = InputDevice();
+    Device d = Device();
     REQUIRE(d.isAttached() == true);
   }
 
   SECTION("A device can be attached and detached") {
-    InputDevice d = InputDevice();
+    Device d = Device();
     d.detach();
     REQUIRE(d.isAttached() == false);
     d.attach(true);
@@ -21,38 +21,38 @@ TEST_CASE("[InputDevice]") {
   }
 
   SECTION("An detached device doesn’t point anywhere") {
-    InputDevice d = InputDevice();
+    Device d = Device();
     d.detach();
     REQUIRE(d.next() == NULL);
   }
 
   SECTION("A single active device points to itself") {
-    InputDevice d = InputDevice();
+    Device d = Device();
     REQUIRE(d.next() == &d);
   }
 
   SECTION("Attached devices point to each other subsequent order") {
-    InputDevice d1 = InputDevice();
-    InputDevice d2 = InputDevice();
-    InputDevice d3 = InputDevice();
+    Device d1 = Device();
+    Device d2 = Device();
+    Device d3 = Device();
     REQUIRE(d1.next() == &d2);
     REQUIRE(d2.next() == &d3);
     REQUIRE(d3.next() == &d1);
   }
 
   SECTION("A detached device is no longer referenced") {
-    InputDevice d1 = InputDevice();
-    InputDevice d2 = InputDevice();
-    InputDevice d3 = InputDevice();
+    Device d1 = Device();
+    Device d2 = Device();
+    Device d3 = Device();
     d2.detach();
     REQUIRE(d1.next() == &d3);
     REQUIRE(d3.next() == &d1);
   }
 
   SECTION("Re-attaching a device doesn’t change the chaining order") {
-    InputDevice d1 = InputDevice();
-    InputDevice d2 = InputDevice();
-    InputDevice d3 = InputDevice();
+    Device d1 = Device();
+    Device d2 = Device();
+    Device d3 = Device();
     d2.attach();
     REQUIRE(d1.next() == &d2);
     REQUIRE(d2.next() == &d3);
@@ -60,17 +60,17 @@ TEST_CASE("[InputDevice]") {
   }
 
   SECTION("Re-detaching is a no-op") {
-    InputDevice d1 = InputDevice();
-    InputDevice d2 = InputDevice();
+    Device d1 = Device();
+    Device d2 = Device();
     d1.detach();
     d1.detach();
     REQUIRE(d2.next() == &d2);
   }
 
   SECTION("Detaching the last (or: only) item cleans up properly") {
-    InputDevice d1 = InputDevice();
+    Device d1 = Device();
     d1.detach();
-    InputDevice d2 = InputDevice();
+    Device d2 = Device();
     REQUIRE(d2.next() == &d2);
   }
 

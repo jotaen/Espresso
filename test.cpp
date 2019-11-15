@@ -1,5 +1,5 @@
 #define CATCH_CONFIG_MAIN
 
-#include "src/InputDevice.test.h"
+#include "src/Device.test.h"
 
-InputDevice* InputDevice::YPS_ROOT_INPUTDEVICE;
+Device* Device::YPS_ROOT_DEVICE;
