@@ -1,4 +1,3 @@
-#include "../lib/catch.hpp"
 #include "../test.h"
 #include "Device.h"
 

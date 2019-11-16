@@ -1,6 +1,8 @@
 #ifndef __YPS_TEST_H__
 #define __YPS_TEST_H__
 
+#include "lib/catch.hpp"
+#include "src/utils.h"
 #include "src/Device.h"
 
 /**
