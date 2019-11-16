@@ -3,6 +3,7 @@
 #include "src/yps.h"
 #include "src/Device.test.h"
 #include "src/Actor.test.h"
+#include "src/Timer.test.h"
 
 void yps::reset() {
   rootDevice = 0;
