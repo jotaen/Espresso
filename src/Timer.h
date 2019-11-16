@@ -20,6 +20,10 @@ public:
     isActive = true;
   }
 
+  void stop() {
+    isActive = false;
+  }
+
 protected:
   void onLoop() {
     if (isActive && yps::millis() >= nextLoop) {
