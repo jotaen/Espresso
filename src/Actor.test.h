@@ -1,5 +1,6 @@
 #include "../lib/catch.hpp"
 #include "yps.h"
+#include "../test.h"
 #include "Actor.h"
 #include "utils.h"
 

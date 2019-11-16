@@ -1,5 +1,6 @@
 #include "../lib/catch.hpp"
 #include "yps.h"
+#include "../test.h"
 #include "Timer.h"
 #include "utils.h"
 
