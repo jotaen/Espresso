@@ -27,10 +27,9 @@ public:
   }
 
 protected:
-  virtual void onLoop() = 0;
-
-private:
   friend class yps;
+
+  virtual void onLoop() = 0;
   Device* nextDevice = 0;
   Device* previousDevice = 0;
 };

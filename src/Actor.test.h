@@ -1,15 +1,11 @@
 #include "../lib/catch.hpp"
 #include "yps.h"
 #include "Actor.h"
-
-bool alwaysTrue() { return true; }
-bool alwaysFalse() { return false; }
-void noop() {}
-bool hasBeenCalled = false;
+#include "utils.h"
 
 TEST_CASE("[Actor]") {
 
-  hasBeenCalled = false;
+  callspy::reset();
 
   SECTION("An Actor is a Device") {
     Actor a = Actor(alwaysTrue, noop);
@@ -17,15 +13,15 @@ TEST_CASE("[Actor]") {
   }
 
   SECTION("`onLoop` calls handler when predicate is `true`") {
-    Actor a = Actor(alwaysTrue, [](){ hasBeenCalled = true; });
+    Actor a = Actor(alwaysTrue, callspy::Void);
     yps::callOnLoop(a);
-    REQUIRE(hasBeenCalled == true);
+    REQUIRE(callspy::reporter.hasBeenCalled);
   }
 
   SECTION("`onLoop` doesn’t call handler when predicate is `false`") {
-    Actor a = Actor(alwaysFalse, [](){ hasBeenCalled = true; });
+    Actor a = Actor(alwaysFalse, callspy::Void);
     yps::callOnLoop(a);
-    REQUIRE(hasBeenCalled == false);
+    REQUIRE(!callspy::reporter.hasBeenCalled);
   }
 
 }

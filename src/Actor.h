@@ -20,7 +20,6 @@ protected:
     }
   }
 
-private:
   Predicate predicate;
   Handler handler;
 };

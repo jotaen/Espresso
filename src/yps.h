@@ -2,6 +2,7 @@
 #define __YPS_CORE_H__
 
 class Device;
+class World;
 
 class yps {
 public:
@@ -11,6 +12,11 @@ public:
 
   static void callOnLoop(Device& d);
 
+  static unsigned long millis();
+
+private:
+  friend class Device;
+  friend class World;
   static Device* rootDevice;
 };
 
