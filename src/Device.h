@@ -6,9 +6,11 @@ public:
   Device();
   ~Device();
 
+protected:
+  virtual void onLoop() = 0;
+
 private:
   friend class _core;
-
   Device* nextDevice = 0;
   Device* previousDevice = 0;
 };
