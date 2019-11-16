@@ -15,7 +15,7 @@ public:
   static void elapseMillis(unsigned long m) {
     const unsigned int target = millis + m;
     while(millis < target) {
-      millis += 10;
+      millis += 7;
       loopOnce();
     }
   }
