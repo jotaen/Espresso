@@ -2,9 +2,9 @@
 
 #include "src/yps.h"
 #include "test.h"
-#include "src/Device.test.h"
-#include "src/Actor.test.h"
-#include "src/Timer.test.h"
+#include "src/Device.spec.h"
+#include "src/Actor.spec.h"
+#include "src/Timer.spec.h"
 
 unsigned long yps::millis() {
   return World::millis;
