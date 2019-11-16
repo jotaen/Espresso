@@ -10,13 +10,14 @@ class Actor: public Device {
 
 public:
   Actor(Predicate p, Handler h)
-  : predicate(p), handler(h)
+  : predicate(p)
+  , handler(h)
   {}
 
 protected:
   void onLoop() {
-    if (predicate()) {
-      handler();
+    if (this->predicate()) {
+      this->handler();
     }
   }
 

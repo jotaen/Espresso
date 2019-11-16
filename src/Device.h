@@ -8,19 +8,19 @@ public:
   Device() {
     if (yps::rootDevice == 0) {
       yps::rootDevice = this;
-      nextDevice = this;
-      previousDevice = this;
+      this->nextDevice = this;
+      this->previousDevice = this;
     } else {
-      previousDevice = yps::rootDevice->previousDevice;
+      this->previousDevice = yps::rootDevice->previousDevice;
       yps::rootDevice->previousDevice->nextDevice = this;
-      nextDevice = yps::rootDevice;
+      this->nextDevice = yps::rootDevice;
       yps::rootDevice->previousDevice = this;
     }
   }
 
   ~Device() {
-    previousDevice->nextDevice = nextDevice;
-    nextDevice = 0;
+    this->previousDevice->nextDevice = nextDevice;
+    this->nextDevice = 0;
     if (yps::rootDevice == this) {
       yps::rootDevice = 0;
     }
