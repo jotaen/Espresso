@@ -11,28 +11,46 @@ public:
   Timer(Handler h)
   : handler(h)
   , isActive(false)
+  , isRecurring(false)
   , intervalMillis(0)
+  , nextLoop(0)
   {}
 
   void runMillis(unsigned long interval) {
-    intervalMillis = interval;
-    nextLoop = yps::millis() + interval;
-    isActive = true;
+    this->startNow(interval, true);
   }
 
   void stop() {
-    isActive = false;
+    this->isActive = false;
+  }
+
+  void onceMillis(unsigned long interval) {
+    this->startNow(interval, false);
   }
 
 protected:
   void onLoop() {
-    if (isActive && yps::millis() >= nextLoop) {
-      handler();
-      nextLoop += intervalMillis;
+    if (!this->isActive || yps::millis() < this->nextLoop) {
+      return;
+    }
+    this->handler();
+    if (this->isRecurring) {
+      this->nextLoop += this->intervalMillis;
+    } else {
+      this->stop();
     }
   }
+
+  void startNow(unsigned long interval, bool isRecurring) {
+    this->intervalMillis = interval;
+    this->nextLoop = yps::millis() + interval;
+    this->isActive = true;
+    this->isRecurring = isRecurring;
+  }
+
   Handler handler;
   bool isActive;
+  bool isRecurring;
   unsigned long intervalMillis;
   unsigned long nextLoop;
 };

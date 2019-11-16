@@ -45,4 +45,13 @@ TEST_CASE("[Timer]") {
     REQUIRE(callspy::reporter.count == 3);
   }
 
+  SECTION("The handler should not be invoked once after the elapsed time") {
+    unsigned long interval = 10;
+    Timer t = Timer(callspy::Void);
+    t.onceMillis(interval);
+    World::elapseMillis(3*interval);
+    REQUIRE(callspy::reporter.hasBeenCalled);
+    REQUIRE(callspy::reporter.count == 1);
+  }
+
 }
