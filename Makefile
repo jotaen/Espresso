@@ -7,4 +7,5 @@ test.out:
 		test.cpp
 
 run-test:
-	@make test.out && ./test.out
+	@# https://github.com/catchorg/Catch2/blob/master/docs/command-line.md#showing-results-for-successful-tests
+	@make test.out && ./test.out --durations yes
