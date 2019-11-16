@@ -6,15 +6,25 @@
 
 class DigitalInput: public Device {
 public:
-  bool isHigh() {
-    return false;
+  DigitalInput(uint8_t pin)
+  : pin(pin)
+  {}
+
+  int isHigh() {
+    return yps::digitalRead(this->pin) == HIGH;
   }
 
-  bool isLow() {
-    return true;
+  int isLow() {
+    return yps::digitalRead(this->pin) == LOW;
   }
+
+  int value() {
+    return yps::digitalRead(this->pin);
+  }
+
 protected:
   void onLoop() {}
+  const uint8_t pin;
 };
 
 #endif

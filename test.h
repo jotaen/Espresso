@@ -4,6 +4,14 @@
 #include "lib/catch.hpp"
 #include "src/utils.h"
 #include "src/Device.h"
+#include <map>
+
+/**
+ *  Arduino provided fixtures
+ */
+#define HIGH 0x1
+#define LOW  0x0
+typedef uint8_t byte;
 
 /**
  *  Class for simulating and manipulating the state of the external Arduino world.
@@ -13,6 +21,7 @@ public:
   static void reset() {
     yps::rootDevice = 0;
     millis = 0;
+    digitalInputs.clear();
   }
 
   static void elapseMillis(unsigned long m) {
@@ -21,6 +30,10 @@ public:
       millis += 1;
       loopOnce();
     }
+  }
+
+  static void setDigitalInput(uint8_t pin, int value) {
+    digitalInputs[pin] = value;
   }
 
   static void settle() {
@@ -42,7 +55,12 @@ public:
 private:
   friend class yps;
   static unsigned long millis;
+  static std::map<uint8_t, int> digitalInputs;
 };
+
+unsigned long World::millis = 0;
+std::map<uint8_t, int> World::digitalInputs;
+
 
 /**
  *  Call spy for testing purpose

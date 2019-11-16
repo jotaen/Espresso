@@ -1,7 +1,7 @@
 #define CATCH_CONFIG_MAIN
 
-#include "src/yps.h"
 #include "test.h"
+#include "src/yps.h"
 #include "src/Device.spec.h"
 #include "src/Actor.spec.h"
 #include "src/Timer.spec.h"
@@ -11,5 +11,8 @@ unsigned long yps::millis() {
   return World::millis;
 }
 
-unsigned long World::millis = 0;
+int yps::digitalRead(uint8_t pin) {
+  return World::digitalInputs[pin];
+}
+
 Device* yps::rootDevice;

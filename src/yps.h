@@ -6,6 +6,7 @@ class Device;
 class yps {
 public:
   static unsigned long millis();
+  static int digitalRead(uint8_t pin);
 
 private:
   friend class Device;

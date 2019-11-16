@@ -18,7 +18,7 @@ TEST_CASE("[Timer]") {
   }
 
   SECTION("`runMillis`: The handler function should be invoked after time has elapsed") {
-    unsigned long interval = 50;
+    const unsigned long interval = 50;
     Timer t = Timer(callspy::Void);
     t.runMillis(interval);
     World::elapseMillis(interval);
@@ -27,7 +27,7 @@ TEST_CASE("[Timer]") {
   }
 
   SECTION("`runMillis`: The handler function should be invoked recurringly") {
-    unsigned long interval = 50;
+    const unsigned long interval = 50;
     Timer t = Timer(callspy::Void);
     t.runMillis(interval);
     World::elapseMillis(3*interval);
@@ -36,7 +36,7 @@ TEST_CASE("[Timer]") {
   }
 
   SECTION("`runMillis`: The handler should not be invoked anymore after the timer was stopped") {
-    unsigned long interval = 50;
+    const unsigned long interval = 50;
     Timer t = Timer(callspy::Void);
     t.runMillis(interval);
     World::elapseMillis(3*interval);
@@ -46,7 +46,7 @@ TEST_CASE("[Timer]") {
   }
 
   SECTION("`onceMillis`: The handler should not be invoked once after the elapsed time") {
-    unsigned long interval = 50;
+    const unsigned long interval = 50;
     Timer t = Timer(callspy::Void);
     t.onceMillis(interval);
     World::elapseMillis(3*interval);
