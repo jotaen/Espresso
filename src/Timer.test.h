@@ -7,6 +7,7 @@
 TEST_CASE("[Timer]") {
 
   callspy::reset();
+  World::reset();
 
   SECTION("A Timer is a Device") {
     Timer t = Timer(noop);
@@ -25,6 +26,16 @@ TEST_CASE("[Timer]") {
     t.runMillis(interval);
     World::elapseMillis(interval);
     REQUIRE(callspy::reporter.hasBeenCalled);
+    REQUIRE(callspy::reporter.count == 1);
+  }
+
+  SECTION("The handler function should be invoked recurringly") {
+    unsigned long interval = 100;
+    Timer t = Timer(callspy::Void);
+    t.runMillis(interval);
+    World::elapseMillis(3*interval);
+    REQUIRE(callspy::reporter.hasBeenCalled);
+    REQUIRE(callspy::reporter.count == 3);
   }
 
 }

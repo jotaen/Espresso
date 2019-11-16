@@ -8,9 +8,16 @@
  */
 class World {
 public:
+  static void reset() {
+    millis = 0;
+  }
+
   static void elapseMillis(unsigned long m) {
-    millis += m;
-    loopOnce();
+    const unsigned int target = millis + m;
+    while(millis < target) {
+      millis += 10;
+      loopOnce();
+    }
   }
 
   static void loopOnce() {
