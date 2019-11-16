@@ -13,6 +13,10 @@ public:
     return d.nextDevice;
   }
 
+  static void callOnLoop(Device& d) {
+    d.onLoop();
+  }
+
   static Device* rootDevice;
 };
 
