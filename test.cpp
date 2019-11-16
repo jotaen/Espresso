@@ -10,17 +10,5 @@ unsigned long yps::millis() {
   return World::millis;
 }
 
-void yps::reset() {
-  rootDevice = 0;
-}
-
-Device* yps::next(Device& d) {
-  return d.nextDevice;
-}
-
-void yps::callOnLoop(Device& d) {
-  d.onLoop();
-}
-
 unsigned long World::millis = 0;
 Device* yps::rootDevice;

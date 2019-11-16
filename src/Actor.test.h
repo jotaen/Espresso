@@ -7,6 +7,7 @@
 TEST_CASE("[Actor]") {
 
   callspy::reset();
+  World::reset();
 
   SECTION("An Actor is a Device") {
     Actor a = Actor(alwaysTrue, noop);
@@ -15,13 +16,13 @@ TEST_CASE("[Actor]") {
 
   SECTION("`onLoop` calls handler when predicate is `true`") {
     Actor a = Actor(alwaysTrue, callspy::Void);
-    yps::callOnLoop(a);
+    World::settle();
     REQUIRE(callspy::reporter.hasBeenCalled);
   }
 
   SECTION("`onLoop` doesn’t call handler when predicate is `false`") {
     Actor a = Actor(alwaysFalse, callspy::Void);
-    yps::callOnLoop(a);
+    World::settle();
     REQUIRE(!callspy::reporter.hasBeenCalled);
   }
 

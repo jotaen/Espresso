@@ -27,7 +27,7 @@ public:
   }
 
 protected:
-  friend class yps;
+  friend class World;
 
   virtual void onLoop() = 0;
   Device* nextDevice = 0;

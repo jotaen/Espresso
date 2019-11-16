@@ -9,6 +9,7 @@
 class World {
 public:
   static void reset() {
+    yps::rootDevice = 0;
     millis = 0;
   }
 
@@ -20,12 +21,20 @@ public:
     }
   }
 
+  static void settle() {
+    loopOnce();
+  }
+
   static void loopOnce() {
     Device* deviceIt = yps::rootDevice;
     do {
-      yps::callOnLoop(*deviceIt);
-      deviceIt = yps::next(*deviceIt);
+      (*deviceIt).onLoop();
+      deviceIt = (*deviceIt).nextDevice;
     } while (deviceIt != yps::rootDevice);
+  }
+
+  static Device* getNext(Device& d) {
+    return d.nextDevice;
   }
 
 private:
