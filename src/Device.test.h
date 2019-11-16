@@ -1,5 +1,5 @@
 #include "../lib/catch.hpp"
-#include "core.h"
+#include "yps.h"
 #include "Device.h"
 
 class TestDevice: public Device {
@@ -9,20 +9,20 @@ protected:
 
 TEST_CASE("[Device]") {
 
-  _core::reset();
+  yps::reset();
 
   SECTION("A single active device points to itself") {
     TestDevice d = TestDevice();
-    REQUIRE(_core::next(d) == &d);
+    REQUIRE(yps::next(d) == &d);
   }
 
   SECTION("Devices point to each other subsequent order") {
     TestDevice d1 = TestDevice();
     TestDevice d2 = TestDevice();
     TestDevice d3 = TestDevice();
-    REQUIRE(_core::next(d1) == &d2);
-    REQUIRE(_core::next(d2) == &d3);
-    REQUIRE(_core::next(d3) == &d1);
+    REQUIRE(yps::next(d1) == &d2);
+    REQUIRE(yps::next(d2) == &d3);
+    REQUIRE(yps::next(d3) == &d1);
   }
 
   SECTION("A destroyed device is no longer referenced") {
@@ -30,12 +30,12 @@ TEST_CASE("[Device]") {
     TestDevice d2 = TestDevice();
     {
       TestDevice d3 = TestDevice();
-      REQUIRE(_core::next(d1) == &d2);
-      REQUIRE(_core::next(d2) == &d3);
-      REQUIRE(_core::next(d3) == &d1);
+      REQUIRE(yps::next(d1) == &d2);
+      REQUIRE(yps::next(d2) == &d3);
+      REQUIRE(yps::next(d3) == &d1);
     }
-    REQUIRE(_core::next(d1) == &d2);
-    REQUIRE(_core::next(d2) == &d1);
+    REQUIRE(yps::next(d1) == &d2);
+    REQUIRE(yps::next(d2) == &d1);
   }
 
   SECTION("Destroying the last (or: only) item cleans up properly") {
@@ -43,7 +43,7 @@ TEST_CASE("[Device]") {
       TestDevice d1 = TestDevice();
     }
     TestDevice d2 = TestDevice();
-    REQUIRE(_core::next(d2) == &d2);
+    REQUIRE(yps::next(d2) == &d2);
   }
 
 }

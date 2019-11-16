@@ -4,7 +4,7 @@ test.out:
 	@clang++ \
 		-std=c++11 \
 		-o test.out \
-		src/Device.cpp test.cpp
+		test.cpp
 
 run-test:
 	@make test.out && ./test.out
