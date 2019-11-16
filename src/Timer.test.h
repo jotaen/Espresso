@@ -17,7 +17,7 @@ TEST_CASE("[Timer]") {
     REQUIRE(!callspy::reporter.hasBeenCalled);
   }
 
-  SECTION("The handler function should be invoked after time has elapsed") {
+  SECTION("`runMillis`: The handler function should be invoked after time has elapsed") {
     unsigned long interval = 10;
     Timer t = Timer(callspy::Void);
     t.runMillis(interval);
@@ -26,7 +26,7 @@ TEST_CASE("[Timer]") {
     REQUIRE(callspy::reporter.count == 1);
   }
 
-  SECTION("The handler function should be invoked recurringly") {
+  SECTION("`runMillis`: The handler function should be invoked recurringly") {
     unsigned long interval = 10;
     Timer t = Timer(callspy::Void);
     t.runMillis(interval);
@@ -35,7 +35,7 @@ TEST_CASE("[Timer]") {
     REQUIRE(callspy::reporter.count == 3);
   }
 
-  SECTION("The handler should not be invoked anymore after the timer was stopped") {
+  SECTION("`runMillis`: The handler should not be invoked anymore after the timer was stopped") {
     unsigned long interval = 10;
     Timer t = Timer(callspy::Void);
     t.runMillis(interval);
@@ -45,7 +45,7 @@ TEST_CASE("[Timer]") {
     REQUIRE(callspy::reporter.count == 3);
   }
 
-  SECTION("The handler should not be invoked once after the elapsed time") {
+  SECTION("`onceMillis`: The handler should not be invoked once after the elapsed time") {
     unsigned long interval = 10;
     Timer t = Timer(callspy::Void);
     t.onceMillis(interval);
