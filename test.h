@@ -9,7 +9,7 @@
 class World {
 public:
   static void elapseMillis(unsigned long m) {
-    millis += millis;
+    millis += m;
     loopOnce();
   }
 

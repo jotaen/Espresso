@@ -15,7 +15,16 @@ TEST_CASE("[Timer]") {
 
   SECTION("The handler function should not be invoked after the time has elapsed") {
     Timer t = Timer(callspy::Void);
+    World::loopOnce();
     REQUIRE(!callspy::reporter.hasBeenCalled);
+  }
+
+  SECTION("The handler function should be invoked after time has passed") {
+    unsigned long interval = 100;
+    Timer t = Timer(callspy::Void);
+    t.runMillis(interval);
+    World::elapseMillis(interval);
+    REQUIRE(callspy::reporter.hasBeenCalled);
   }
 
 }
