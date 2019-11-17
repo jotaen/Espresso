@@ -11,52 +11,34 @@ public:
   Timer(Handler h)
   : handler(h)
   , active(false)
-  , recurring(false)
-  , intervalMillis(0)
-  , nextLoop(0)
+  , trigger(0)
   {}
 
-  void runMillis(unsigned long interval) {
-    this->startNow(interval, true);
+  void start(unsigned long delayMillis) {
+    this->trigger = yps::millis() + delayMillis;
+    this->active = true;
   }
 
-  void stop() {
+  void cancel() {
     this->active = false;
   }
 
-  void onceMillis(unsigned long interval) {
-    this->startNow(interval, false);
-  }
-
   bool isActive() {
-    return active;
+    return this->active;
   }
 
 protected:
   void onLoop() {
-    if (!this->active || yps::millis() < this->nextLoop) {
+    if (!this->active || yps::millis() < this->trigger) {
       return;
     }
     this->handler();
-    if (this->recurring) {
-      this->nextLoop += this->intervalMillis;
-    } else {
-      this->stop();
-    }
-  }
-
-  void startNow(unsigned long interval, bool isRecurring) {
-    this->intervalMillis = interval;
-    this->nextLoop = yps::millis() + interval;
-    this->active = true;
-    this->recurring = isRecurring;
+    this->active = false;
   }
 
   Handler handler;
   bool active;
-  bool recurring;
-  unsigned long intervalMillis;
-  unsigned long nextLoop;
+  unsigned long trigger;
 };
 
 #endif

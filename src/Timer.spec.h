@@ -13,60 +13,49 @@ TEST_CASE("[Timer]") {
     Device& d = t; // The “assertion” is that this compiles
   }
 
-  SECTION("The handler function should not be invoked before the time has elapsed") {
+  SECTION("The handler function should not be invoked without the timer being started") {
     Timer t = Timer(callspy::Void);
     World::loopOnce();
     REQUIRE(!callspy::reporter.hasBeenCalled);
   }
 
-  SECTION("`isActive`: Should inform about whether the timer is active or idling") {
+  SECTION("`isActive` should inform about the timer status") {
     Timer t = Timer(noop);
     REQUIRE(t.isActive() == false);
-    t.runMillis(10);
-    REQUIRE(t.isActive());
-    t.stop();
+    t.start(10);
+    REQUIRE(t.isActive() == true);
+    World::elapseMillis(11);
     REQUIRE(t.isActive() == false);
-    t.onceMillis(10);
-    REQUIRE(t.isActive());
+  }
+
+  SECTION("The handler function should not be invoked before the time is elapsed") {
+    Timer t = Timer(callspy::Void);
+    t.start(10);
+    World::loopOnce();
+    REQUIRE(callspy::reporter.hasBeenCalled == false);
+    World::elapseMillis(3);
+    REQUIRE(callspy::reporter.hasBeenCalled == false);
+    World::elapseMillis(3);
+    REQUIRE(callspy::reporter.hasBeenCalled == false);
+    World::elapseMillis(3);
+    REQUIRE(callspy::reporter.hasBeenCalled == false);
+    World::elapseMillis(1);
+    REQUIRE(callspy::reporter.hasBeenCalled);
+  }
+
+  SECTION("The handler should only be invoked once after the time has elapsed") {
+    Timer t = Timer(callspy::Void);
+    t.start(1);
+    World::elapseMillis(3);
+    REQUIRE(callspy::reporter.count == 1);
+  }
+
+  SECTION("The timer can be cancelled") {
+    Timer t = Timer(callspy::Void);
+    t.start(10);
+    World::elapseMillis(3);
+    t.cancel();
     World::elapseMillis(50);
-    REQUIRE(t.isActive() == false);
+    REQUIRE(callspy::reporter.hasBeenCalled == false);
   }
-
-  SECTION("`runMillis`: The handler function should be invoked after time has elapsed") {
-    const unsigned long interval = 50;
-    Timer t = Timer(callspy::Void);
-    t.runMillis(interval);
-    World::elapseMillis(interval);
-    REQUIRE(callspy::reporter.hasBeenCalled);
-    REQUIRE(callspy::reporter.count == 1);
-  }
-
-  SECTION("`runMillis`: The handler function should be invoked recurringly") {
-    const unsigned long interval = 50;
-    Timer t = Timer(callspy::Void);
-    t.runMillis(interval);
-    World::elapseMillis(3*interval);
-    REQUIRE(callspy::reporter.hasBeenCalled);
-    REQUIRE(callspy::reporter.count == 3);
-  }
-
-  SECTION("`runMillis`: The handler should not be invoked anymore after the timer was stopped") {
-    const unsigned long interval = 50;
-    Timer t = Timer(callspy::Void);
-    t.runMillis(interval);
-    World::elapseMillis(3*interval);
-    t.stop();
-    World::elapseMillis(3*interval);
-    REQUIRE(callspy::reporter.count == 3);
-  }
-
-  SECTION("`onceMillis`: The handler should not be invoked once after the elapsed time") {
-    const unsigned long interval = 50;
-    Timer t = Timer(callspy::Void);
-    t.onceMillis(interval);
-    World::elapseMillis(3*interval);
-    REQUIRE(callspy::reporter.hasBeenCalled);
-    REQUIRE(callspy::reporter.count == 1);
-  }
-
 }
