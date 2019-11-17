@@ -1,7 +1,7 @@
 #ifndef __YPS_DEVICE_H__
 #define __YPS_DEVICE_H__
 
-#include "yps.h"
+#include "core.h"
 
 using namespace __yps_internal;
 

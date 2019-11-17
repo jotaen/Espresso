@@ -1,7 +1,7 @@
 #ifndef __YPS_TIMER_H__
 #define __YPS_TIMER_H__
 
-#include "yps.h"
+#include "core.h"
 
 class Timer: public Device {
   

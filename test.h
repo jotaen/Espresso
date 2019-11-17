@@ -2,7 +2,7 @@
 #define __YPS_TEST_H__
 
 #include "lib/catch.hpp"
-#include "src/yps.h"
+#include "src/core.h"
 #include "src/utils.h"
 #include "src/Device.h"
 #include <map>
