@@ -6,11 +6,15 @@ class Timer: public Device {
   typedef void (*Handler)();
 
 public:
-  Timer(Handler h)
-  : handler(h)
+  Timer()
+  : handler(0)
   , active(false)
   , trigger(0)
   {}
+
+  void onTrigger(Handler h) {
+    this->handler = h;
+  }
 
   void start(unsigned long delayMillis) {
     this->trigger = millis() + delayMillis;
@@ -30,7 +34,9 @@ protected:
     if (!this->active || millis() < this->trigger) {
       return;
     }
-    this->handler();
+    if (this->handler != 0) {
+      this->handler();
+    }
     this->active = false;
   }
 

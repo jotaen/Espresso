@@ -8,24 +8,24 @@ TEST_CASE("[Metronome]") {
   Arduino::clear();
 
   SECTION("A Metronome is a Device") {
-    Metronome m = Metronome();
+    Metronome m;
     Device& d = m; // The “assertion” is that this compiles
   }
 
   SECTION("The handler function invocation should begin immediately") {
-    Metronome m = Metronome();
+    Metronome m;
     m.onTrigger(callspy::Void);
     m.runMillis(5);
     REQUIRE(callspy::hasBeenCalled());
   }
 
   SECTION("If no handler function is given, nothing happens") {
-    Metronome m = Metronome();
+    Metronome m;
     REQUIRE_NOTHROW(m.run());
   }
 
   SECTION("`isActive`: Should inform about whether the timer is active or idling") {
-    Metronome m = Metronome();
+    Metronome m;
     REQUIRE(m.isActive() == false);
     m.runMillis(10);
     REQUIRE(m.isActive());
@@ -37,7 +37,7 @@ TEST_CASE("[Metronome]") {
 
   SECTION("`runMillis`: The handler function should be invoked after time has elapsed") {
     const unsigned long interval = 50;
-    Metronome m = Metronome();
+    Metronome m;
     m.onTrigger(callspy::Void);
     m.runMillis(interval);
     Arduino::elapseMillis(interval);
@@ -47,7 +47,7 @@ TEST_CASE("[Metronome]") {
 
   SECTION("`runMillis`: The handler function should be invoked recurringly") {
     const unsigned long interval = 50;
-    Metronome m = Metronome();
+    Metronome m;
     m.onTrigger(callspy::Void);
     m.runMillis(interval);
     Arduino::elapseMillis(3*interval);
@@ -57,7 +57,7 @@ TEST_CASE("[Metronome]") {
 
   SECTION("`runMillis`: The handler should not be invoked anymore after the metronome was stopped") {
     const unsigned long interval = 50;
-    Metronome m = Metronome();
+    Metronome m;
     m.onTrigger(callspy::Void);
     m.runMillis(interval);
     Arduino::elapseMillis(3*interval);
@@ -67,7 +67,7 @@ TEST_CASE("[Metronome]") {
   }
 
   SECTION("`run`: The handler should be invoked straight away and as often as possible") {
-    Metronome m = Metronome();
+    Metronome m;
     m.onTrigger(callspy::Void);
     m.run();
     REQUIRE(callspy::hasBeenCalled());

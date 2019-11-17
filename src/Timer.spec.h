@@ -8,18 +8,26 @@ TEST_CASE("[Timer]") {
   Arduino::clear();
 
   SECTION("A Timer is a Device") {
-    Timer t = Timer(noop);
+    Timer t;
     Device& d = t; // The “assertion” is that this compiles
   }
 
   SECTION("The handler function should not be invoked without the timer being started") {
-    Timer t = Timer(callspy::Void);
+    Timer t;
+    t.onTrigger(callspy::Void);
     Arduino::flush();
-    REQUIRE(!callspy::hasBeenCalled());
+    REQUIRE(callspy::hasBeenCalled() == false);
+  }
+
+  SECTION("If there is no handler function, nothing happens") {
+    Timer t;
+    t.start(10);
+    REQUIRE_NOTHROW(Arduino::elapseMillis(11));
+    REQUIRE(t.isActive() == false);
   }
 
   SECTION("`isActive` should inform about the timer status") {
-    Timer t = Timer(noop);
+    Timer t;
     REQUIRE(t.isActive() == false);
     t.start(10);
     REQUIRE(t.isActive() == true);
@@ -28,7 +36,8 @@ TEST_CASE("[Timer]") {
   }
 
   SECTION("The handler function should not be invoked before the time is elapsed") {
-    Timer t = Timer(callspy::Void);
+    Timer t;
+    t.onTrigger(callspy::Void);
     t.start(10);
     Arduino::flush();
     REQUIRE(callspy::hasBeenCalled() == false);
@@ -43,17 +52,20 @@ TEST_CASE("[Timer]") {
   }
 
   SECTION("The handler should only be invoked once after the time has elapsed") {
-    Timer t = Timer(callspy::Void);
+    Timer t;
+    t.onTrigger(callspy::Void);
     t.start(1);
     Arduino::elapseMillis(3);
     REQUIRE(callspy::counter() == 1);
   }
 
   SECTION("The timer can be cancelled") {
-    Timer t = Timer(callspy::Void);
+    Timer t;
+    t.onTrigger(callspy::Void);
     t.start(10);
     Arduino::elapseMillis(3);
     t.cancel();
+    REQUIRE(t.isActive() == false);
     Arduino::elapseMillis(50);
     REQUIRE(callspy::hasBeenCalled() == false);
   }
