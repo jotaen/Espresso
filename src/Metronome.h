@@ -8,22 +8,34 @@ class Metronome: public Device {
   typedef void (*Handler)();
 
 public:
-  Metronome(Handler h)
-  : handler(h)
+  Metronome()
+  : handler(0)
   , active(false)
   , intervalMillis(0)
   , nextLoop(0)
   {}
 
-  void runMillis(unsigned long interval) {
+  Metronome& onTrigger(Handler h) {
+    this->handler = h;
+    return *this;
+  }
+
+  Metronome& runMillis(unsigned long interval) {
     this->intervalMillis = interval;
     this->nextLoop = yps::millis() + interval;
     this->active = true;
-    this->handler();
+    this->invoke();
+    return *this;
   }
 
-  void stop() {
+  Metronome& run() {
+    runMillis(0);
+    return *this;
+  }
+
+  Metronome& stop() {
     this->active = false;
+    return *this;
   }
 
   bool isActive() {
@@ -35,8 +47,14 @@ protected:
     if (!this->active || yps::millis() < this->nextLoop) {
       return;
     }
-    this->handler();
+    this->invoke();
     this->nextLoop += this->intervalMillis;
+  }
+
+  void invoke() {
+    if (this->handler) {
+      this->handler();
+    }
   }
 
   Handler handler;
