@@ -5,33 +5,37 @@ class DigitalOutput {
 public:
   DigitalOutput(uint8_t pin)
   : pinNr(pin)
-  , value(0)
+  , m_value(0)
   {}
 
   uint8_t pin() {
     return this->pinNr;
   }
 
-  int get() {
-    return value;
+  int value() {
+    return m_value;
   }
 
   bool isHigh() {
-    return value == HIGH;
+    return m_value == HIGH;
   }
 
   bool isLow() {
-    return value == LOW;
+    return m_value == LOW;
   }
 
-  void set(int val) {
+  void write(int val) {
     __yps_internal::_digitalWrite(this->pinNr, val);
-    this->value = val;
+    this->m_value = val;
+  }
+
+  void toggle() {
+    this->write(!this->value());
   }
 
 protected:
   const uint8_t pinNr;
-  int value;
+  int m_value;
 };
 
 #endif

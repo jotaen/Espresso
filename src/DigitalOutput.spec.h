@@ -14,28 +14,39 @@ TEST_CASE("[DigitalOutput]") {
 
   SECTION("By default the value is `LOW`") {
     DigitalOutput dt = DigitalOutput(2);
-    REQUIRE(dt.get() == LOW);
+    REQUIRE(dt.value() == LOW);
     REQUIRE(dt.isLow());
     REQUIRE(!dt.isHigh());
   }
 
-  SECTION("`set` sets the value to HIGH") {
+  SECTION("`write` sets the value to HIGH") {
     DigitalOutput dt = DigitalOutput(2);
-    dt.set(HIGH);
-    REQUIRE(dt.get() == HIGH);
+    dt.write(HIGH);
+    REQUIRE(dt.value() == HIGH);
     REQUIRE(!dt.isLow());
     REQUIRE(dt.isHigh());
     REQUIRE(World::checkDigitalOutput(dt.pin()) == HIGH);
   }
 
-  SECTION("`set` sets the value to LOW") {
+  SECTION("`write` sets the value to LOW") {
     DigitalOutput dt = DigitalOutput(2);
-    dt.set(HIGH);
-    dt.set(LOW);
-    REQUIRE(dt.get() == LOW);
+    dt.write(HIGH);
+    dt.write(LOW);
+    REQUIRE(dt.value() == LOW);
     REQUIRE(dt.isLow());
     REQUIRE(!dt.isHigh());
     REQUIRE(World::checkDigitalOutput(dt.pin()) == LOW);
+  }
+
+  SECTION("`toggle` flips the value") {
+    DigitalOutput dt = DigitalOutput(2);
+    dt.write(HIGH);
+    dt.toggle();
+    REQUIRE(dt.isLow());
+    dt.toggle();
+    REQUIRE(dt.isHigh());
+    dt.toggle();
+    REQUIRE(dt.isLow());
   }
 
 }

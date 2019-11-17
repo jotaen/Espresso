@@ -6,6 +6,7 @@
 #include "src/Timer.h"
 #include "src/Metronome.h"
 #include "src/DigitalInput.h"
+#include "src/DigitalOutput.h"
 
 void onSetup();
 

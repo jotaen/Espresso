@@ -6,16 +6,16 @@
 
 TEST_CASE("LED starts blinking while button is pressed", "[BlinkButton]") {
   World::setDigitalInput(button.pin(), HIGH);
-  REQUIRE(led == true);
+  REQUIRE(led.isHigh());
   World::elapseMillis(frequency);
-  REQUIRE(led == false);
+  REQUIRE(led.isLow());
   World::elapseMillis(frequency);
-  REQUIRE(led == true);
+  REQUIRE(led.isHigh());
   World::elapseMillis(frequency);
-  REQUIRE(led == false);
+  REQUIRE(led.isLow());
 }
 
 TEST_CASE("LED turns off when button is released", "[BlinkButton]") {
   World::setDigitalInput(4, LOW);
-  REQUIRE(led == false);
+  REQUIRE(led.isLow());
 }

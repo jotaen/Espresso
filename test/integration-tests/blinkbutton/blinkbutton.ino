@@ -1,12 +1,10 @@
 #include <yps.h>
 
+const unsigned long frequency = 100;
+
 DigitalInput button = DigitalInput(4);
-
-bool led = false;
-
-unsigned long frequency = 100;
-
-Metronome ledBlinker = Metronome([](){ led = !led; });
+DigitalOutput led = DigitalOutput(6);
+Metronome ledBlinker = Metronome([](){ led.toggle(); });
 
 Actor onButtonHigh = Actor(
   []()->bool { return button.isHigh(); },
@@ -15,7 +13,7 @@ Actor onButtonHigh = Actor(
 
 Actor onButtonLow = Actor(
   []()->bool { return button.isLow(); },
-  [](){ ledBlinker.stop(); led = false; }
+  [](){ ledBlinker.stop(); led.write(LOW); }
 );
 
 void onSetup() {}
