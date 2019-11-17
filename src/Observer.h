@@ -1,15 +1,15 @@
-#ifndef __YPS_ACTOR_H__
-#define __YPS_ACTOR_H__
+#ifndef __YPS_OBSERVER_H__
+#define __YPS_OBSERVER_H__
 
 #include "Device.h"
 
-class Actor: public Device {
+class Observer: public Device {
 
   typedef bool (*Predicate)();
   typedef void (*Handler)();
 
 public:
-  Actor(Predicate p)
+  Observer(Predicate p)
   : predicate(p)
   , hasLastState(false)
   , lastState(false)
