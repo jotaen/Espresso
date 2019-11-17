@@ -4,6 +4,18 @@
 
 #include "blinkbutton.ino"
 
+TEST_CASE("Setup...", "[BlinkButton]") {
+  World::start();
+}
+
+TEST_CASE("LED is off in the beginning", "[BlinkButton]") {
+  REQUIRE(led.isLow());
+  World::elapseMillis(frequency);
+  REQUIRE(led.isLow());
+  World::elapseMillis(frequency);
+  REQUIRE(led.isLow());
+}
+
 TEST_CASE("LED starts blinking while button is pressed", "[BlinkButton]") {
   World::setDigitalInput(button.pin(), HIGH);
   REQUIRE(led.isHigh());
@@ -17,5 +29,7 @@ TEST_CASE("LED starts blinking while button is pressed", "[BlinkButton]") {
 
 TEST_CASE("LED turns off when button is released", "[BlinkButton]") {
   World::setDigitalInput(4, LOW);
+  REQUIRE(led.isLow());
+  World::elapseMillis(frequency);
   REQUIRE(led.isLow());
 }
