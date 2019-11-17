@@ -35,6 +35,7 @@ namespace World {
   void destroy() {
     _clearRootDevice();
     _digitalInputs.clear();
+    start();
   }
 
   void start() {
