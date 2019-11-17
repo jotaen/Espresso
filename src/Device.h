@@ -24,7 +24,7 @@ public:
     }
   }
 
-  static Device* next(Device& d) {
+  static Device* next(const Device& d) {
     return d.nextDevice;
   }
 

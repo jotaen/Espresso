@@ -5,7 +5,7 @@
 
 class DigitalInput: public Device {
 public:
-  DigitalInput(uint8_t pin)
+  DigitalInput(const uint8_t pin)
   : pinNr(pin)
   {
     pinMode(this->pinNr, INPUT);
@@ -35,8 +35,8 @@ protected:
   void update() {
     this->value_ = digitalRead(this->pinNr);
   }
-  int value_;
   const uint8_t pinNr;
+  int value_;
 };
 
 #endif

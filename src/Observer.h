@@ -9,7 +9,7 @@ class Observer: public Device {
   typedef void (*Handler)();
 
 public:
-  Observer(Predicate p)
+  Observer(const Predicate p)
   : predicate(p)
   , lastState(false)
   , ontrue(0)
@@ -54,7 +54,7 @@ protected:
   }
 
   bool lastState;
-  Predicate predicate;
+  const Predicate predicate;
   Handler ontrue;
   Handler onfalse;
   Handler whiletrue;

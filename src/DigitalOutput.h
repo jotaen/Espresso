@@ -3,7 +3,7 @@
 
 class DigitalOutput {
 public:
-  DigitalOutput(uint8_t pin)
+  DigitalOutput(const uint8_t pin)
   : pinNr(pin)
   , value_(0)
   {
