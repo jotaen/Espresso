@@ -1,8 +1,6 @@
 #ifndef __YPS_TIMER_H__
 #define __YPS_TIMER_H__
 
-#include "core.h"
-
 class Timer: public Device {
   
   typedef void (*Handler)();
@@ -15,7 +13,7 @@ public:
   {}
 
   void start(unsigned long delayMillis) {
-    this->trigger = yps::millis() + delayMillis;
+    this->trigger = millis() + delayMillis;
     this->active = true;
   }
 
@@ -29,7 +27,7 @@ public:
 
 protected:
   void onLoop() {
-    if (!this->active || yps::millis() < this->trigger) {
+    if (!this->active || millis() < this->trigger) {
       return;
     }
     this->handler();

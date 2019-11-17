@@ -1,10 +1,6 @@
 #ifndef __YPS_DEVICE_H__
 #define __YPS_DEVICE_H__
 
-#include "core.h"
-
-using namespace __yps_internal;
-
 class Device {
 public:
   Device() {
@@ -28,12 +24,23 @@ public:
     }
   }
 
-protected:
-  friend Device* __yps_internal::_getRootDevice();
-  friend Device* __yps_internal::_getNextDevice(Device& d);
-  friend void __yps_internal::_callOnLoop(Device& d);
-  friend void __yps_internal::_clearRootDevice();
+  static Device* next(Device& d) {
+    return d.nextDevice;
+  }
 
+  static void clearRoot() {
+    Device::rootDevice = 0;
+  }
+
+  static void loopOnce() {
+    Device* deviceIt = Device::rootDevice;
+    do {
+      (*deviceIt).onLoop();
+      deviceIt = (*deviceIt).nextDevice;
+    } while (deviceIt != Device::rootDevice);
+  }
+
+protected:
   virtual void onLoop() = 0;
   static Device* rootDevice;
   Device* nextDevice = 0;

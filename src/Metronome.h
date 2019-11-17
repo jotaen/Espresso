@@ -1,8 +1,6 @@
 #ifndef __YPS_METRONOME_H__
 #define __YPS_METRONOME_H__
 
-#include "core.h"
-
 class Metronome: public Device {
   
   typedef void (*Handler)();
@@ -21,7 +19,7 @@ public:
 
   void runMillis(unsigned long interval) {
     this->intervalMillis = interval;
-    this->nextLoop = yps::millis() + interval;
+    this->nextLoop = millis() + interval;
     this->active = true;
     this->invoke();
   }
@@ -40,7 +38,7 @@ public:
 
 protected:
   void onLoop() {
-    if (!this->active || yps::millis() < this->nextLoop) {
+    if (!this->active || millis() < this->nextLoop) {
       return;
     }
     this->invoke();

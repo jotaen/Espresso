@@ -1,11 +1,10 @@
 #include <catch.hpp>
-#include <World.h>
 #include "DigitalOutput.h"
 
 TEST_CASE("[DigitalOutput]") {
 
   callspy::reset();
-  World::destroy();
+  Arduino::clear();
 
   SECTION("It knows its pin number") {
     DigitalOutput dt = DigitalOutput(4);
@@ -25,7 +24,7 @@ TEST_CASE("[DigitalOutput]") {
     REQUIRE(dt.value() == HIGH);
     REQUIRE(!dt.isLow());
     REQUIRE(dt.isHigh());
-    REQUIRE(World::checkDigitalOutput(dt.pin()) == HIGH);
+    REQUIRE(Arduino::checkDigitalOutput(dt.pin()) == HIGH);
   }
 
   SECTION("`write` sets the value to LOW") {
@@ -35,7 +34,7 @@ TEST_CASE("[DigitalOutput]") {
     REQUIRE(dt.value() == LOW);
     REQUIRE(dt.isLow());
     REQUIRE(!dt.isHigh());
-    REQUIRE(World::checkDigitalOutput(dt.pin()) == LOW);
+    REQUIRE(Arduino::checkDigitalOutput(dt.pin()) == LOW);
   }
 
   SECTION("`toggle` flips the value") {

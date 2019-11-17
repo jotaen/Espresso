@@ -1,5 +1,4 @@
 #include <catch.hpp>
-#include <World.h>
 #include "Device.h"
 
 class TestDevice: public Device {
@@ -9,20 +8,18 @@ protected:
 
 TEST_CASE("[Device]") {
 
-  World::destroy();
-
   SECTION("A single active device points to itself") {
     TestDevice d = TestDevice();
-    REQUIRE(__yps_internal::_getNextDevice(d) == &d);
+    REQUIRE(Device::next(d) == &d);
   }
 
   SECTION("Devices point to each other subsequent order") {
     TestDevice d1 = TestDevice();
     TestDevice d2 = TestDevice();
     TestDevice d3 = TestDevice();
-    REQUIRE(__yps_internal::_getNextDevice(d1) == &d2);
-    REQUIRE(__yps_internal::_getNextDevice(d2) == &d3);
-    REQUIRE(__yps_internal::_getNextDevice(d3) == &d1);
+    REQUIRE(Device::next(d1) == &d2);
+    REQUIRE(Device::next(d2) == &d3);
+    REQUIRE(Device::next(d3) == &d1);
   }
 
   SECTION("A destroyed device is no longer referenced") {
@@ -30,12 +27,12 @@ TEST_CASE("[Device]") {
     TestDevice d2 = TestDevice();
     {
       TestDevice d3 = TestDevice();
-      REQUIRE(__yps_internal::_getNextDevice(d1) == &d2);
-      REQUIRE(__yps_internal::_getNextDevice(d2) == &d3);
-      REQUIRE(__yps_internal::_getNextDevice(d3) == &d1);
+      REQUIRE(Device::next(d1) == &d2);
+      REQUIRE(Device::next(d2) == &d3);
+      REQUIRE(Device::next(d3) == &d1);
     }
-    REQUIRE(__yps_internal::_getNextDevice(d1) == &d2);
-    REQUIRE(__yps_internal::_getNextDevice(d2) == &d1);
+    REQUIRE(Device::next(d1) == &d2);
+    REQUIRE(Device::next(d2) == &d1);
   }
 
   SECTION("Destroying the last (or: only) item cleans up properly") {
@@ -43,7 +40,7 @@ TEST_CASE("[Device]") {
       TestDevice d1 = TestDevice();
     }
     TestDevice d2 = TestDevice();
-    REQUIRE(__yps_internal::_getNextDevice(d2) == &d2);
+    REQUIRE(Device::next(d2) == &d2);
   }
 
 }

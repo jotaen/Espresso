@@ -1,11 +1,10 @@
 #include <catch.hpp>
-#include <World.h>
 #include "DigitalInput.h"
 
 TEST_CASE("[DigitalInput]") {
 
   callspy::reset();
-  World::destroy();
+  Arduino::clear();
 
   SECTION("A DigitalInput is a Device") {
     DigitalInput di = DigitalInput(0);
@@ -26,7 +25,7 @@ TEST_CASE("[DigitalInput]") {
 
   SECTION("The value should be `high` according to pin") {
     DigitalInput di = DigitalInput(7);
-    World::setDigitalInput(di.pin(), HIGH);
+    Arduino::setDigitalInput(di.pin(), HIGH);
     REQUIRE(di.isHigh());
     REQUIRE(!di.isLow());
     REQUIRE(di.value() == HIGH);
@@ -35,7 +34,7 @@ TEST_CASE("[DigitalInput]") {
   SECTION("They behave independently from one another") {
     DigitalInput di1 = DigitalInput(6);
     DigitalInput di2 = DigitalInput(11);
-    World::setDigitalInput(di2.pin(), HIGH);
+    Arduino::setDigitalInput(di2.pin(), HIGH);
     REQUIRE(di1.isLow());
     REQUIRE(di2.isHigh());
   }

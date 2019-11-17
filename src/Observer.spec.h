@@ -1,5 +1,4 @@
 #include <catch.hpp>
-#include <World.h>
 #include <utils.h>
 #include "Observer.h"
 
@@ -8,7 +7,7 @@ bool predicateValue = false;
 TEST_CASE("[Observer]") {
 
   callspy::reset();
-  World::destroy();
+  Arduino::clear();
   predicateValue = false;
 
   SECTION("An Observer is a Device") {
@@ -18,29 +17,29 @@ TEST_CASE("[Observer]") {
 
   SECTION("Absence of handlers is dealt with gracefully") {
     Observer o = Observer([](){ return predicateValue; });
-    REQUIRE_NOTHROW(World::flush());
+    REQUIRE_NOTHROW(Arduino::flush());
     predicateValue = true;
-    REQUIRE_NOTHROW(World::flush());
+    REQUIRE_NOTHROW(Arduino::flush());
   }
 
   SECTION("`onTrue` gets called once when state changes") {
     predicateValue = true;
     Observer o = Observer([](){ return predicateValue; });
     o.onTrue(callspy::Void);
-    World::elapseMillis(10);
+    Arduino::elapseMillis(10);
     REQUIRE(callspy::hasBeenCalled() == false); // since there was no change so far
     predicateValue = false;
-    World::elapseMillis(10);
+    Arduino::elapseMillis(10);
     REQUIRE(callspy::hasBeenCalled() == false);
     predicateValue = true;
-    World::elapseMillis(10);
+    Arduino::elapseMillis(10);
     REQUIRE(callspy::counter() == 1);
   }
 
   SECTION("`whileTrue` gets called repeatedly") {
     Observer o = Observer(alwaysTrue);
     o.whileTrue(callspy::Void);
-    World::elapseMillis(10);
+    Arduino::elapseMillis(10);
     REQUIRE(callspy::hasBeenCalled());
     REQUIRE(callspy::counter() > 2);
   }
@@ -48,20 +47,20 @@ TEST_CASE("[Observer]") {
   SECTION("`onFalse` gets called once") {
     Observer o = Observer([](){ return predicateValue; });
     o.onFalse(callspy::Void);
-    World::elapseMillis(10);
+    Arduino::elapseMillis(10);
     REQUIRE(callspy::hasBeenCalled() == false); // since there was no change so far
     predicateValue = true;
-    World::elapseMillis(10);
+    Arduino::elapseMillis(10);
     REQUIRE(callspy::hasBeenCalled() == false);
     predicateValue = false;
-    World::elapseMillis(10);
+    Arduino::elapseMillis(10);
     REQUIRE(callspy::counter() == 1);
   }
 
   SECTION("`whileFalse` gets called repeatedly") {
     Observer o = Observer(alwaysFalse);
     o.whileFalse(callspy::Void);
-    World::elapseMillis(10);
+    Arduino::elapseMillis(10);
     REQUIRE(callspy::hasBeenCalled());
     REQUIRE(callspy::counter() > 2);
   }
@@ -72,7 +71,7 @@ TEST_CASE("[Observer]") {
     o.whileTrue(callspy::Void);
     o.onFalse([](){ throw; });
     o.whileFalse([](){ throw; });
-    REQUIRE_NOTHROW(World::flush());
+    REQUIRE_NOTHROW(Arduino::flush());
   }
 
   SECTION("For `false`: Only the matching handlers get invoked") {
@@ -81,7 +80,7 @@ TEST_CASE("[Observer]") {
     o.whileFalse(callspy::Void);
     o.onTrue([](){ throw; });
     o.whileTrue([](){ throw; });
-    REQUIRE_NOTHROW(World::flush());
+    REQUIRE_NOTHROW(Arduino::flush());
   }
 
 }

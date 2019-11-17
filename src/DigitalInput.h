@@ -9,18 +9,19 @@ public:
   : pinNr(pin)
   {
     pinMode(this->pinNr, INPUT);
+    update();
   }
 
   int isHigh() {
-    return __yps_internal::_digitalRead(this->pinNr) == HIGH;
+    return value_ == HIGH;
   }
 
   int isLow() {
-    return __yps_internal::_digitalRead(this->pinNr) == LOW;
+    return value_ == LOW;
   }
 
   int value() {
-    return __yps_internal::_digitalRead(this->pinNr);
+    return value_;
   }
 
   uint8_t pin() {
@@ -28,7 +29,13 @@ public:
   }
 
 protected:
-  void onLoop() {}
+  void onLoop() {
+    update();
+  }
+  void update() {
+    this->value_ = digitalRead(this->pinNr);
+  }
+  int value_;
   const uint8_t pinNr;
 };
 

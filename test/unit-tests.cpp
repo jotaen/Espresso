@@ -22,6 +22,8 @@ namespace callspy {
 
 void onSetup() {}
 
+#include <Arduino.h>
+
 #include "../src/Device.spec.h"
 #include "../src/Observer.spec.h"
 #include "../src/Timer.spec.h"

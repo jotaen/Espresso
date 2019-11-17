@@ -27,7 +27,7 @@ public:
   }
 
   void write(int val) {
-    __yps_internal::_digitalWrite(this->pinNr, val);
+    digitalWrite(this->pinNr, val);
     this->m_value = val;
   }
 

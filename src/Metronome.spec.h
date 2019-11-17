@@ -1,12 +1,11 @@
 #include <catch.hpp>
-#include <World.h>
 #include <utils.h>
 #include "Metronome.h"
 
 TEST_CASE("[Metronome]") {
 
   callspy::reset();
-  World::destroy();
+  Arduino::clear();
 
   SECTION("A Metronome is a Device") {
     Metronome m = Metronome();
@@ -32,7 +31,7 @@ TEST_CASE("[Metronome]") {
     REQUIRE(m.isActive());
     m.stop();
     REQUIRE(m.isActive() == false);
-    World::elapseMillis(50);
+    Arduino::elapseMillis(50);
     REQUIRE(m.isActive() == false);
   }
 
@@ -41,7 +40,7 @@ TEST_CASE("[Metronome]") {
     Metronome m = Metronome();
     m.onTrigger(callspy::Void);
     m.runMillis(interval);
-    World::elapseMillis(interval);
+    Arduino::elapseMillis(interval);
     REQUIRE(callspy::hasBeenCalled());
     REQUIRE(callspy::counter() == 2);
   }
@@ -51,7 +50,7 @@ TEST_CASE("[Metronome]") {
     Metronome m = Metronome();
     m.onTrigger(callspy::Void);
     m.runMillis(interval);
-    World::elapseMillis(3*interval);
+    Arduino::elapseMillis(3*interval);
     REQUIRE(callspy::hasBeenCalled());
     REQUIRE(callspy::counter() == 4);
   }
@@ -61,9 +60,9 @@ TEST_CASE("[Metronome]") {
     Metronome m = Metronome();
     m.onTrigger(callspy::Void);
     m.runMillis(interval);
-    World::elapseMillis(3*interval);
+    Arduino::elapseMillis(3*interval);
     m.stop();
-    World::elapseMillis(3*interval);
+    Arduino::elapseMillis(3*interval);
     REQUIRE(callspy::counter() == 4);
   }
 
@@ -73,7 +72,7 @@ TEST_CASE("[Metronome]") {
     m.run();
     REQUIRE(callspy::hasBeenCalled());
     REQUIRE(callspy::counter() == 1);
-    World::elapseMillis(10);
+    Arduino::elapseMillis(10);
     REQUIRE(callspy::counter() > 2); // in reality, we cannot tell exactly!
   }
 

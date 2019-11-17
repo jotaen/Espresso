@@ -1,35 +1,34 @@
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
-#include <World.h>
 
 #include "blinkbutton.ino"
 
 TEST_CASE("Setup...", "[BlinkButton]") {
-  World::start();
+  Arduino::start();
 }
 
 TEST_CASE("LED is off in the beginning", "[BlinkButton]") {
   REQUIRE(led.isLow());
-  World::elapseMillis(frequency);
+  Arduino::elapseMillis(frequency);
   REQUIRE(led.isLow());
-  World::elapseMillis(frequency);
+  Arduino::elapseMillis(frequency);
   REQUIRE(led.isLow());
 }
 
 TEST_CASE("LED starts blinking while button is pressed", "[BlinkButton]") {
-  World::setDigitalInput(button.pin(), HIGH);
+  Arduino::setDigitalInput(button.pin(), HIGH);
   REQUIRE(led.isHigh());
-  World::elapseMillis(frequency);
+  Arduino::elapseMillis(frequency);
   REQUIRE(led.isLow());
-  World::elapseMillis(frequency);
+  Arduino::elapseMillis(frequency);
   REQUIRE(led.isHigh());
-  World::elapseMillis(frequency);
+  Arduino::elapseMillis(frequency);
   REQUIRE(led.isLow());
 }
 
 TEST_CASE("LED turns off when button is released", "[BlinkButton]") {
-  World::setDigitalInput(4, LOW);
+  Arduino::setDigitalInput(button.pin(), LOW);
   REQUIRE(led.isLow());
-  World::elapseMillis(frequency);
+  Arduino::elapseMillis(frequency);
   REQUIRE(led.isLow());
 }
