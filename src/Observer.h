@@ -11,13 +11,14 @@ class Observer: public Device {
 public:
   Observer(Predicate p)
   : predicate(p)
-  , hasLastState(false)
   , lastState(false)
   , ontrue(0)
   , onfalse(0)
   , whiletrue(0)
   , whilefalse(0)
-  {}
+  {
+    this->lastState = this->predicate();
+  }
 
   void onTrue(Handler h) {
     this->ontrue = h;
@@ -38,16 +39,12 @@ public:
 protected:
   void onLoop() {
     bool currentState = this->predicate();
-    if (hasStateChanged(currentState)) {
+    bool hasStateChanged = this->lastState != currentState;
+    if (hasStateChanged) {
       invoke(currentState ? this->ontrue : this->onfalse);
     }
     invoke(currentState ? this->whiletrue : this->whilefalse);
     this->lastState = currentState;
-    this->hasLastState = true;
-  }
-
-  bool hasStateChanged(bool newState) {
-    return this->hasLastState && (this->lastState != newState);
   }
 
   void invoke(Handler h) {
@@ -56,7 +53,6 @@ protected:
     }
   }
 
-  bool hasLastState;
   bool lastState;
   Predicate predicate;
   Handler ontrue;
