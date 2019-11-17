@@ -6,7 +6,9 @@ public:
   DigitalOutput(uint8_t pin)
   : pinNr(pin)
   , m_value(0)
-  {}
+  {
+    pinMode(this->pinNr, OUTPUT);
+  }
 
   uint8_t pin() {
     return this->pinNr;

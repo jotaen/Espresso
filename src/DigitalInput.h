@@ -7,7 +7,9 @@ class DigitalInput: public Device {
 public:
   DigitalInput(uint8_t pin)
   : pinNr(pin)
-  {}
+  {
+    pinMode(this->pinNr, INPUT);
+  }
 
   int isHigh() {
     return __yps_internal::_digitalRead(this->pinNr) == HIGH;
