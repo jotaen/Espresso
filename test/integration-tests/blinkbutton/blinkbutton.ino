@@ -2,8 +2,8 @@
 
 const unsigned long frequency = 100;
 
-DigitalInput button = DigitalInput(4);
-DigitalOutput led = DigitalOutput(6);
+DigitalInput button = DigitalInput(7);
+DigitalOutput led = DigitalOutput(13);
 Metronome ledBlinker = Metronome();
 Observer buttonObserver = Observer([]()->bool { return button.isHigh(); });
 
