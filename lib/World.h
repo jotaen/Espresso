@@ -5,22 +5,41 @@
 #include "../src/Device.h"
 #include <map>
 
-using namespace __yps_internal;
-
 typedef uint8_t byte;
 #define HIGH 0x1
 #define LOW  0x0
+
+namespace World {
+  void start();
+  void elapseMillis(unsigned long m);
+  void setDigitalInput(uint8_t pin, int value);
+  int checkDigitalOutput(uint8_t pin);
+}
+
+///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
+/////////  Internal definitions and setup
+///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
+
+using namespace __yps_internal;
+
+void onSetup();
 
 namespace World {
   unsigned long _millis;
   std::map<uint8_t, int> _digitalInputs;
   std::map<uint8_t, int> _digitalOutputs;
 
-  void reset() {
+  void destroy() {
     _clearRootDevice();
-    _millis = 0;
     _digitalInputs.clear();
+  }
+
+  void start() {
+    _millis = 0;
     _digitalOutputs.clear();
+    onSetup();
   }
 
   void loopOnce() {
@@ -41,20 +60,14 @@ namespace World {
 
   void setDigitalInput(uint8_t pin, int value) {
     _digitalInputs[pin] = value;
+    loopOnce();
   }
 
   int checkDigitalOutput(uint8_t pin) {
     return _digitalOutputs[pin];
   }
-
-  void settle() {
-    loopOnce();
-  }
 };
 
-/**
- *  Definitions of core functions for test context
- */
 unsigned long yps::millis() {
   return World::_millis;
 }
@@ -83,9 +96,6 @@ void __yps_internal::_callOnLoop(Device& d) {
   d.onLoop();
 }
 
-/**
- *  Other inialisation
- */
 Device* Device::rootDevice = 0;
 
 #endif

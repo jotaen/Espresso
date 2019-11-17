@@ -5,7 +5,7 @@
 TEST_CASE("[DigitalOutput]") {
 
   callspy::reset();
-  World::reset();
+  World::destroy();
 
   SECTION("It knows its pin number") {
     DigitalOutput dt = DigitalOutput(4);

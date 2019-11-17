@@ -9,7 +9,7 @@ protected:
 
 TEST_CASE("[Device]") {
 
-  World::reset();
+  World::destroy();
 
   SECTION("A single active device points to itself") {
     TestDevice d = TestDevice();

@@ -17,3 +17,5 @@ Actor onButtonLow = Actor(
   []()->bool { return button.isLow(); },
   [](){ ledBlinker.stop(); led = false; }
 );
+
+void onSetup() {}

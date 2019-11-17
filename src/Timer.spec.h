@@ -6,7 +6,7 @@
 TEST_CASE("[Timer]") {
 
   callspy::reset();
-  World::reset();
+  World::destroy();
 
   SECTION("A Timer is a Device") {
     Timer t = Timer(noop);

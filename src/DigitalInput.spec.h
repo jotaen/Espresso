@@ -5,7 +5,7 @@
 TEST_CASE("[DigitalInput]") {
 
   callspy::reset();
-  World::reset();
+  World::destroy();
 
   SECTION("A DigitalInput is a Device") {
     DigitalInput di = DigitalInput(0);

@@ -6,7 +6,7 @@
 TEST_CASE("[Metronome]") {
 
   callspy::reset();
-  World::reset();
+  World::destroy();
 
   SECTION("A Metronome is a Device") {
     Metronome m = Metronome(noop);

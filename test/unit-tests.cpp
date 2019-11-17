@@ -17,6 +17,8 @@ namespace callspy {
   }
 }
 
+void onSetup() {}
+
 #include "../src/Device.spec.h"
 #include "../src/Actor.spec.h"
 #include "../src/Timer.spec.h"

@@ -7,4 +7,6 @@
 #include "src/Metronome.h"
 #include "src/DigitalInput.h"
 
+void onSetup();
+
 #endif
