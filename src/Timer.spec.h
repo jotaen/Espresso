@@ -1,4 +1,6 @@
-#include "../test/test.h"
+#include <catch.hpp>
+#include <World.h>
+#include <utils.h>
 #include "Timer.h"
 
 TEST_CASE("[Timer]") {

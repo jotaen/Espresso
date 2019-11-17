@@ -1,24 +1,16 @@
-#ifndef __YPS_TEST_H__
-#define __YPS_TEST_H__
+#ifndef __YPS_WORLD_H__
+#define __YPS_WORLD_H__
 
-#include "../lib/catch.hpp"
 #include "../src/core.h"
-#include "../src/utils.h"
 #include "../src/Device.h"
 #include <map>
 
 using namespace __yps_internal;
 
-/**
- *  Arduino provided fixtures
- */
+typedef uint8_t byte;
 #define HIGH 0x1
 #define LOW  0x0
-typedef uint8_t byte;
 
-/**
- *  Class for simulating and manipulating the state of the external Arduino world.
- */
 namespace World {
   unsigned long _millis;
   std::map<uint8_t, int> _digitalInputs;
@@ -82,26 +74,8 @@ void __yps_internal::_callOnLoop(Device& d) {
 }
 
 /**
- *  Call spy for testing purpose
- *  This is one global instance, don’t forget to reset!
+ *  Other inialisation
  */
-namespace callspy {
-
-  struct {
-    bool hasBeenCalled;
-    int count;
-  } reporter;
-
-  void Void() {
-    reporter.hasBeenCalled = true;
-    reporter.count++;
-  }
-
-  void reset() {
-    reporter.hasBeenCalled = false;
-    reporter.count = 0;
-  }
-
-}
+Device* Device::rootDevice = 0;
 
 #endif

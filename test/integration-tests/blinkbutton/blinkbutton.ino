@@ -1,4 +1,4 @@
-#include "yps.h"
+#include <yps.h>
 
 DigitalInput button = DigitalInput(4);
 

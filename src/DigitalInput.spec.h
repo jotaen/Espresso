@@ -1,4 +1,5 @@
-#include "../test/test.h"
+#include <catch.hpp>
+#include <World.h>
 #include "DigitalInput.h"
 
 TEST_CASE("[DigitalInput]") {

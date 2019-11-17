@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include "yps.h"
 
 Device* Device::rootDevice = 0;

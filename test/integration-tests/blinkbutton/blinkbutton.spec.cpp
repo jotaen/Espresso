@@ -1,4 +1,7 @@
-#include "../yps-test.h"
+#define CATCH_CONFIG_MAIN
+#include <catch.hpp>
+#include <World.h>
+
 #include "blinkbutton.ino"
 
 TEST_CASE("LED starts blinking while button is pressed", "[BlinkButton]") {

@@ -1,9 +1,23 @@
 #define CATCH_CONFIG_MAIN
 
-#include "test.h"
+namespace callspy {
+  struct {
+    bool hasBeenCalled;
+    int count;
+  } reporter;
+
+  void Void() {
+    reporter.hasBeenCalled = true;
+    reporter.count++;
+  }
+
+  void reset() {
+    reporter.hasBeenCalled = false;
+    reporter.count = 0;
+  }
+}
+
 #include "../src/Device.spec.h"
 #include "../src/Actor.spec.h"
 #include "../src/Timer.spec.h"
 #include "../src/DigitalInput.spec.h"
-
-Device* Device::rootDevice = 0;
