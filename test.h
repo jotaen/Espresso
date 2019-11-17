@@ -2,9 +2,12 @@
 #define __YPS_TEST_H__
 
 #include "lib/catch.hpp"
+#include "src/yps.h"
 #include "src/utils.h"
 #include "src/Device.h"
 #include <map>
+
+using namespace __yps_internal;
 
 /**
  *  Arduino provided fixtures
@@ -16,51 +19,40 @@ typedef uint8_t byte;
 /**
  *  Class for simulating and manipulating the state of the external Arduino world.
  */
-class World {
-public:
-  static void reset() {
-    yps::rootDevice = 0;
-    millis = 0;
-    digitalInputs.clear();
+namespace World {
+  unsigned long _millis;
+  std::map<uint8_t, int> _digitalInputs;
+
+  void reset() {
+    _clearRootDevice();
+    _millis = 0;
+    _digitalInputs.clear();
   }
 
-  static void elapseMillis(unsigned long m) {
-    const unsigned int target = millis + m;
-    while(millis < target) {
-      millis += 1;
+  void loopOnce() {
+    Device* deviceIt = _getRootDevice();
+    do {
+      _callOnLoop(*deviceIt);
+      deviceIt = _getNextDevice(*deviceIt);
+    } while (deviceIt != _getRootDevice());
+  }
+
+  void elapseMillis(unsigned long m) {
+    const unsigned int target = _millis + m;
+    while(_millis < target) {
+      _millis += 1;
       loopOnce();
     }
   }
 
-  static void setDigitalInput(uint8_t pin, int value) {
-    digitalInputs[pin] = value;
+  void setDigitalInput(uint8_t pin, int value) {
+    _digitalInputs[pin] = value;
   }
 
-  static void settle() {
+  void settle() {
     loopOnce();
   }
-
-  static void loopOnce() {
-    Device* deviceIt = yps::rootDevice;
-    do {
-      (*deviceIt).onLoop();
-      deviceIt = (*deviceIt).nextDevice;
-    } while (deviceIt != yps::rootDevice);
-  }
-
-  static Device* getNext(Device& d) {
-    return d.nextDevice;
-  }
-
-private:
-  friend class yps;
-  static unsigned long millis;
-  static std::map<uint8_t, int> digitalInputs;
 };
-
-unsigned long World::millis = 0;
-std::map<uint8_t, int> World::digitalInputs;
-
 
 /**
  *  Call spy for testing purpose

@@ -3,35 +3,43 @@
 
 #include "yps.h"
 
+using namespace __yps_internal;
+
 class Device {
 public:
   Device() {
-    if (yps::rootDevice == 0) {
-      yps::rootDevice = this;
+    if (rootDevice == 0) {
+      rootDevice = this;
       this->nextDevice = this;
       this->previousDevice = this;
     } else {
-      this->previousDevice = yps::rootDevice->previousDevice;
-      yps::rootDevice->previousDevice->nextDevice = this;
-      this->nextDevice = yps::rootDevice;
-      yps::rootDevice->previousDevice = this;
+      this->previousDevice = rootDevice->previousDevice;
+      rootDevice->previousDevice->nextDevice = this;
+      this->nextDevice = rootDevice;
+      rootDevice->previousDevice = this;
     }
   }
 
   ~Device() {
     this->previousDevice->nextDevice = nextDevice;
     this->nextDevice = 0;
-    if (yps::rootDevice == this) {
-      yps::rootDevice = 0;
+    if (rootDevice == this) {
+      rootDevice = 0;
     }
   }
 
 protected:
-  friend class World;
+  friend Device* __yps_internal::_getRootDevice();
+  friend Device* __yps_internal::_getNextDevice(Device& d);
+  friend void __yps_internal::_callOnLoop(Device& d);
+  friend void __yps_internal::_clearRootDevice();
 
   virtual void onLoop() = 0;
+  static Device* rootDevice;
   Device* nextDevice = 0;
   Device* previousDevice = 0;
 };
+
+Device* Device::rootDevice = 0;
 
 #endif

@@ -11,15 +11,15 @@ public:
   {}
 
   int isHigh() {
-    return yps::digitalRead(this->pin) == HIGH;
+    return __yps_internal::_digitalRead(this->pin) == HIGH;
   }
 
   int isLow() {
-    return yps::digitalRead(this->pin) == LOW;
+    return __yps_internal::_digitalRead(this->pin) == LOW;
   }
 
   int value() {
-    return yps::digitalRead(this->pin);
+    return __yps_internal::_digitalRead(this->pin);
   }
 
 protected:

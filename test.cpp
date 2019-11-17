@@ -8,11 +8,25 @@
 #include "src/DigitalInput.spec.h"
 
 unsigned long yps::millis() {
-  return World::millis;
+  return World::_millis;
 }
 
-int yps::digitalRead(uint8_t pin) {
-  return World::digitalInputs[pin];
+int __yps_internal::_digitalRead(uint8_t pin) {
+  return World::_digitalInputs[pin];
 }
 
-Device* yps::rootDevice;
+Device* __yps_internal::_getRootDevice() {
+  return Device::rootDevice;
+}
+
+void __yps_internal::_clearRootDevice() {
+  Device::rootDevice = 0;
+}
+
+Device* __yps_internal::_getNextDevice(Device& d) {
+  return d.nextDevice;
+}
+
+void __yps_internal::_callOnLoop(Device& d) {
+  d.onLoop();
+}

@@ -12,16 +12,16 @@ TEST_CASE("[Device]") {
 
   SECTION("A single active device points to itself") {
     TestDevice d = TestDevice();
-    REQUIRE(World::getNext(d) == &d);
+    REQUIRE(__yps_internal::_getNextDevice(d) == &d);
   }
 
   SECTION("Devices point to each other subsequent order") {
     TestDevice d1 = TestDevice();
     TestDevice d2 = TestDevice();
     TestDevice d3 = TestDevice();
-    REQUIRE(World::getNext(d1) == &d2);
-    REQUIRE(World::getNext(d2) == &d3);
-    REQUIRE(World::getNext(d3) == &d1);
+    REQUIRE(__yps_internal::_getNextDevice(d1) == &d2);
+    REQUIRE(__yps_internal::_getNextDevice(d2) == &d3);
+    REQUIRE(__yps_internal::_getNextDevice(d3) == &d1);
   }
 
   SECTION("A destroyed device is no longer referenced") {
@@ -29,12 +29,12 @@ TEST_CASE("[Device]") {
     TestDevice d2 = TestDevice();
     {
       TestDevice d3 = TestDevice();
-      REQUIRE(World::getNext(d1) == &d2);
-      REQUIRE(World::getNext(d2) == &d3);
-      REQUIRE(World::getNext(d3) == &d1);
+      REQUIRE(__yps_internal::_getNextDevice(d1) == &d2);
+      REQUIRE(__yps_internal::_getNextDevice(d2) == &d3);
+      REQUIRE(__yps_internal::_getNextDevice(d3) == &d1);
     }
-    REQUIRE(World::getNext(d1) == &d2);
-    REQUIRE(World::getNext(d2) == &d1);
+    REQUIRE(__yps_internal::_getNextDevice(d1) == &d2);
+    REQUIRE(__yps_internal::_getNextDevice(d2) == &d1);
   }
 
   SECTION("Destroying the last (or: only) item cleans up properly") {
@@ -42,7 +42,7 @@ TEST_CASE("[Device]") {
       TestDevice d1 = TestDevice();
     }
     TestDevice d2 = TestDevice();
-    REQUIRE(World::getNext(d2) == &d2);
+    REQUIRE(__yps_internal::_getNextDevice(d2) == &d2);
   }
 
 }
