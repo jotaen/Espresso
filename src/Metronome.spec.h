@@ -16,7 +16,7 @@ TEST_CASE("[Metronome]") {
   SECTION("The handler function invocation should begin immediately") {
     Metronome m = Metronome(callspy::Void);
     m.runMillis(5);
-    REQUIRE(callspy::reporter.hasBeenCalled);
+    REQUIRE(callspy::hasBeenCalled());
   }
 
   SECTION("`isActive`: Should inform about whether the timer is active or idling") {
@@ -35,8 +35,8 @@ TEST_CASE("[Metronome]") {
     Metronome m = Metronome(callspy::Void);
     m.runMillis(interval);
     World::elapseMillis(interval);
-    REQUIRE(callspy::reporter.hasBeenCalled);
-    REQUIRE(callspy::reporter.count == 2);
+    REQUIRE(callspy::hasBeenCalled());
+    REQUIRE(callspy::counter() == 2);
   }
 
   SECTION("`runMillis`: The handler function should be invoked recurringly") {
@@ -44,8 +44,8 @@ TEST_CASE("[Metronome]") {
     Metronome m = Metronome(callspy::Void);
     m.runMillis(interval);
     World::elapseMillis(3*interval);
-    REQUIRE(callspy::reporter.hasBeenCalled);
-    REQUIRE(callspy::reporter.count == 4);
+    REQUIRE(callspy::hasBeenCalled());
+    REQUIRE(callspy::counter() == 4);
   }
 
   SECTION("`runMillis`: The handler should not be invoked anymore after the metronome was stopped") {
@@ -55,7 +55,7 @@ TEST_CASE("[Metronome]") {
     World::elapseMillis(3*interval);
     m.stop();
     World::elapseMillis(3*interval);
-    REQUIRE(callspy::reporter.count == 4);
+    REQUIRE(callspy::counter() == 4);
   }
 
 }

@@ -1,19 +1,22 @@
 #define CATCH_CONFIG_MAIN
 
 namespace callspy {
-  struct {
-    bool hasBeenCalled;
-    int count;
-  } reporter;
+  unsigned int _counter;
 
   void Void() {
-    reporter.hasBeenCalled = true;
-    reporter.count++;
+    _counter++;
   }
 
   void reset() {
-    reporter.hasBeenCalled = false;
-    reporter.count = 0;
+    _counter = 0;
+  }
+
+  bool hasBeenCalled() {
+    return _counter > 0;
+  }
+
+  unsigned int counter() {
+    return _counter;
   }
 }
 

@@ -16,13 +16,13 @@ TEST_CASE("[Actor]") {
   SECTION("`onLoop` calls handler when predicate is `true`") {
     Actor a = Actor(alwaysTrue, callspy::Void);
     World::flush();
-    REQUIRE(callspy::reporter.hasBeenCalled);
+    REQUIRE(callspy::hasBeenCalled());
   }
 
   SECTION("`onLoop` doesn’t call handler when predicate is `false`") {
     Actor a = Actor(alwaysFalse, callspy::Void);
     World::flush();
-    REQUIRE(!callspy::reporter.hasBeenCalled);
+    REQUIRE(!callspy::hasBeenCalled());
   }
 
 }
