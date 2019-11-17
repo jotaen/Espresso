@@ -11,4 +11,4 @@ clang++ \
   --include-directory=lib \
   -o $YPSTEST_OUT \
   $YPSTEST_PATH \
-  && eval ./$YPSTEST_OUT
+  && eval "./$YPSTEST_OUT ${@:2}"
