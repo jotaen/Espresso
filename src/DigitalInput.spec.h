@@ -12,6 +12,11 @@ TEST_CASE("[DigitalInput]") {
     Device& d = di; // The “assertion” is that this compiles
   }
 
+  SECTION("It knows its pin number") {
+    DigitalInput di = DigitalInput(7);
+    REQUIRE(di.pin() == 7);
+  }
+
   SECTION("The value should be `low` initially") {
     DigitalInput di = DigitalInput(2);
     REQUIRE(!di.isHigh());
@@ -20,20 +25,17 @@ TEST_CASE("[DigitalInput]") {
   }
 
   SECTION("The value should be `high` according to pin") {
-    const uint8_t pin = 7;
-    DigitalInput di = DigitalInput(pin);
-    World::setDigitalInput(pin, HIGH);
+    DigitalInput di = DigitalInput(7);
+    World::setDigitalInput(di.pin(), HIGH);
     REQUIRE(di.isHigh());
     REQUIRE(!di.isLow());
     REQUIRE(di.value() == HIGH);
   }
 
   SECTION("They behave independently from one another") {
-    const uint8_t pin1 = 7;
-    const uint8_t pin2 = 12;
-    DigitalInput di1 = DigitalInput(pin1);
-    DigitalInput di2 = DigitalInput(pin2);
-    World::setDigitalInput(pin2, HIGH);
+    DigitalInput di1 = DigitalInput(6);
+    DigitalInput di2 = DigitalInput(11);
+    World::setDigitalInput(di2.pin(), HIGH);
     REQUIRE(di1.isLow());
     REQUIRE(di2.isHigh());
   }

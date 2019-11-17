@@ -6,24 +6,28 @@
 class DigitalInput: public Device {
 public:
   DigitalInput(uint8_t pin)
-  : pin(pin)
+  : pinNr(pin)
   {}
 
   int isHigh() {
-    return __yps_internal::_digitalRead(this->pin) == HIGH;
+    return __yps_internal::_digitalRead(this->pinNr) == HIGH;
   }
 
   int isLow() {
-    return __yps_internal::_digitalRead(this->pin) == LOW;
+    return __yps_internal::_digitalRead(this->pinNr) == LOW;
   }
 
   int value() {
-    return __yps_internal::_digitalRead(this->pin);
+    return __yps_internal::_digitalRead(this->pinNr);
+  }
+
+  uint8_t pin() {
+    return this->pinNr;
   }
 
 protected:
   void onLoop() {}
-  const uint8_t pin;
+  const uint8_t pinNr;
 };
 
 #endif
