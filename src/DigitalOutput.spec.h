@@ -11,6 +11,11 @@ TEST_CASE("[DigitalOutput]") {
     REQUIRE(dt.pin() == 4);
   }
 
+  SECTION("It sets the pin mode correctly") {
+    DigitalOutput dt = DigitalOutput(12);
+    REQUIRE(Arduino::checkPinMode(dt.pin()) == OUTPUT);
+  }
+
   SECTION("By default the value is `LOW`") {
     DigitalOutput dt = DigitalOutput(2);
     REQUIRE(dt.value() == LOW);

@@ -16,6 +16,11 @@ TEST_CASE("[DigitalInput]") {
     REQUIRE(di.pin() == 7);
   }
 
+  SECTION("It sets the pin mode correctly") {
+    DigitalInput di = DigitalInput(12);
+    REQUIRE(Arduino::checkPinMode(di.pin()) == INPUT);
+  }
+
   SECTION("The value should be `low` initially") {
     DigitalInput di = DigitalInput(2);
     REQUIRE(!di.isHigh());

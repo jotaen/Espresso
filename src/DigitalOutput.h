@@ -5,7 +5,7 @@ class DigitalOutput {
 public:
   DigitalOutput(uint8_t pin)
   : pinNr(pin)
-  , m_value(0)
+  , value_(0)
   {
     pinMode(this->pinNr, OUTPUT);
   }
@@ -15,20 +15,20 @@ public:
   }
 
   int value() {
-    return m_value;
+    return value_;
   }
 
   bool isHigh() {
-    return m_value == HIGH;
+    return value_ == HIGH;
   }
 
   bool isLow() {
-    return m_value == LOW;
+    return value_ == LOW;
   }
 
   void write(int val) {
     digitalWrite(this->pinNr, val);
-    this->m_value = val;
+    this->value_ = val;
   }
 
   void toggle() {
@@ -37,7 +37,7 @@ public:
 
 protected:
   const uint8_t pinNr;
-  int m_value;
+  int value_;
 };
 
 #endif

@@ -30,7 +30,7 @@ Device* Device::rootDevice = 0;
 
 namespace Arduino {
   unsigned long __millis;
-  std::map<uint8_t, int> __pinModes;
+  std::map<uint8_t, uint8_t> __pinModes;
   std::map<uint8_t, int> __digitalInputs;
   std::map<uint8_t, int> __digitalOutputs;
 
@@ -58,19 +58,23 @@ namespace Arduino {
     }
   }
 
+  uint8_t checkPinMode(uint8_t pin) {
+    return __pinModes.at(pin); // throws if key not set
+  }
+
   void setDigitalInput(uint8_t pin, int val) {
-    if (Arduino::__pinModes[pin] != INPUT) {
+    if (checkPinMode(pin) != INPUT) {
       throw;
     }
-    Arduino::__digitalInputs[pin] = val;
+    __digitalInputs[pin] = val;
     flush();
   }
 
   int checkDigitalOutput(uint8_t pin) {
-    if (Arduino::__pinModes[pin] != OUTPUT) {
+    if (checkPinMode(pin) != OUTPUT) {
       throw;
     }
-    return Arduino::__digitalOutputs[pin];
+    return __digitalOutputs[pin];
   }
 }
 
@@ -79,14 +83,14 @@ void pinMode(uint8_t pin, uint8_t mode) {
 }
 
 void digitalWrite(uint8_t pin, uint8_t val) {
-  if (Arduino::__pinModes[pin] != OUTPUT) {
+  if (Arduino::checkPinMode(pin) != OUTPUT) {
     throw;
   }
   Arduino::__digitalOutputs[pin] = val;
 }
 
 int digitalRead(uint8_t pin) {
-  if (Arduino::__pinModes[pin] != INPUT) {
+  if (Arduino::checkPinMode(pin) != INPUT) {
     throw;
   }
   return Arduino::__digitalInputs[pin];
