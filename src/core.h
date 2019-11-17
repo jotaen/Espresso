@@ -9,6 +9,7 @@ namespace yps {
 
 namespace __yps_internal {
   int _digitalRead(uint8_t pin);
+  void _digitalWrite(uint8_t pin, int val);
   Device* _getRootDevice();
   void _clearRootDevice();
   Device* _getNextDevice(Device& d);

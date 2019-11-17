@@ -14,11 +14,13 @@ typedef uint8_t byte;
 namespace World {
   unsigned long _millis;
   std::map<uint8_t, int> _digitalInputs;
+  std::map<uint8_t, int> _digitalOutputs;
 
   void reset() {
     _clearRootDevice();
     _millis = 0;
     _digitalInputs.clear();
+    _digitalOutputs.clear();
   }
 
   void loopOnce() {
@@ -41,6 +43,10 @@ namespace World {
     _digitalInputs[pin] = value;
   }
 
+  int checkDigitalOutput(uint8_t pin) {
+    return _digitalOutputs[pin];
+  }
+
   void settle() {
     loopOnce();
   }
@@ -55,6 +61,10 @@ unsigned long yps::millis() {
 
 int __yps_internal::_digitalRead(uint8_t pin) {
   return World::_digitalInputs[pin];
+}
+
+void __yps_internal::_digitalWrite(uint8_t pin, int val) {
+  World::_digitalOutputs[pin] = val;
 }
 
 Device* __yps_internal::_getRootDevice() {
