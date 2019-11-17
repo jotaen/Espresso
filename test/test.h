@@ -1,10 +1,10 @@
 #ifndef __YPS_TEST_H__
 #define __YPS_TEST_H__
 
-#include "lib/catch.hpp"
-#include "src/core.h"
-#include "src/utils.h"
-#include "src/Device.h"
+#include "../lib/catch.hpp"
+#include "../src/core.h"
+#include "../src/utils.h"
+#include "../src/Device.h"
 #include <map>
 
 using namespace __yps_internal;

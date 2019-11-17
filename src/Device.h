@@ -40,6 +40,4 @@ protected:
   Device* previousDevice = 0;
 };
 
-Device* Device::rootDevice = 0;
-
 #endif

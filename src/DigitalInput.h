@@ -1,7 +1,6 @@
 #ifndef __YPS_DIGITALINPUT_H__
 #define __YPS_DIGITALINPUT_H__
 
-#include "../test.h"
 #include "Device.h"
 
 class DigitalInput: public Device {

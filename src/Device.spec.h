@@ -1,4 +1,4 @@
-#include "../test.h"
+#include "../test/test.h"
 #include "Device.h"
 
 class TestDevice: public Device {

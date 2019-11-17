@@ -1,4 +1,4 @@
-#include "../test.h"
+#include "../test/test.h"
 #include "Timer.h"
 
 TEST_CASE("[Timer]") {
