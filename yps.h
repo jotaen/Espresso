@@ -1,16 +1,9 @@
-#include "src/yps.h"
+#ifndef __YPS_YPS_H__
+#define __YPS_YPS_H__
+
+#include "src/core.h"
 #include "src/Actor.h"
 #include "src/Timer.h"
+#include "src/DigitalInput.h"
 
-void onSetup();
-
-int main() {
-  onSetup();
-  Device* deviceIt = yps::rootDevice;
-  while (true) {
-    while {
-      (*deviceIt).onLoop();
-      deviceIt = (*deviceIt).nextDevice;
-    } while (deviceIt != yps::rootDevice);
-  }
-}
+#endif
