@@ -4,11 +4,15 @@
 Device* Device::rootDevice = 0;
 
 unsigned long yps::millis() {
-  return millis();
+  return ::millis();
 }
 
 int __yps_internal::_digitalRead(uint8_t pin) {
-  return 1;
+  return ::digitalRead(pin);
+}
+
+void __yps_internal::_digitalWrite(uint8_t pin, int val) {
+  ::digitalWrite(pin, val);
 }
 
 Device* __yps_internal::_getRootDevice() {
@@ -27,6 +31,14 @@ void __yps_internal::_callOnLoop(Device& d) {
   d.onLoop();
 }
 
-void setup() {}
+void setup() {
+  onSetup();
+}
 
-void loop() {}
+void loop() {
+  Device* deviceIt = __yps_internal::_getRootDevice();
+  do {
+    __yps_internal::_callOnLoop(*deviceIt);
+    deviceIt = __yps_internal::_getNextDevice(*deviceIt);
+  } while (deviceIt != __yps_internal::_getRootDevice());
+}
