@@ -55,6 +55,33 @@ namespace World {
 };
 
 /**
+ *  Definitions of core functions for test context
+ */
+unsigned long yps::millis() {
+  return World::_millis;
+}
+
+int __yps_internal::_digitalRead(uint8_t pin) {
+  return World::_digitalInputs[pin];
+}
+
+Device* __yps_internal::_getRootDevice() {
+  return Device::rootDevice;
+}
+
+void __yps_internal::_clearRootDevice() {
+  Device::rootDevice = 0;
+}
+
+Device* __yps_internal::_getNextDevice(Device& d) {
+  return d.nextDevice;
+}
+
+void __yps_internal::_callOnLoop(Device& d) {
+  d.onLoop();
+}
+
+/**
  *  Call spy for testing purpose
  *  This is one global instance, don’t forget to reset!
  */
