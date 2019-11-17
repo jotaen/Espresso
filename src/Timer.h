@@ -10,8 +10,8 @@ class Timer: public Device {
 public:
   Timer(Handler h)
   : handler(h)
-  , isActive(false)
-  , isRecurring(false)
+  , active(false)
+  , recurring(false)
   , intervalMillis(0)
   , nextLoop(0)
   {}
@@ -21,20 +21,24 @@ public:
   }
 
   void stop() {
-    this->isActive = false;
+    this->active = false;
   }
 
   void onceMillis(unsigned long interval) {
     this->startNow(interval, false);
   }
 
+  bool isActive() {
+    return active;
+  }
+
 protected:
   void onLoop() {
-    if (!this->isActive || yps::millis() < this->nextLoop) {
+    if (!this->active || yps::millis() < this->nextLoop) {
       return;
     }
     this->handler();
-    if (this->isRecurring) {
+    if (this->recurring) {
       this->nextLoop += this->intervalMillis;
     } else {
       this->stop();
@@ -44,13 +48,13 @@ protected:
   void startNow(unsigned long interval, bool isRecurring) {
     this->intervalMillis = interval;
     this->nextLoop = yps::millis() + interval;
-    this->isActive = true;
-    this->isRecurring = isRecurring;
+    this->active = true;
+    this->recurring = isRecurring;
   }
 
   Handler handler;
-  bool isActive;
-  bool isRecurring;
+  bool active;
+  bool recurring;
   unsigned long intervalMillis;
   unsigned long nextLoop;
 };

@@ -17,6 +17,19 @@ TEST_CASE("[Timer]") {
     REQUIRE(!callspy::reporter.hasBeenCalled);
   }
 
+  SECTION("`isActive`: Should inform about whether the timer is active or idling") {
+    Timer t = Timer(noop);
+    REQUIRE(t.isActive() == false);
+    t.runMillis(10);
+    REQUIRE(t.isActive());
+    t.stop();
+    REQUIRE(t.isActive() == false);
+    t.onceMillis(10);
+    REQUIRE(t.isActive());
+    World::elapseMillis(50);
+    REQUIRE(t.isActive() == false);
+  }
+
   SECTION("`runMillis`: The handler function should be invoked after time has elapsed") {
     const unsigned long interval = 50;
     Timer t = Timer(callspy::Void);
