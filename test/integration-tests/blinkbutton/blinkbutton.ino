@@ -6,7 +6,7 @@ bool led = false;
 
 unsigned long frequency = 100;
 
-Timer ledBlinker = Timer([](){ led = !led; });
+Metronome ledBlinker = Metronome([](){ led = !led; });
 
 Actor onButtonHigh = Actor(
   []()->bool { return button.isHigh(); },

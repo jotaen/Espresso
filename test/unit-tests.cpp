@@ -20,4 +20,5 @@ namespace callspy {
 #include "../src/Device.spec.h"
 #include "../src/Actor.spec.h"
 #include "../src/Timer.spec.h"
+#include "../src/Metronome.spec.h"
 #include "../src/DigitalInput.spec.h"
