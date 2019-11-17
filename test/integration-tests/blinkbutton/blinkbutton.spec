@@ -1,4 +1,4 @@
-#include "yps-test.h"
+#include "../yps-test.h"
 #include "blinkbutton.ino"
 
 TEST_CASE("LED starts blinking while button is pressed", "[BlinkButton]") {
