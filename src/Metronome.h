@@ -15,27 +15,23 @@ public:
   , nextLoop(0)
   {}
 
-  Metronome& onTrigger(Handler h) {
+  void onTrigger(Handler h) {
     this->handler = h;
-    return *this;
   }
 
-  Metronome& runMillis(unsigned long interval) {
+  void runMillis(unsigned long interval) {
     this->intervalMillis = interval;
     this->nextLoop = yps::millis() + interval;
     this->active = true;
     this->invoke();
-    return *this;
   }
 
-  Metronome& run() {
+  void run() {
     runMillis(0);
-    return *this;
   }
 
-  Metronome& stop() {
+  void stop() {
     this->active = false;
-    return *this;
   }
 
   bool isActive() {
