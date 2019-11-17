@@ -15,7 +15,7 @@ TEST_CASE("[Timer]") {
 
   SECTION("The handler function should not be invoked without the timer being started") {
     Timer t = Timer(callspy::Void);
-    World::loopOnce();
+    World::flush();
     REQUIRE(!callspy::reporter.hasBeenCalled);
   }
 
@@ -31,7 +31,7 @@ TEST_CASE("[Timer]") {
   SECTION("The handler function should not be invoked before the time is elapsed") {
     Timer t = Timer(callspy::Void);
     t.start(10);
-    World::loopOnce();
+    World::flush();
     REQUIRE(callspy::reporter.hasBeenCalled == false);
     World::elapseMillis(3);
     REQUIRE(callspy::reporter.hasBeenCalled == false);

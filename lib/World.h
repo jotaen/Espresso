@@ -14,6 +14,7 @@ namespace World {
   void elapseMillis(unsigned long m);
   void setDigitalInput(uint8_t pin, int value);
   int checkDigitalOutput(uint8_t pin);
+  void flush();
 }
 
 ///////////////////////////////////////////////////////////
@@ -42,7 +43,7 @@ namespace World {
     onSetup();
   }
 
-  void loopOnce() {
+  void flush() {
     Device* deviceIt = _getRootDevice();
     do {
       _callOnLoop(*deviceIt);
@@ -54,13 +55,13 @@ namespace World {
     const unsigned int target = _millis + m;
     while(_millis < target) {
       _millis += 1;
-      loopOnce();
+      flush();
     }
   }
 
   void setDigitalInput(uint8_t pin, int value) {
     _digitalInputs[pin] = value;
-    loopOnce();
+    flush();
   }
 
   int checkDigitalOutput(uint8_t pin) {
