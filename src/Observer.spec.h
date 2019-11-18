@@ -11,12 +11,12 @@ TEST_CASE("[Observer]") {
   predicateValue = false;
 
   SECTION("An Observer is a Device") {
-    Observer o = Observer(fn::alwaysTrue);
+    Observer o(fn::alwaysTrue);
     Device& d = o; // The “assertion” is that this compiles
   }
 
   SECTION("Absence of handlers is dealt with gracefully") {
-    Observer o = Observer([](){ return predicateValue; });
+    Observer o([](){ return predicateValue; });
     REQUIRE_NOTHROW(Arduino::flush());
     predicateValue = true;
     REQUIRE_NOTHROW(Arduino::flush());
@@ -24,7 +24,7 @@ TEST_CASE("[Observer]") {
 
   SECTION("`onTrue` gets called once when state changes") {
     predicateValue = true;
-    Observer o = Observer([](){ return predicateValue; });
+    Observer o([](){ return predicateValue; });
     o.onTrue(callspy::Void);
     Arduino::elapseMillis(10);
     REQUIRE(callspy::hasBeenCalled() == false); // since there was no change so far
@@ -37,7 +37,7 @@ TEST_CASE("[Observer]") {
   }
 
   SECTION("`whileTrue` gets called repeatedly") {
-    Observer o = Observer(fn::alwaysTrue);
+    Observer o(fn::alwaysTrue);
     o.whileTrue(callspy::Void);
     Arduino::elapseMillis(10);
     REQUIRE(callspy::hasBeenCalled());
@@ -45,7 +45,7 @@ TEST_CASE("[Observer]") {
   }
 
   SECTION("`onFalse` gets called once") {
-    Observer o = Observer([](){ return predicateValue; });
+    Observer o([](){ return predicateValue; });
     o.onFalse(callspy::Void);
     Arduino::elapseMillis(10);
     REQUIRE(callspy::hasBeenCalled() == false); // since there was no change so far
@@ -58,7 +58,7 @@ TEST_CASE("[Observer]") {
   }
 
   SECTION("`whileFalse` gets called repeatedly") {
-    Observer o = Observer(fn::alwaysFalse);
+    Observer o(fn::alwaysFalse);
     o.whileFalse(callspy::Void);
     Arduino::elapseMillis(10);
     REQUIRE(callspy::hasBeenCalled());
@@ -66,7 +66,7 @@ TEST_CASE("[Observer]") {
   }
 
   SECTION("For `true`: Only the matching handlers get invoked") {
-    Observer o = Observer(fn::alwaysTrue);
+    Observer o(fn::alwaysTrue);
     o.onTrue(callspy::Void);
     o.whileTrue(callspy::Void);
     o.onFalse([](){ throw; });
@@ -75,7 +75,7 @@ TEST_CASE("[Observer]") {
   }
 
   SECTION("For `false`: Only the matching handlers get invoked") {
-    Observer o = Observer(fn::alwaysFalse);
+    Observer o(fn::alwaysFalse);
     o.onFalse(callspy::Void);
     o.whileFalse(callspy::Void);
     o.onTrue([](){ throw; });
