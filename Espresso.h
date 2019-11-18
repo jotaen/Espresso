@@ -9,23 +9,7 @@
 #include "src/DigitalInput.h"
 #include "src/DigitalOutput.h"
 
-Device* Device::rootDevice = 0;
-
 void onSetup();
 
-void setup() {
-  onSetup();
-}
-
-void loop() {
-  Device* deviceIt = Device::rootDevice;
-  if (deviceIt == 0) {
-    return;
-  }
-  do {
-    (*deviceIt).onLoop();
-    deviceIt = (*deviceIt).nextDevice;
-  } while (deviceIt != Device::rootDevice);
-}
-
+#include "src/core/main.h"
 #endif
