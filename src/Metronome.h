@@ -1,5 +1,5 @@
-#ifndef __YPS_METRONOME_H__
-#define __YPS_METRONOME_H__
+#ifndef __ESPRESSO_METRONOME_H__
+#define __ESPRESSO_METRONOME_H__
 
 #include "Device.h"
 #include "util/fn.h"

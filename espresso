@@ -1,0 +1,14 @@
+#!/bin/sh
+
+ESPRESSO_PATH=$1
+ESPRESSO_FILE=${ESPRESSO_PATH##*/}
+ESPRESSO_NAME=${ESPRESSO_FILE%.*}
+ESPRESSO_OUT="build/$ESPRESSO_NAME"
+
+clang++ \
+  -std=c++11 \
+  --include-directory=. \
+  --include-directory=lib \
+  -o $ESPRESSO_OUT \
+  $ESPRESSO_PATH \
+  && eval "./$ESPRESSO_OUT ${@:2}"

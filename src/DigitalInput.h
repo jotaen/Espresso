@@ -1,5 +1,5 @@
-#ifndef __YPS_DIGITALINPUT_H__
-#define __YPS_DIGITALINPUT_H__
+#ifndef __ESPRESSO_DIGITALINPUT_H__
+#define __ESPRESSO_DIGITALINPUT_H__
 
 #include "Device.h"
 

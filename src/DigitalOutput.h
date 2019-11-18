@@ -1,5 +1,5 @@
-#ifndef __YPS_DIGITALOUTPUT_H__
-#define __YPS_DIGITALOUTPUT_H__
+#ifndef __ESPRESSO_DIGITALOUTPUT_H__
+#define __ESPRESSO_DIGITALOUTPUT_H__
 
 class DigitalOutput {
 public:

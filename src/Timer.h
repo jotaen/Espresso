@@ -1,5 +1,5 @@
-#ifndef __YPS_TIMER_H__
-#define __YPS_TIMER_H__
+#ifndef __ESPRESSO_TIMER_H__
+#define __ESPRESSO_TIMER_H__
 
 #include "Device.h"
 #include "util/fn.h"

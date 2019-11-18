@@ -1,5 +1,5 @@
-#ifndef __YPS_DEVICE_H__
-#define __YPS_DEVICE_H__
+#ifndef __ESPRESSO_DEVICE_H__
+#define __ESPRESSO_DEVICE_H__
 
 class Device {
 public:

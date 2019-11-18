@@ -1,5 +1,5 @@
-#ifndef __YPS_UTILS_H_
-#define __YPS_UTILS_H_
+#ifndef __ESPRESSO_UTILS_H_
+#define __ESPRESSO_UTILS_H_
 
 namespace fn {
 
