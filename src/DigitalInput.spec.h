@@ -7,14 +7,9 @@ TEST_CASE("[DigitalInput]") {
   callspy::reset();
   Virtuino::clear();
 
-  SECTION("A DigitalInput is a Device") {
-    DigitalInput di(0);
-    Device& d = di; // The “assertion” is that this compiles
-  }
-
-  SECTION("It knows its pin number") {
-    DigitalInput di(7);
-    REQUIRE(di.pin() == 7);
+  SECTION("A DigitalInput is a DigitalPin") {
+    DigitalInput di(1);
+    DigitalPin& d = di; // The “assertion” is that this compiles
   }
 
   SECTION("It sets the pin mode correctly") {

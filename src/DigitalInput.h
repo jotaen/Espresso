@@ -1,42 +1,25 @@
 #ifndef __ESPRESSO_DIGITALINPUT_H__
 #define __ESPRESSO_DIGITALINPUT_H__
 
-#include "core/Device.h"
+#include "core/DigitalPin.h"
 
-class DigitalInput: public Device {
+class DigitalInput: public DigitalPin {
 public:
   DigitalInput(uint8_t pin, uint8_t mode = INPUT)
-  : pinNr(pin)
-  {
-    pinMode(this->pinNr, (mode == INPUT_PULLUP ? INPUT_PULLUP : INPUT));
-    update();
-  }
+  : DigitalPin(pin, (mode == INPUT_PULLUP ? INPUT_PULLUP : INPUT))
+  {}
 
   bool isHigh() {
-    return value_ == HIGH;
+    return value() == HIGH;
   }
 
   bool isLow() {
-    return value_ == LOW;
+    return value() == LOW;
   }
 
   int value() {
-    return value_;
+    return rdn::digitalReadUnchecked(this->bit_, this->port_);
   }
-
-  uint8_t pin() {
-    return this->pinNr;
-  }
-
-protected:
-  void onLoop() override {
-    update();
-  }
-  void update() {
-    this->value_ = digitalRead(this->pinNr);
-  }
-  const uint8_t pinNr;
-  int value_;
 };
 
 #endif

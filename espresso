@@ -8,8 +8,8 @@ ESPRESSO_OUT="build/$ESPRESSO_NAME"
 clang++ \
   -std=c++11 \
   --include-directory=. \
-  --include-directory=lib \
   --include-directory=lib/virtuino \
+  --include-directory=lib \
   -o $ESPRESSO_OUT \
   $ESPRESSO_PATH \
   && eval "./$ESPRESSO_OUT ${@:2}"

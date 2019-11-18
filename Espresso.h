@@ -19,6 +19,9 @@ void setup() {
 
 void loop() {
   Device* deviceIt = Device::rootDevice;
+  if (deviceIt == 0) {
+    return;
+  }
   do {
     (*deviceIt).onLoop();
     deviceIt = (*deviceIt).nextDevice;

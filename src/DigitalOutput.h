@@ -1,18 +1,12 @@
 #ifndef __ESPRESSO_DIGITALOUTPUT_H__
 #define __ESPRESSO_DIGITALOUTPUT_H__
 
-class DigitalOutput {
+class DigitalOutput: public DigitalPin {
 public:
   DigitalOutput(uint8_t pin)
-  : pinNr(pin)
+  : DigitalPin(pin, OUTPUT)
   , value_(0)
-  {
-    pinMode(this->pinNr, OUTPUT);
-  }
-
-  uint8_t pin() {
-    return this->pinNr;
-  }
+  {}
 
   int value() {
     return value_;
@@ -27,7 +21,7 @@ public:
   }
 
   void write(int val) {
-    digitalWrite(this->pinNr, val);
+    rdn::digitalWriteUnchecked(this->bit_, this->port_, val);
     this->value_ = val;
   }
 
@@ -36,7 +30,6 @@ public:
   }
 
 protected:
-  const uint8_t pinNr;
   int value_;
 };
 

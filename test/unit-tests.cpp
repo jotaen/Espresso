@@ -31,6 +31,7 @@ void Virtuino::clear() {
 void onSetup() {}
 
 #include "../src/core/Device.spec.h"
+#include "../src/core/DigitalPin.spec.h"
 #include "../src/Observer.spec.h"
 #include "../src/Timer.spec.h"
 #include "../src/Metronome.spec.h"

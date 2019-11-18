@@ -7,9 +7,9 @@ TEST_CASE("[DigitalOutput]") {
   callspy::reset();
   Virtuino::clear();
 
-  SECTION("It knows its pin number") {
-    DigitalOutput dt(4);
-    REQUIRE(dt.pin() == 4);
+  SECTION("A DigitalOutput is a DigitalPin") {
+    DigitalOutput dt(1);
+    DigitalPin& d = dt; // The “assertion” is that this compiles
   }
 
   SECTION("It sets the pin mode correctly") {

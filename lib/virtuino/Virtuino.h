@@ -1,10 +1,14 @@
 #ifndef __VIRTUINO_H__
 #define __VIRTUINO_H__
 
-#include <Arduino.h>
 #include <iostream>
 #include <map>
 #include <string>
+
+#include <Arduino.h>
+
+#define VIRTUINO_ENVIRONMENT true
+
 typedef std::string String;
 
 namespace Virtuino {
@@ -59,29 +63,18 @@ namespace Virtuino {
   }
 }
 
-void pinMode(uint8_t pin, uint8_t mode) {
-  if (mode != OUTPUT && mode != INPUT && mode != INPUT_PULLUP) {
-    throw std::invalid_argument("`mode`");
-  }
-  Virtuino::__pinModes[pin] = mode;
-}
-
-void digitalWrite(uint8_t pin, uint8_t val) {
-  if (Virtuino::checkPinMode(pin) != OUTPUT) {
-    throw std::invalid_argument("`pin`");
-  }
-  Virtuino::__digitalOutputs[pin] = val;
-}
-
-int digitalRead(uint8_t pin) {
-  if (Virtuino::checkPinMode(pin) != INPUT && Virtuino::checkPinMode(pin) != INPUT_PULLUP) {
-    throw std::invalid_argument("`pin`");
-  }
-  return Virtuino::__digitalInputs[pin];
-}
+#include "rdn.h"
 
 unsigned long millis(void) {
   return Virtuino::__millis;
+}
+
+uint8_t digitalPinToBitMask(uint8_t pin) {
+  return pin;
+}
+
+uint8_t digitalPinToPort(uint8_t pin) {
+  return pin;
 }
 
 struct SoftwareSerial {
