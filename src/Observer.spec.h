@@ -1,5 +1,5 @@
 #include <catch.hpp>
-#include <fn.h>
+#include "util/fn.h"
 #include "Observer.h"
 
 bool predicateValue = false;

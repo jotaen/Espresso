@@ -2,7 +2,7 @@
 #define __YPS_TIMER_H__
 
 #include "Device.h"
-#include "../lib/fn.h"
+#include "util/fn.h"
 
 class Timer: public Device {
 public:
