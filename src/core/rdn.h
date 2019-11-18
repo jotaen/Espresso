@@ -5,7 +5,6 @@ namespace rdn {
 
   void setupPin(uint8_t bit, uint8_t port, uint8_t mode) {
     volatile uint8_t *reg, *out;
-
     reg = portModeRegister(port);
     out = portOutputRegister(port);
 
@@ -31,7 +30,6 @@ namespace rdn {
 
   void digitalWriteUnchecked(uint8_t bit, uint8_t port, uint8_t val) {
     volatile uint8_t *out;
-
     out = portOutputRegister(port);
 
     uint8_t oldSREG = SREG;
@@ -46,8 +44,7 @@ namespace rdn {
     SREG = oldSREG;
   }
 
-  int digitalReadUnchecked(uint8_t bit, uint8_t port)
-  {
+  int digitalReadUnchecked(uint8_t bit, uint8_t port) {
     if (*portInputRegister(port) & bit) {
       return HIGH;
     }
