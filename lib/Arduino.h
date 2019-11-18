@@ -60,6 +60,11 @@ namespace Arduino {
     }
   }
 
+  void freezeMillis(unsigned long m) {
+    __millis += m;
+    flush();
+  }
+
   uint8_t checkPinMode(uint8_t pin) {
     return __pinModes.at(pin); // throws if key not set
   }
