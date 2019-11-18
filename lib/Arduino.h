@@ -1,6 +1,9 @@
 #ifndef __ESPRESSO_ARDUINO_H__
 #define __ESPRESSO_ARDUINO_H__
 
+#include <iostream>
+typedef std::string String;
+
 /////////////////////////////////////////////////////////////////////////////////
 // Declarations from original <Arduino.h>
 // https://github.com/arduino/ArduinoCore-avr/blob/master/cores/arduino/Arduino.h
@@ -21,6 +24,14 @@ int digitalRead(uint8_t pin);
 
 unsigned long millis(void);
 
+struct SoftwareSerial {
+  void begin(long speed);
+  size_t print(const String &);
+  size_t println(const String &s);
+} Serial;
+
+void setup();
+void loop();
 
 /////////////////////////////////////////////////////////////////////////////////
 // Fixtures for Espresso testing environment
@@ -109,5 +120,20 @@ int digitalRead(uint8_t pin) {
 unsigned long millis(void) {
   return Arduino::__millis;
 }
+
+void SoftwareSerial::begin(long speed) {
+
+}
+
+size_t SoftwareSerial::print(const String &s) {
+  return 0;
+}
+
+size_t SoftwareSerial::println(const String &s) {
+  std::cout << s << std::endl;
+  return 0;
+}
+
+
 
 #endif
