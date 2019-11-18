@@ -1,6 +1,10 @@
 #ifndef __ESPRESSO_DEVICE_H__
 #define __ESPRESSO_DEVICE_H__
 
+namespace Virtuino {
+  void clear();
+}
+
 class Device {
 public:
   Device() {
@@ -24,24 +28,12 @@ public:
     }
   }
 
-  static Device* next(const Device& d) {
-    return d.nextDevice;
-  }
-
-  static void clearRoot() {
-    rootDevice = 0;
-  }
-
-  static void loopOnce() {
-    Device* deviceIt = rootDevice;
-    do {
-      (*deviceIt).onLoop();
-      deviceIt = (*deviceIt).nextDevice;
-    } while (deviceIt != rootDevice);
-  }
-
 protected:
+  friend void Virtuino::clear();
+  friend void loop();
+
   virtual void onLoop() = 0;
+
   static Device* rootDevice;
   Device* nextDevice = 0;
   Device* previousDevice = 0;

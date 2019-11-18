@@ -24,7 +24,7 @@ namespace callspy {
 #include <Espresso.h>
 
 void Virtuino::clear() {
-  Device::clearRoot();
+  Device::rootDevice = 0;
   Virtuino::start();
 }
 

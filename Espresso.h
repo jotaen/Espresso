@@ -18,7 +18,11 @@ void setup() {
 }
 
 void loop() {
-  Device::loopOnce();
+  Device* deviceIt = Device::rootDevice;
+  do {
+    (*deviceIt).onLoop();
+    deviceIt = (*deviceIt).nextDevice;
+  } while (deviceIt != Device::rootDevice);
 }
 
 #endif
