@@ -5,10 +5,10 @@
 
 class DigitalInput: public Device {
 public:
-  DigitalInput(const uint8_t pin)
+  DigitalInput(const uint8_t pin, uint8_t mode = INPUT)
   : pinNr(pin)
   {
-    pinMode(this->pinNr, INPUT);
+    pinMode(this->pinNr, (mode == INPUT_PULLUP ? INPUT_PULLUP : INPUT));
     update();
   }
 

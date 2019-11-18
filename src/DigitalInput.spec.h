@@ -21,6 +21,16 @@ TEST_CASE("[DigitalInput]") {
     REQUIRE(Arduino::checkPinMode(di.pin()) == INPUT);
   }
 
+  SECTION("The pin mode can optionally be set to `INPUT_PULLUP` as well") {
+    DigitalInput di = DigitalInput(5, INPUT_PULLUP);
+    REQUIRE(Arduino::checkPinMode(di.pin()) == INPUT_PULLUP);
+  }
+
+  SECTION("Pin mode defaults to `INPUT` if funny value is given") {
+    DigitalInput di = DigitalInput(5, 42);
+    REQUIRE(Arduino::checkPinMode(di.pin()) == INPUT);
+  }
+
   SECTION("The value should be `low` initially") {
     DigitalInput di = DigitalInput(2);
     REQUIRE(!di.isHigh());
