@@ -16,7 +16,7 @@ public:
     }
   }
 
-  ~Device() {
+  virtual ~Device() {
     this->previousDevice->nextDevice = nextDevice;
     this->nextDevice = 0;
     if (rootDevice == this) {

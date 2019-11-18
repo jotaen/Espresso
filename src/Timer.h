@@ -49,7 +49,7 @@ public:
   }
 
 protected:
-  void onLoop() {
+  void onLoop() override {
     unsigned long now = millis();
     if (!this->isActive_ || now < this->nextTrigger_) {
       return;

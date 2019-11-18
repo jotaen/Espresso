@@ -37,7 +37,7 @@ public:
   }
 
 protected:
-  void onLoop() {
+  void onLoop() override {
     if (!this->active || millis() < this->nextLoop) {
       return;
     }

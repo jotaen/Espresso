@@ -34,7 +34,7 @@ public:
   }
 
 protected:
-  void onLoop() {
+  void onLoop() override {
     bool currentState = this->predicate();
     bool hasStateChanged = this->lastState != currentState;
     if (hasStateChanged) {

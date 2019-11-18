@@ -29,7 +29,7 @@ public:
   }
 
 protected:
-  void onLoop() {
+  void onLoop() override {
     update();
   }
   void update() {
