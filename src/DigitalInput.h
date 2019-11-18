@@ -1,7 +1,7 @@
 #ifndef __ESPRESSO_DIGITALINPUT_H__
 #define __ESPRESSO_DIGITALINPUT_H__
 
-#include "Device.h"
+#include "core/Device.h"
 
 class DigitalInput: public Device {
 public:

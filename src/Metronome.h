@@ -1,7 +1,7 @@
 #ifndef __ESPRESSO_METRONOME_H__
 #define __ESPRESSO_METRONOME_H__
 
-#include "Device.h"
+#include "core/Device.h"
 #include "util/fn.h"
 
 class Metronome: public Device {
