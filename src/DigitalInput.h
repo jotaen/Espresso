@@ -12,11 +12,11 @@ public:
     update();
   }
 
-  int isHigh() {
+  bool isHigh() {
     return value_ == HIGH;
   }
 
-  int isLow() {
+  bool isLow() {
     return value_ == LOW;
   }
 
