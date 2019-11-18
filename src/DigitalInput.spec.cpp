@@ -1,6 +1,8 @@
+#define CATCH_CONFIG_MAIN
 #include <catch.hpp>
 #include <Virtuino.h>
 #include "DigitalInput.h"
+#include "util/callspy.h"
 
 TEST_CASE("[DigitalInput]") {
 

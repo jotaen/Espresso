@@ -1,7 +1,9 @@
+#define CATCH_CONFIG_MAIN
 #include <catch.hpp>
 #include <Virtuino.h>
 #include "util/fn.h"
 #include "Observer.h"
+#include "util/callspy.h"
 
 bool predicateValue = false;
 

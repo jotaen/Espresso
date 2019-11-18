@@ -1,6 +1,8 @@
+#define CATCH_CONFIG_MAIN
 #include <catch.hpp>
 #include <Virtuino.h>
 #include "Device.h"
+#include "../util/callspy.h"
 
 class TestDevice: public Device {
 public:
