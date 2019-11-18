@@ -7,40 +7,63 @@
 class Timer: public Device {
 public:
   Timer()
-  : handler(0)
-  , active(false)
-  , trigger(0)
+  : handler_(0)
+  , isActive_(false)
+  , delay_(0)
+  , lastTriggered_(0)
   {}
 
   void onTrigger(fn::Handler h) {
-    this->handler = h;
+    this->handler_ = h;
   }
 
-  void start(unsigned long delayMillis) {
-    this->trigger = millis() + delayMillis;
-    this->active = true;
+  void start(const unsigned long delayMillis) {
+    this->delay_ = delayMillis;
+    this->start();
+  }
+
+  void start() {
+    this->nextTrigger_ = millis() + this->delay_;
+    this->isActive_ = true;
+  }
+
+  void delay(const unsigned long delayMillis) {
+    this->nextTrigger_ = this->nextTrigger_ - this->delay_ + delayMillis;
+    this->delay_ = delayMillis;
+  }
+
+  unsigned long delay() {
+    return this->delay_;
   }
 
   void cancel() {
-    this->active = false;
+    this->isActive_ = false;
   }
 
   bool isActive() {
-    return this->active;
+    return this->isActive_;
+  }
+
+  unsigned long lastTriggered() {
+    return this->lastTriggered_;
   }
 
 protected:
   void onLoop() {
-    if (!this->active || millis() < this->trigger) {
+    unsigned long now = millis();
+    if (!this->isActive_ || now < this->nextTrigger_) {
       return;
     }
-    fn::invoke(this->handler);
-    this->active = false;
+    fn::invoke(this->handler_);
+    this->lastTriggered_ = now;
+    this->isActive_ = false;
   }
 
-  fn::Handler handler;
-  bool active;
-  unsigned long trigger;
+  fn::Handler handler_;
+  bool isActive_;
+  unsigned long delay_;
+  unsigned long lastTriggered_;
+  unsigned long nextTrigger_;
 };
 
 #endif

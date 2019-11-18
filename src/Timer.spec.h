@@ -68,4 +68,55 @@ TEST_CASE("[Timer]") {
     Arduino::elapseMillis(50);
     REQUIRE(callspy::hasBeenCalled() == false);
   }
+
+  SECTION("`delay` sets and gets the delay value") {
+    Timer t;
+    t.onTrigger(callspy::Void);
+    t.delay(50);
+    REQUIRE(t.delay() == 50);
+    Arduino::elapseMillis(30); // make sure `delay` doesn’t set other internal state
+    t.start();
+    Arduino::elapseMillis(49);
+    REQUIRE(callspy::hasBeenCalled() == false);
+    Arduino::elapseMillis(1);
+    REQUIRE(callspy::hasBeenCalled());
+  }
+
+  SECTION("Calling `delay` on a running timer resets the value after the fact") {
+    Timer t;
+    t.onTrigger(callspy::Void);
+    t.start(10);
+    Arduino::elapseMillis(9);
+    t.delay(20);
+    Arduino::elapseMillis(10);
+    REQUIRE(callspy::hasBeenCalled() == false);
+    Arduino::elapseMillis(1);
+    REQUIRE(callspy::hasBeenCalled());
+  }
+
+  SECTION("Calling `start()` or `start(long)` restarts the timer") {
+    Timer t;
+    t.onTrigger(callspy::Void);
+    t.start(10);
+    Arduino::elapseMillis(9);
+    t.start();
+    Arduino::elapseMillis(9);
+    t.start(20);
+    Arduino::elapseMillis(19);
+    t.start(30);
+    Arduino::elapseMillis(29);
+    REQUIRE(callspy::hasBeenCalled() == false);
+    Arduino::elapseMillis(2);
+    REQUIRE(callspy::hasBeenCalled());
+  }
+
+  SECTION("`lastTriggered` returns absolute timestamp [ms]") {
+    Timer t;
+    REQUIRE(t.lastTriggered() == 0);
+    Arduino::elapseMillis(5);
+    REQUIRE(t.lastTriggered() == 0);
+    t.start(5);
+    Arduino::elapseMillis(50);
+    REQUIRE(t.lastTriggered() == 10);
+  }
 }
