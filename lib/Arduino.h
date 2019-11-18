@@ -38,8 +38,6 @@ void loop();
 /////////////////////////////////////////////////////////////////////////////////
 
 #include <map>
-#include "../src/Device.h"
-Device* Device::rootDevice = 0;
 
 namespace Arduino {
   unsigned long __millis;
@@ -47,20 +45,19 @@ namespace Arduino {
   std::map<uint8_t, int> __digitalInputs;
   std::map<uint8_t, int> __digitalOutputs;
 
-  void start() {
+  void clear() {
     __millis = 0;
     __digitalOutputs.clear();
-    onSetup();
+    __digitalInputs.clear();
+    ::setup();
   }
 
-  void clear() {
-    Device::clearRoot();
-    __digitalInputs.clear();
-    start();
+  void start() {
+    clear();
   }
 
   void flush() {
-    Device::loopOnce();
+    ::loop();
   }
 
   void elapseMillis(unsigned long m) {
