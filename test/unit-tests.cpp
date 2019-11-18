@@ -20,9 +20,7 @@ namespace callspy {
   }
 }
 
-void onSetup() {}
-
-#include <Arduino.h>
+#include <Espresso.h>
 
 #include "../src/Device.spec.h"
 #include "../src/Observer.spec.h"
@@ -30,3 +28,5 @@ void onSetup() {}
 #include "../src/Metronome.spec.h"
 #include "../src/DigitalInput.spec.h"
 #include "../src/DigitalOutput.spec.h"
+
+void onSetup() {}

@@ -1,8 +1,6 @@
 #ifndef __ESPRESSO_H__
 #define __ESPRESSO_H__
 
-void onSetup();
-
 #include <Arduino.h>
 
 #include "src/Observer.h"
@@ -10,5 +8,17 @@ void onSetup();
 #include "src/Metronome.h"
 #include "src/DigitalInput.h"
 #include "src/DigitalOutput.h"
+
+void onSetup();
+
+Device* Device::rootDevice = 0;
+
+void setup() {
+  onSetup();
+}
+
+void loop() {
+  Device::loopOnce();
+}
 
 #endif
