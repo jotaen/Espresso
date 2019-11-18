@@ -1,4 +1,5 @@
 #include <catch.hpp>
+#include <Virtuino.h>
 #include "Device.h"
 
 class TestDevice: public Device {
@@ -8,7 +9,7 @@ protected:
 
 TEST_CASE("[Device]") {
 
-  Arduino::clear();
+  Virtuino::clear();
 
   SECTION("A single active device points to itself") {
     TestDevice d = TestDevice();

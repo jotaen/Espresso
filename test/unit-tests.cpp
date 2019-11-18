@@ -1,4 +1,5 @@
 #define CATCH_CONFIG_MAIN
+#include <Virtuino.h>
 
 namespace callspy {
   unsigned int _counter;
@@ -22,9 +23,9 @@ namespace callspy {
 
 #include <Espresso.h>
 
-void Arduino::clear() {
+void Virtuino::clear() {
   Device::clearRoot();
-  Arduino::start();
+  Virtuino::start();
 }
 
 void onSetup() {}

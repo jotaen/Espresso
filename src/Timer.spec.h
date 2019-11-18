@@ -1,10 +1,11 @@
 #include <catch.hpp>
+#include <Virtuino.h>
 #include "Timer.h"
 
 TEST_CASE("[Timer]") {
 
   callspy::reset();
-  Arduino::clear();
+  Virtuino::clear();
 
   SECTION("A Timer is a Device") {
     Timer t;
@@ -14,14 +15,14 @@ TEST_CASE("[Timer]") {
   SECTION("The handler function should not be invoked without the timer being started") {
     Timer t;
     t.onTrigger(callspy::Void);
-    Arduino::flush();
+    Virtuino::flush();
     REQUIRE(callspy::hasBeenCalled() == false);
   }
 
   SECTION("If there is no handler function, nothing happens") {
     Timer t;
     t.start(10);
-    REQUIRE_NOTHROW(Arduino::elapseMillis(11));
+    REQUIRE_NOTHROW(Virtuino::elapseMillis(11));
     REQUIRE(t.isActive() == false);
   }
 
@@ -30,7 +31,7 @@ TEST_CASE("[Timer]") {
     REQUIRE(t.isActive() == false);
     t.start(10);
     REQUIRE(t.isActive() == true);
-    Arduino::elapseMillis(11);
+    Virtuino::elapseMillis(11);
     REQUIRE(t.isActive() == false);
   }
 
@@ -38,15 +39,15 @@ TEST_CASE("[Timer]") {
     Timer t;
     t.onTrigger(callspy::Void);
     t.start(10);
-    Arduino::flush();
+    Virtuino::flush();
     REQUIRE(callspy::hasBeenCalled() == false);
-    Arduino::elapseMillis(3);
+    Virtuino::elapseMillis(3);
     REQUIRE(callspy::hasBeenCalled() == false);
-    Arduino::elapseMillis(3);
+    Virtuino::elapseMillis(3);
     REQUIRE(callspy::hasBeenCalled() == false);
-    Arduino::elapseMillis(3);
+    Virtuino::elapseMillis(3);
     REQUIRE(callspy::hasBeenCalled() == false);
-    Arduino::elapseMillis(1);
+    Virtuino::elapseMillis(1);
     REQUIRE(callspy::hasBeenCalled());
   }
 
@@ -54,7 +55,7 @@ TEST_CASE("[Timer]") {
     Timer t;
     t.onTrigger(callspy::Void);
     t.start(1);
-    Arduino::elapseMillis(3);
+    Virtuino::elapseMillis(3);
     REQUIRE(callspy::counter() == 1);
   }
 
@@ -62,10 +63,10 @@ TEST_CASE("[Timer]") {
     Timer t;
     t.onTrigger(callspy::Void);
     t.start(10);
-    Arduino::elapseMillis(3);
+    Virtuino::elapseMillis(3);
     t.cancel();
     REQUIRE(t.isActive() == false);
-    Arduino::elapseMillis(50);
+    Virtuino::elapseMillis(50);
     REQUIRE(callspy::hasBeenCalled() == false);
   }
 
@@ -74,11 +75,11 @@ TEST_CASE("[Timer]") {
     t.onTrigger(callspy::Void);
     t.delay(50);
     REQUIRE(t.delay() == 50);
-    Arduino::elapseMillis(30); // make sure `delay` doesn’t set other internal state
+    Virtuino::elapseMillis(30); // make sure `delay` doesn’t set other internal state
     t.start();
-    Arduino::elapseMillis(49);
+    Virtuino::elapseMillis(49);
     REQUIRE(callspy::hasBeenCalled() == false);
-    Arduino::elapseMillis(1);
+    Virtuino::elapseMillis(1);
     REQUIRE(callspy::hasBeenCalled());
   }
 
@@ -86,11 +87,11 @@ TEST_CASE("[Timer]") {
     Timer t;
     t.onTrigger(callspy::Void);
     t.start(10);
-    Arduino::elapseMillis(9);
+    Virtuino::elapseMillis(9);
     t.delay(20);
-    Arduino::elapseMillis(10);
+    Virtuino::elapseMillis(10);
     REQUIRE(callspy::hasBeenCalled() == false);
-    Arduino::elapseMillis(1);
+    Virtuino::elapseMillis(1);
     REQUIRE(callspy::hasBeenCalled());
   }
 
@@ -98,25 +99,25 @@ TEST_CASE("[Timer]") {
     Timer t;
     t.onTrigger(callspy::Void);
     t.start(10);
-    Arduino::elapseMillis(9);
+    Virtuino::elapseMillis(9);
     t.start();
-    Arduino::elapseMillis(9);
+    Virtuino::elapseMillis(9);
     t.start(20);
-    Arduino::elapseMillis(19);
+    Virtuino::elapseMillis(19);
     t.start(30);
-    Arduino::elapseMillis(29);
+    Virtuino::elapseMillis(29);
     REQUIRE(callspy::hasBeenCalled() == false);
-    Arduino::elapseMillis(2);
+    Virtuino::elapseMillis(2);
     REQUIRE(callspy::hasBeenCalled());
   }
 
   SECTION("`lastTriggered` returns absolute timestamp [ms]") {
     Timer t;
     REQUIRE(t.lastTriggered() == 0);
-    Arduino::elapseMillis(5);
+    Virtuino::elapseMillis(5);
     REQUIRE(t.lastTriggered() == 0);
     t.start(5);
-    Arduino::elapseMillis(50);
+    Virtuino::elapseMillis(50);
     REQUIRE(t.lastTriggered() == 10);
   }
 }

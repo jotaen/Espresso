@@ -1,10 +1,11 @@
 #include <catch.hpp>
+#include <Virtuino.h>
 #include "DigitalOutput.h"
 
 TEST_CASE("[DigitalOutput]") {
 
   callspy::reset();
-  Arduino::clear();
+  Virtuino::clear();
 
   SECTION("It knows its pin number") {
     DigitalOutput dt(4);
@@ -13,7 +14,7 @@ TEST_CASE("[DigitalOutput]") {
 
   SECTION("It sets the pin mode correctly") {
     DigitalOutput dt(12);
-    REQUIRE(Arduino::checkPinMode(dt.pin()) == OUTPUT);
+    REQUIRE(Virtuino::checkPinMode(dt.pin()) == OUTPUT);
   }
 
   SECTION("By default the value is `LOW`") {
@@ -29,7 +30,7 @@ TEST_CASE("[DigitalOutput]") {
     REQUIRE(dt.value() == HIGH);
     REQUIRE(!dt.isLow());
     REQUIRE(dt.isHigh());
-    REQUIRE(Arduino::checkDigitalOutput(dt.pin()) == HIGH);
+    REQUIRE(Virtuino::checkDigitalOutput(dt.pin()) == HIGH);
   }
 
   SECTION("`write` sets the value to LOW") {
@@ -39,7 +40,7 @@ TEST_CASE("[DigitalOutput]") {
     REQUIRE(dt.value() == LOW);
     REQUIRE(dt.isLow());
     REQUIRE(!dt.isHigh());
-    REQUIRE(Arduino::checkDigitalOutput(dt.pin()) == LOW);
+    REQUIRE(Virtuino::checkDigitalOutput(dt.pin()) == LOW);
   }
 
   SECTION("`toggle` flips the value") {
