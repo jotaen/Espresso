@@ -2,14 +2,11 @@
 #define __YPS_OBSERVER_H__
 
 #include "Device.h"
+#include "../lib/fn.h"
 
 class Observer: public Device {
-
-  typedef bool (*Predicate)();
-  typedef void (*Handler)();
-
 public:
-  Observer(const Predicate p)
+  Observer(const fn::Predicate p)
   : predicate(p)
   , lastState(false)
   , ontrue(0)
@@ -20,19 +17,19 @@ public:
     this->lastState = this->predicate();
   }
 
-  void onTrue(Handler h) {
+  void onTrue(fn::Handler h) {
     this->ontrue = h;
   }
 
-  void onFalse(Handler h) {
+  void onFalse(fn::Handler h) {
     this->onfalse = h;
   }
 
-  void whileTrue(Handler h) {
+  void whileTrue(fn::Handler h) {
     this->whiletrue = h;
   }
 
-  void whileFalse(Handler h) {
+  void whileFalse(fn::Handler h) {
     this->whilefalse = h;
   }
 
@@ -41,24 +38,18 @@ protected:
     bool currentState = this->predicate();
     bool hasStateChanged = this->lastState != currentState;
     if (hasStateChanged) {
-      invoke(currentState ? this->ontrue : this->onfalse);
+      fn::invoke(currentState ? this->ontrue : this->onfalse);
     }
-    invoke(currentState ? this->whiletrue : this->whilefalse);
+    fn::invoke(currentState ? this->whiletrue : this->whilefalse);
     this->lastState = currentState;
   }
 
-  void invoke(Handler h) {
-    if (h != 0) {
-      h();
-    }
-  }
-
   bool lastState;
-  const Predicate predicate;
-  Handler ontrue;
-  Handler onfalse;
-  Handler whiletrue;
-  Handler whilefalse;
+  const fn::Predicate predicate;
+  fn::Handler ontrue;
+  fn::Handler onfalse;
+  fn::Handler whiletrue;
+  fn::Handler whilefalse;
 };
 
 #endif

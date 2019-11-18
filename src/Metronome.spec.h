@@ -1,5 +1,4 @@
 #include <catch.hpp>
-#include <utils.h>
 #include "Metronome.h"
 
 TEST_CASE("[Metronome]") {

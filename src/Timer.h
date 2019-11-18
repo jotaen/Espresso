@@ -1,10 +1,10 @@
 #ifndef __YPS_TIMER_H__
 #define __YPS_TIMER_H__
 
-class Timer: public Device {
-  
-  typedef void (*Handler)();
+#include "Device.h"
+#include "../lib/fn.h"
 
+class Timer: public Device {
 public:
   Timer()
   : handler(0)
@@ -12,7 +12,7 @@ public:
   , trigger(0)
   {}
 
-  void onTrigger(Handler h) {
+  void onTrigger(fn::Handler h) {
     this->handler = h;
   }
 
@@ -34,13 +34,11 @@ protected:
     if (!this->active || millis() < this->trigger) {
       return;
     }
-    if (this->handler != 0) {
-      this->handler();
-    }
+    fn::invoke(this->handler);
     this->active = false;
   }
 
-  Handler handler;
+  fn::Handler handler;
   bool active;
   unsigned long trigger;
 };

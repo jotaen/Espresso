@@ -1,10 +1,10 @@
 #ifndef __YPS_METRONOME_H__
 #define __YPS_METRONOME_H__
 
-class Metronome: public Device {
-  
-  typedef void (*Handler)();
+#include "Device.h"
+#include "../lib/fn.h"
 
+class Metronome: public Device {
 public:
   Metronome()
   : handler(0)
@@ -13,7 +13,7 @@ public:
   , nextLoop(0)
   {}
 
-  void onTrigger(Handler h) {
+  void onTrigger(fn::Handler h) {
     this->handler = h;
   }
 
@@ -21,7 +21,7 @@ public:
     this->intervalMillis = interval;
     this->nextLoop = millis() + interval;
     this->active = true;
-    this->invoke();
+    fn::invoke(this->handler);
   }
 
   void run() {
@@ -41,17 +41,11 @@ protected:
     if (!this->active || millis() < this->nextLoop) {
       return;
     }
-    this->invoke();
+    fn::invoke(this->handler);
     this->nextLoop += this->intervalMillis;
   }
 
-  void invoke() {
-    if (this->handler) {
-      this->handler();
-    }
-  }
-
-  Handler handler;
+  fn::Handler handler;
   bool active;
   unsigned long intervalMillis;
   unsigned long nextLoop;

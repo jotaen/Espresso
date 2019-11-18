@@ -1,5 +1,4 @@
 #include <catch.hpp>
-#include <utils.h>
 #include "Timer.h"
 
 TEST_CASE("[Timer]") {

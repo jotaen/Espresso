@@ -1,5 +1,5 @@
 #include <catch.hpp>
-#include <utils.h>
+#include <fn.h>
 #include "Observer.h"
 
 bool predicateValue = false;
@@ -11,7 +11,7 @@ TEST_CASE("[Observer]") {
   predicateValue = false;
 
   SECTION("An Observer is a Device") {
-    Observer o = Observer(alwaysTrue);
+    Observer o = Observer(fn::alwaysTrue);
     Device& d = o; // The “assertion” is that this compiles
   }
 
@@ -37,7 +37,7 @@ TEST_CASE("[Observer]") {
   }
 
   SECTION("`whileTrue` gets called repeatedly") {
-    Observer o = Observer(alwaysTrue);
+    Observer o = Observer(fn::alwaysTrue);
     o.whileTrue(callspy::Void);
     Arduino::elapseMillis(10);
     REQUIRE(callspy::hasBeenCalled());
@@ -58,7 +58,7 @@ TEST_CASE("[Observer]") {
   }
 
   SECTION("`whileFalse` gets called repeatedly") {
-    Observer o = Observer(alwaysFalse);
+    Observer o = Observer(fn::alwaysFalse);
     o.whileFalse(callspy::Void);
     Arduino::elapseMillis(10);
     REQUIRE(callspy::hasBeenCalled());
@@ -66,7 +66,7 @@ TEST_CASE("[Observer]") {
   }
 
   SECTION("For `true`: Only the matching handlers get invoked") {
-    Observer o = Observer(alwaysTrue);
+    Observer o = Observer(fn::alwaysTrue);
     o.onTrue(callspy::Void);
     o.whileTrue(callspy::Void);
     o.onFalse([](){ throw; });
@@ -75,7 +75,7 @@ TEST_CASE("[Observer]") {
   }
 
   SECTION("For `false`: Only the matching handlers get invoked") {
-    Observer o = Observer(alwaysFalse);
+    Observer o = Observer(fn::alwaysFalse);
     o.onFalse(callspy::Void);
     o.whileFalse(callspy::Void);
     o.onTrue([](){ throw; });
