@@ -17,7 +17,7 @@ public:
     this->handler_ = h;
   }
 
-  void start(const unsigned long delayMillis) {
+  void start(unsigned long delayMillis) {
     this->delay_ = delayMillis;
     this->start();
   }
@@ -27,7 +27,7 @@ public:
     this->isActive_ = true;
   }
 
-  void delay(const unsigned long delayMillis) {
+  void delay(unsigned long delayMillis) {
     this->nextTrigger_ = this->nextTrigger_ - this->delay_ + delayMillis;
     this->delay_ = delayMillis;
   }

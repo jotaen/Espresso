@@ -6,7 +6,7 @@
 
 class Observer: public Device {
 public:
-  Observer(const fn::Predicate p)
+  Observer(fn::Predicate p)
   : predicate(p)
   , lastState(false)
   , ontrue(0)
