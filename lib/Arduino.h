@@ -5,7 +5,7 @@
 typedef std::string String;
 
 /////////////////////////////////////////////////////////////////////////////////
-// Declarations from original <Arduino.h>
+// Declarations from original `Arduino.h`
 // https://github.com/arduino/ArduinoCore-avr/blob/master/cores/arduino/Arduino.h
 /////////////////////////////////////////////////////////////////////////////////
 
@@ -34,7 +34,7 @@ void setup();
 void loop();
 
 /////////////////////////////////////////////////////////////////////////////////
-// Fixtures for Espresso testing environment
+// Fixtures for synthetic testing environment
 /////////////////////////////////////////////////////////////////////////////////
 
 #include <map>
@@ -45,16 +45,14 @@ namespace Arduino {
   std::map<uint8_t, int> __digitalInputs;
   std::map<uint8_t, int> __digitalOutputs;
 
-  void clear() {
+  void start() {
     __millis = 0;
     __digitalOutputs.clear();
     __digitalInputs.clear();
     ::setup();
   }
 
-  void start() {
-    clear();
-  }
+  void clear();
 
   void flush() {
     ::loop();

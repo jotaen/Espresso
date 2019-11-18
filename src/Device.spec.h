@@ -8,6 +8,8 @@ protected:
 
 TEST_CASE("[Device]") {
 
+  Arduino::clear();
+
   SECTION("A single active device points to itself") {
     TestDevice d = TestDevice();
     REQUIRE(Device::next(d) == &d);

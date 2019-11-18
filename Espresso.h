@@ -9,9 +9,9 @@
 #include "src/DigitalInput.h"
 #include "src/DigitalOutput.h"
 
-void onSetup();
-
 Device* Device::rootDevice = 0;
+
+void onSetup();
 
 void setup() {
   onSetup();

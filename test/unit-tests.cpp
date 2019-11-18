@@ -22,11 +22,16 @@ namespace callspy {
 
 #include <Espresso.h>
 
+void Arduino::clear() {
+  Device::clearRoot();
+  Arduino::start();
+}
+
+void onSetup() {}
+
 #include "../src/Device.spec.h"
 #include "../src/Observer.spec.h"
 #include "../src/Timer.spec.h"
 #include "../src/Metronome.spec.h"
 #include "../src/DigitalInput.spec.h"
 #include "../src/DigitalOutput.spec.h"
-
-void onSetup() {}

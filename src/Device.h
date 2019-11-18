@@ -29,15 +29,15 @@ public:
   }
 
   static void clearRoot() {
-    Device::rootDevice = 0;
+    rootDevice = 0;
   }
 
   static void loopOnce() {
-    Device* deviceIt = Device::rootDevice;
+    Device* deviceIt = rootDevice;
     do {
       (*deviceIt).onLoop();
       deviceIt = (*deviceIt).nextDevice;
-    } while (deviceIt != Device::rootDevice);
+    } while (deviceIt != rootDevice);
   }
 
 protected:
