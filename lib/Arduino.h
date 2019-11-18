@@ -13,6 +13,7 @@ typedef uint8_t byte;
 #define LOW  0x0
 #define INPUT 0x0
 #define OUTPUT 0x1
+#define INPUT_PULLUP 0x2
 
 void pinMode(uint8_t pin, uint8_t mode);
 void digitalWrite(uint8_t pin, uint8_t val);
@@ -65,7 +66,7 @@ namespace Arduino {
 
   void setDigitalInput(uint8_t pin, int val) {
     if (checkPinMode(pin) != INPUT) {
-      throw;
+      throw std::invalid_argument("`pin`");
     }
     __digitalInputs[pin] = val;
     flush();
@@ -73,26 +74,29 @@ namespace Arduino {
 
   int checkDigitalOutput(uint8_t pin) {
     if (checkPinMode(pin) != OUTPUT) {
-      throw;
+      throw std::invalid_argument("`pin`");
     }
     return __digitalOutputs[pin];
   }
 }
 
 void pinMode(uint8_t pin, uint8_t mode) {
+  if (mode != OUTPUT && mode != INPUT && mode != INPUT_PULLUP) {
+    throw std::invalid_argument("`mode`");
+  }
   Arduino::__pinModes[pin] = mode;
 }
 
 void digitalWrite(uint8_t pin, uint8_t val) {
   if (Arduino::checkPinMode(pin) != OUTPUT) {
-    throw;
+    throw std::invalid_argument("`pin`");
   }
   Arduino::__digitalOutputs[pin] = val;
 }
 
 int digitalRead(uint8_t pin) {
-  if (Arduino::checkPinMode(pin) != INPUT) {
-    throw;
+  if (Arduino::checkPinMode(pin) != INPUT && Arduino::checkPinMode(pin) != INPUT_PULLUP) {
+    throw std::invalid_argument("`pin`");
   }
   return Arduino::__digitalInputs[pin];
 }
