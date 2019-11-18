@@ -4,6 +4,8 @@
 #include <Arduino.h>
 #include <iostream>
 #include <map>
+#include <string>
+typedef std::string String;
 
 namespace Virtuino {
   unsigned long __millis;
@@ -81,6 +83,12 @@ int digitalRead(uint8_t pin) {
 unsigned long millis(void) {
   return Virtuino::__millis;
 }
+
+struct SoftwareSerial {
+  void begin(long speed);
+  size_t print(const String &);
+  size_t println(const String &s);
+} Serial;
 
 void SoftwareSerial::begin(long speed) {
 
