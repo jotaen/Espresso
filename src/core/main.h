@@ -22,7 +22,12 @@ void loop() {
   do {
     (*it).onLoop();
     it = (*it).next;
-  } while (it != AutoUpdated::root);
+  }
+  #ifdef VIRTUINO
+  while(it != AutoUpdated::root);
+  #else
+  while(true);
+  #endif
 }
 
 #endif

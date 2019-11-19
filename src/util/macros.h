@@ -1,4 +1,4 @@
-#ifdef VIRTUINO_ENVIRONMENT
+#ifdef VIRTUINO
   #define ASSERT( bool_expression, error_message ) \
     if (!bool_expression) { throw error_message; }
 #else

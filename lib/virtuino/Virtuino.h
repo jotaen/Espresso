@@ -7,9 +7,10 @@
 
 #include <Arduino.h>
 
-#define VIRTUINO_ENVIRONMENT true
+#define VIRTUINO
 
 typedef std::string String;
+#define String(x) std::to_string(x)
 
 namespace Virtuino {
   unsigned long __millis;
