@@ -8,7 +8,9 @@ AutoUpdated* AutoUpdated::root = 0;
 
 void setup() {
   logger::init();
+  logger::info("System started");
   onSetup();
+  logger::info("Setup complete");
 }
 
 void loop() {
