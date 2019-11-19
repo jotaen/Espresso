@@ -7,6 +7,7 @@ CHECK(
   test<Observer>("Observer", 14),
   test<Metronome>("Metronome", 15),
   test<Timer>("Timer", 15),
+  test<Loop>("Loop", 7),
 );
 
 void onSetup() {

@@ -11,11 +11,12 @@
 #include "src/util/logger.h"
 #include "src/util/macros.h"
 
+#include "src/DigitalInput.h"
+#include "src/DigitalOutput.h"
 #include "src/Observer.h"
 #include "src/Timer.h"
 #include "src/Metronome.h"
-#include "src/DigitalInput.h"
-#include "src/DigitalOutput.h"
+#include "src/Loop.h"
 
 #include "src/util/LoopBenchmark.h"
 
