@@ -10,14 +10,14 @@ public:
   , bit_(digitalPinToBitMask(pin))
   , port_(digitalPinToPort(pin))
   {
-    if (this->port_ == NOT_A_PIN) {
+    if (!rdn::isValidPort(this->pin_)) {
       #ifdef VIRTUINO_ENVIRONMENT
         throw "Invalid PIN number";
       #else
         exit(1);
       #endif
     }
-    rdn::setupPin(this->bit_, this->port_, mode);
+    rdn::pinModeUnchecked(this->bit_, this->port_, mode);
   }
 
   uint8_t pin() {
