@@ -2,10 +2,7 @@ struct Result {
   String name;
   uint8_t actualSize;
   uint8_t expectedSize;
-
-  bool ok() {
-    return this->expectedSize == this->actualSize;
-  }
+  bool ok;
 };
 
 template<class T>
@@ -18,13 +15,14 @@ struct Test: public Result {
   Test& expectSize(uint8_t s) {
     this->expectedSize = s;
     this->actualSize = sizeof(T);
+    this->ok = (this->expectedSize == this->actualSize);
     return *this;
   }
 };
 
-void printout(Result& r) {
+void printout(const Result& r) {
   const String _ = "          ";
-  Serial.print(r.ok() ? "[OK]      " : "[ERROR]   ");
+  Serial.print(r.ok ? "[OK]      " : "[ERROR]   ");
   Serial.print("# ");
   Serial.print(r.name);
   Serial.print(": ");
