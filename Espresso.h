@@ -1,9 +1,9 @@
 #ifndef __ESPRESSO_H__
 #define __ESPRESSO_H__
 
-#define pinMode _BLACKLISTED_pinMode_
-#define digitalWrite _BLACKLISTED_digitalWrite_
-#define digitalRead _BLACKLISTED_digitalRead_
+#define _BLACKLISTED_pinMode_ pinMode
+#define _BLACKLISTED_digitalWrite_ digitalWrite
+#define _BLACKLISTED_digitalRead_ digitalRead
 
 #include <Arduino.h>
 

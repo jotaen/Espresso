@@ -70,6 +70,14 @@ unsigned long millis(void) {
   return Virtuino::__millis;
 }
 
+int digitalRead(uint8_t pin) {
+    return Virtuino::__digitalInputs[pin];
+}
+
+void digitalWrite(uint8_t pin, uint8_t val) {
+  Virtuino::__digitalOutputs[pin] = val;
+}
+
 uint8_t digitalPinToBitMask(uint8_t pin) {
   return pin;
 }

@@ -12,6 +12,8 @@ public:
   {
     ASSERT((mode == INPUT || mode == INPUT_PULLUP), "Invalid mode");
     rdn::pinModeUnchecked(this->bit_, this->port_, mode);
+    // Call “regular” digitalRead to ensure PWM is turned Off
+    _BLACKLISTED_digitalRead_(this->pin_);
   }
 
   bool isHigh() {

@@ -77,6 +77,9 @@ typedef unsigned int word;
 typedef bool boolean;
 typedef uint8_t byte;
 
+int digitalRead(uint8_t pin);
+void digitalWrite(uint8_t pin, uint8_t val);
+
 unsigned long millis(void);
 
 void setup(void);

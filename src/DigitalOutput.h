@@ -10,6 +10,9 @@ public:
   , value_(0)
   {
     rdn::pinModeUnchecked(this->bit_, this->port_, OUTPUT);
+
+    // Call “regular” digitalWrite to ensure PWM is turned Off
+    ::_BLACKLISTED_digitalWrite_(this->pin_, 0);
   }
 
   int value() {
