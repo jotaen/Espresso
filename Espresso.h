@@ -17,6 +17,8 @@
 #include "src/DigitalInput.h"
 #include "src/DigitalOutput.h"
 
+#include "src/util/LoopBenchmark.h"
+
 void onSetup();
 
 #include "src/core/main.h"
