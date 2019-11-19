@@ -30,8 +30,23 @@ public:
     this->flags_[ONFALSE_MODE] = mode;
   }
 
+  void enable() {
+    this->flags_[ACTIVE] = true;
+  }
+
+  void disable() {
+    this->flags_[ACTIVE] = false;
+  }
+
+  bool isActive() {
+    return this->flags_[ACTIVE];
+  }
+
 protected:
   void onLoop() override {
+    if (!this->flags_[ACTIVE]) {
+      return;
+    }
     const bool isTrue = this->predicate();
     const bool hasStateChanged = this->flags_[LAST_STATE] != isTrue;
     const bool isOnceMode = (this->flags_[isTrue ? ONTRUE_MODE : ONFALSE_MODE] == ONCE);

@@ -71,17 +71,33 @@ TEST_CASE("[Observer]") {
   }
 
   SECTION("For `true`: Only the matching handlers get invoked") {
-    Observer o(fn::alwaysTrue);
-    o.onTrue(callspy::Void);
-    o.onFalse([](){ throw; });
+    Observer o1(fn::alwaysTrue);
+    o1.onTrue(callspy::Void);
+    o1.onFalse([](){ throw; });
+    REQUIRE_NOTHROW(Virtuino::flush());
+
+    Observer o2(fn::alwaysFalse);
+    o2.onFalse(callspy::Void);
+    o2.onTrue([](){ throw; });
     REQUIRE_NOTHROW(Virtuino::flush());
   }
 
-  SECTION("For `false`: Only the matching handlers get invoked") {
-    Observer o(fn::alwaysFalse);
-    o.onFalse(callspy::Void);
-    o.onTrue([](){ throw; });
-    REQUIRE_NOTHROW(Virtuino::flush());
+  SECTION("Observer can be disabled") {
+    Observer o([](){ return predicateValue; });
+    o.onTrue(callspy::Void);
+    o.disable();
+    predicateValue = true;
+    Virtuino::flush();
+    REQUIRE(callspy::hasBeenCalled() == false);
+    o.onTrue(callspy::Void, Observer::WHILE);
+    Virtuino::flush();
+    REQUIRE(callspy::hasBeenCalled() == false);
+    REQUIRE(o.isActive() == false);
+
+    o.enable();
+    REQUIRE(o.isActive() == true);
+    Virtuino::flush();
+    REQUIRE(callspy::hasBeenCalled());
   }
 
 }
