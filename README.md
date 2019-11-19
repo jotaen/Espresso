@@ -3,4 +3,5 @@
 ## Todos
 
 - Write implementation comments
-- Support for Wiring Analog
+- Implement Analog Pins
+- Add Benchmarks/Performance tests for `onLoop`
