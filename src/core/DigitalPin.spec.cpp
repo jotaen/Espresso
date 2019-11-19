@@ -19,8 +19,19 @@ TEST_CASE("[DigitalPin]") {
     REQUIRE(dp.pin() == 2);
   }
 
-  SECTION("It throws when pin number is invalid") {
+  SECTION("It errors when pin number is invalid") {
     REQUIRE_THROWS(DigitalPin_(0)); // `0` is never valid
+  }
+
+  SECTION("It errors when pin is currently in use elsewhere") {
+    REQUIRE_NOTHROW(DigitalPin_(10));
+    {
+      DigitalPin_ dp1(11);
+      REQUIRE_THROWS(DigitalPin_(11));
+    }
+    REQUIRE_NOTHROW(DigitalPin_(11));
+    REQUIRE_NOTHROW(DigitalPin_(12));
+    REQUIRE_NOTHROW(DigitalPin_(13));
   }
 
 }

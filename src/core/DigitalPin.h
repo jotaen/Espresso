@@ -14,9 +14,16 @@ protected:
   : pin_(pin)
   {
     ASSERT(rdn::isValidPin(this->pin_), "Invalid PIN number");
+    ASSERT(!pinRegistry[this->pin_-1], "PIN already in use");
+    pinRegistry[this->pin_-1] = true;
+  }
+
+  ~DigitalPin() {
+    pinRegistry[this->pin_-1] = false;
   }
 
   const uint8_t pin_;
+  static bool pinRegistry[64];
 };
 
 #endif

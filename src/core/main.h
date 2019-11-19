@@ -5,6 +5,7 @@
 #include "../util/logger.h"
 
 AutoUpdated* AutoUpdated::root = 0;
+bool DigitalPin::pinRegistry[64] = {false};
 
 void setup() {
   logger::init();
