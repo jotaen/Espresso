@@ -48,8 +48,8 @@ namespace rdn {
     SREG = oldSREG;
   }
 
-  int digitalReadUnchecked(uint8_t bit, uint8_t port) {
-    if (*portInputRegister(port) & bit) {
+  int digitalReadUnchecked(uint8_t bit, volatile uint8_t* portInputRegister) {
+    if (*portInputRegister & bit) {
       return HIGH;
     }
     return LOW;

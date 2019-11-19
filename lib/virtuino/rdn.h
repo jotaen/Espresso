@@ -17,9 +17,8 @@ namespace rdn {
     Virtuino::__digitalOutputs[port] = val;
   }
 
-  int digitalReadUnchecked(uint8_t bit, uint8_t port)
-  {
-    return Virtuino::__digitalInputs[port];
+  int digitalReadUnchecked(uint8_t bit, volatile uint8_t* portInputRegister) {
+    return Virtuino::__digitalInputs[bit];
   }
 
 }

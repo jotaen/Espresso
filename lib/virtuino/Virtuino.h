@@ -86,6 +86,10 @@ uint8_t digitalPinToPort(uint8_t pin) {
   return pin;
 }
 
+volatile uint8_t* portInputRegister(uint8_t pin) {
+  return 0;
+}
+
 struct SoftwareSerial {
   static const int DEC = 10;
 
