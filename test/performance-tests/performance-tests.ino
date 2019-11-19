@@ -4,9 +4,9 @@
 CHECK(
   test<DigitalInput>("DigitalInput", 4),
   test<DigitalOutput>("DigitalOutput", 6),
-  test<Observer>("Observer", 15),
+  test<Observer>("Observer", 14),
   test<Metronome>("Metronome", 15),
-  test<Timer>("Timer", 19),
+  test<Timer>("Timer", 15),
 );
 
 void onSetup() {

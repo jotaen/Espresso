@@ -8,7 +8,7 @@ class Metronome: public AutoUpdated {
 public:
   Metronome()
   : handler(0)
-  , active(false)
+  , flags{false}
   , intervalMillis(0)
   , nextLoop(0)
   {}
@@ -20,7 +20,7 @@ public:
   void runMillis(unsigned long interval) {
     this->intervalMillis = interval;
     this->nextLoop = millis() + interval;
-    this->active = true;
+    this->flags[ACTIVE] = true;
     fn::invoke(this->handler);
   }
 
@@ -29,26 +29,27 @@ public:
   }
 
   void stop() {
-    this->active = false;
+    this->flags[ACTIVE] = false;
   }
 
   bool isActive() {
-    return active;
+    return flags[ACTIVE];
   }
 
 protected:
   void onLoop() override {
-    if (!this->active || millis() < this->nextLoop) {
+    if (!this->flags[ACTIVE] || millis() < this->nextLoop) {
       return;
     }
     fn::invoke(this->handler);
     this->nextLoop += this->intervalMillis;
   }
 
-  fn::Handler handler;
-  bool active;
+  enum Flags { ACTIVE };
+  bool flags[1];
   unsigned long intervalMillis;
   unsigned long nextLoop;
+  fn::Handler handler;
 };
 
 #endif

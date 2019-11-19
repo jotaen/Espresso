@@ -8,9 +8,8 @@ class Timer: public AutoUpdated {
 public:
   Timer()
   : handler_(0)
-  , isActive_(false)
+  , flags_{false}
   , delay_(0)
-  , lastTriggered_(0)
   {}
 
   void onTrigger(fn::Handler h) {
@@ -24,7 +23,7 @@ public:
 
   void start() {
     this->nextTrigger_ = millis() + this->delay_;
-    this->isActive_ = true;
+    this->flags_[ACTIVE] = true;
   }
 
   void delay(unsigned long delayMillis) {
@@ -37,33 +36,28 @@ public:
   }
 
   void cancel() {
-    this->isActive_ = false;
+    this->flags_[ACTIVE] = false;
   }
 
   bool isActive() {
-    return this->isActive_;
-  }
-
-  unsigned long lastTriggered() {
-    return this->lastTriggered_;
+    return this->flags_[ACTIVE];
   }
 
 protected:
   void onLoop() override {
     unsigned long now = millis();
-    if (!this->isActive_ || now < this->nextTrigger_) {
+    if (!this->flags_[ACTIVE] || now < this->nextTrigger_) {
       return;
     }
     fn::invoke(this->handler_);
-    this->lastTriggered_ = now;
-    this->isActive_ = false;
+    this->flags_[ACTIVE] = false;
   }
 
-  fn::Handler handler_;
-  bool isActive_;
+  enum Flags { ACTIVE };
+  bool flags_[1];
   unsigned long delay_;
-  unsigned long lastTriggered_;
   unsigned long nextTrigger_;
+  fn::Handler handler_;
 };
 
 #endif

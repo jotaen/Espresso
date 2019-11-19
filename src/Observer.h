@@ -8,48 +8,45 @@ class Observer: public AutoUpdated {
 public:
   Observer(fn::Predicate p)
   : predicate(p)
-  , lastState(false)
+  , flags_{true, false, ONCE, ONCE}
   , ontrue(0)
   , onfalse(0)
-  , whiletrue(0)
-  , whilefalse(0)
   {
-    this->lastState = this->predicate();
+    this->flags_[LAST_STATE] = this->predicate();
   }
 
-  void onTrue(fn::Handler h) {
+  enum RepeatMode {
+    ONCE = false,
+    WHILE = true
+  };
+
+  void onTrue(fn::Handler h, RepeatMode mode = ONCE) {
     this->ontrue = h;
+    this->flags_[ONTRUE_MODE] = mode;
   }
 
-  void onFalse(fn::Handler h) {
+  void onFalse(fn::Handler h, RepeatMode mode = ONCE) {
     this->onfalse = h;
-  }
-
-  void whileTrue(fn::Handler h) {
-    this->whiletrue = h;
-  }
-
-  void whileFalse(fn::Handler h) {
-    this->whilefalse = h;
+    this->flags_[ONFALSE_MODE] = mode;
   }
 
 protected:
   void onLoop() override {
-    bool currentState = this->predicate();
-    bool hasStateChanged = this->lastState != currentState;
-    if (hasStateChanged) {
-      fn::invoke(currentState ? this->ontrue : this->onfalse);
+    const bool isTrue = this->predicate();
+    const bool hasStateChanged = this->flags_[LAST_STATE] != isTrue;
+    const bool isOnceMode = (this->flags_[isTrue ? ONTRUE_MODE : ONFALSE_MODE] == ONCE);
+    if (isOnceMode && !hasStateChanged) {
+      return;
     }
-    fn::invoke(currentState ? this->whiletrue : this->whilefalse);
-    this->lastState = currentState;
+    fn::invoke(isTrue ? this->ontrue : this->onfalse);
+    this->flags_[LAST_STATE] = isTrue;
   }
 
-  bool lastState;
-  const fn::Predicate predicate;
+  enum Flags { ACTIVE, LAST_STATE, ONTRUE_MODE, ONFALSE_MODE };
+  bool flags_[4];
+  fn::Predicate predicate;
   fn::Handler ontrue;
   fn::Handler onfalse;
-  fn::Handler whiletrue;
-  fn::Handler whilefalse;
 };
 
 #endif

@@ -25,7 +25,7 @@ TEST_CASE("[Observer]") {
     REQUIRE_NOTHROW(Virtuino::flush());
   }
 
-  SECTION("`onTrue` gets called once when state changes") {
+  SECTION("`onTrue` gets called once when state changes (mode=ONCE)") {
     predicateValue = true;
     Observer o([](){ return predicateValue; });
     o.onTrue(callspy::Void);
@@ -39,15 +39,16 @@ TEST_CASE("[Observer]") {
     REQUIRE(callspy::counter() == 1);
   }
 
-  SECTION("`whileTrue` gets called repeatedly") {
+  SECTION("`onTrue` gets called repeatedly (mode=WHILE)") {
     Observer o(fn::alwaysTrue);
-    o.whileTrue(callspy::Void);
+    o.onTrue(callspy::Void, Observer::WHILE);
+    Virtuino::flush();
+    REQUIRE(callspy::counter() == 1);
     Virtuino::elapseMillis(10);
-    REQUIRE(callspy::hasBeenCalled());
     REQUIRE(callspy::counter() > 2);
   }
 
-  SECTION("`onFalse` gets called once") {
+  SECTION("`onFalse` gets called once when state changes (mode=ONCE)") {
     Observer o([](){ return predicateValue; });
     o.onFalse(callspy::Void);
     Virtuino::elapseMillis(10);
@@ -60,29 +61,26 @@ TEST_CASE("[Observer]") {
     REQUIRE(callspy::counter() == 1);
   }
 
-  SECTION("`whileFalse` gets called repeatedly") {
+  SECTION("`onFalse` gets called repeatedly (mode=WHILE)") {
     Observer o(fn::alwaysFalse);
-    o.whileFalse(callspy::Void);
+    o.onFalse(callspy::Void, Observer::WHILE);
+    Virtuino::flush();
+    REQUIRE(callspy::counter() == 1);
     Virtuino::elapseMillis(10);
-    REQUIRE(callspy::hasBeenCalled());
     REQUIRE(callspy::counter() > 2);
   }
 
   SECTION("For `true`: Only the matching handlers get invoked") {
     Observer o(fn::alwaysTrue);
     o.onTrue(callspy::Void);
-    o.whileTrue(callspy::Void);
     o.onFalse([](){ throw; });
-    o.whileFalse([](){ throw; });
     REQUIRE_NOTHROW(Virtuino::flush());
   }
 
   SECTION("For `false`: Only the matching handlers get invoked") {
     Observer o(fn::alwaysFalse);
     o.onFalse(callspy::Void);
-    o.whileFalse(callspy::Void);
     o.onTrue([](){ throw; });
-    o.whileTrue([](){ throw; });
     REQUIRE_NOTHROW(Virtuino::flush());
   }
 

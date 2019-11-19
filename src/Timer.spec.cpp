@@ -112,14 +112,4 @@ TEST_CASE("[Timer]") {
     Virtuino::elapseMillis(2);
     REQUIRE(callspy::hasBeenCalled());
   }
-
-  SECTION("`lastTriggered` returns absolute timestamp [ms]") {
-    Timer t;
-    REQUIRE(t.lastTriggered() == 0);
-    Virtuino::elapseMillis(5);
-    REQUIRE(t.lastTriggered() == 0);
-    t.start(5);
-    Virtuino::elapseMillis(50);
-    REQUIRE(t.lastTriggered() == 10);
-  }
 }
