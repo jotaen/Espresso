@@ -6,11 +6,7 @@
 
 class Timer: public AutoUpdated {
 public:
-  Timer()
-  : handler_(0)
-  , flags_{false}
-  , delay_(0)
-  {}
+  Timer() {}
 
   void onTrigger(fn::Handler h) {
     this->handler_ = h;
@@ -54,10 +50,10 @@ protected:
   }
 
   enum Flags { ACTIVE };
-  bool flags_[1];
-  unsigned long delay_;
-  unsigned long nextTrigger_;
-  fn::Handler handler_;
+  bool flags_[1] = {false};
+  unsigned long delay_ = 0;
+  unsigned long nextTrigger_ = 0;
+  fn::Handler handler_ = 0;
 };
 
 #endif

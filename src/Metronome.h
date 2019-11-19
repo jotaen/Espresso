@@ -6,22 +6,17 @@
 
 class Metronome: public AutoUpdated {
 public:
-  Metronome()
-  : handler(0)
-  , flags{false}
-  , intervalMillis(0)
-  , nextLoop(0)
-  {}
+  Metronome() {}
 
   void onTrigger(fn::Handler h) {
-    this->handler = h;
+    this->handler_ = h;
   }
 
   void runMillis(unsigned long interval) {
-    this->intervalMillis = interval;
-    this->nextLoop = millis() + interval;
-    this->flags[ACTIVE] = true;
-    fn::invoke(this->handler);
+    this->interval_ = interval;
+    this->nextLoop_ = millis() + interval;
+    this->flags_[ACTIVE] = true;
+    fn::invoke(this->handler_);
   }
 
   void run() {
@@ -29,27 +24,27 @@ public:
   }
 
   void stop() {
-    this->flags[ACTIVE] = false;
+    this->flags_[ACTIVE] = false;
   }
 
   bool isActive() {
-    return flags[ACTIVE];
+    return this->flags_[ACTIVE];
   }
 
 protected:
   void onLoop() override {
-    if (!this->flags[ACTIVE] || millis() < this->nextLoop) {
+    if (!this->flags_[ACTIVE] || millis() < this->nextLoop_) {
       return;
     }
-    fn::invoke(this->handler);
-    this->nextLoop += this->intervalMillis;
+    fn::invoke(this->handler_);
+    this->nextLoop_ += this->interval_;
   }
 
   enum Flags { ACTIVE };
-  bool flags[1];
-  unsigned long intervalMillis;
-  unsigned long nextLoop;
-  fn::Handler handler;
+  bool flags_[1] = { false };
+  unsigned long interval_ = 0;
+  unsigned long nextLoop_ = 0;
+  fn::Handler handler_ = 0;
 };
 
 #endif
