@@ -5,15 +5,9 @@ class DigitalOutput: public DigitalPin {
 public:
   DigitalOutput(uint8_t pin)
   : DigitalPin(pin)
-  , bit_(digitalPinToBitMask(pin))
   , value_(0)
   {
-    const uint8_t port = digitalPinToPort(pin);
-    rdn::pinModeUnchecked(this->bit_, port, OUTPUT);
-    this->portOutputRegister_ = portOutputRegister(port);
-
-    // Call “regular” digitalWrite to ensure PWM is turned Off
-    ::_BLACKLISTED_digitalWrite_(this->pin_, 0);
+    this->outReg_ = rdn::setupDigitalOutputPin(this->pin_, this->bit_, OUTPUT);
   }
 
   int value() {
@@ -29,7 +23,7 @@ public:
   }
 
   void write(int val) {
-    rdn::digitalWriteUnchecked(this->bit_, this->portOutputRegister_, val);
+    rdn::digitalWriteUnchecked(this->bit_, this->outReg_, val);
     this->value_ = val;
   }
 
@@ -38,8 +32,7 @@ public:
   }
 
 protected:
-  const uint8_t bit_;
-  volatile uint8_t* portOutputRegister_;
+  volatile uint8_t* outReg_;
   int value_;
 };
 

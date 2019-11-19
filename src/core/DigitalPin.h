@@ -12,6 +12,7 @@ public:
 protected:
   DigitalPin(uint8_t pin)
   : pin_(pin)
+  , bit_(digitalPinToBitMask(pin))
   {
     ASSERT(rdn::isValidPin(this->pin_), "Invalid PIN number");
     ASSERT(!pinRegistry[this->pin_-1], "PIN already in use");
@@ -23,6 +24,8 @@ protected:
   }
 
   const uint8_t pin_;
+  const uint8_t bit_;
+
   static bool pinRegistry[64];
 };
 

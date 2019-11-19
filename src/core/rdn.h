@@ -7,7 +7,7 @@ namespace rdn {
     return digitalPinToPort(pin) != NOT_A_PIN;
   }
 
-  void pinModeUnchecked(uint8_t bit, uint8_t port, uint8_t mode) {
+  static void pinModeUnchecked(uint8_t port, uint8_t bit, uint8_t mode) {
     volatile uint8_t *reg, *out;
     reg = portModeRegister(port);
     out = portOutputRegister(port);
@@ -30,6 +30,20 @@ namespace rdn {
       *reg |= bit;
       SREG = oldSREG;
     }
+  }
+
+  volatile uint8_t* setupDigitalInputPin(uint8_t pin, uint8_t bit, uint8_t mode) {
+    uint8_t port = digitalPinToPort(pin);
+    rdn::pinModeUnchecked(bit, port, mode);
+    _BLACKLISTED_digitalRead_(pin); // only way of ensuring PWM is turned off
+    return portInputRegister(port);
+  }
+
+  volatile uint8_t* setupDigitalOutputPin(uint8_t pin, uint8_t bit, uint8_t mode) {
+    uint8_t port = digitalPinToPort(pin);
+    rdn::pinModeUnchecked(bit, port, mode);
+    _BLACKLISTED_digitalWrite_(pin, 0); // only way of ensuring PWM is turned off
+    return portOutputRegister(port);
   }
 
   void digitalWriteUnchecked(uint8_t bit, volatile uint8_t* out, uint8_t val) {

@@ -9,8 +9,14 @@ namespace rdn {
     return pin != NOT_A_PIN;
   }
 
-  void pinModeUnchecked(uint8_t bit, uint8_t port, uint8_t mode) {
-    Virtuino::__pinModes[port] = mode;
+  volatile uint8_t* setupDigitalInputPin(uint8_t pin, uint8_t bit, uint8_t mode) {
+    Virtuino::__pinModes[bit] = mode;
+    return 0;
+  }
+
+  volatile uint8_t* setupDigitalOutputPin(uint8_t pin, uint8_t bit, uint8_t mode) {
+    Virtuino::__pinModes[bit] = mode;
+    return 0;
   }
 
   void digitalWriteUnchecked(uint8_t bit, volatile uint8_t* out, uint8_t val) {
