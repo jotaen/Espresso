@@ -3,8 +3,8 @@
 
 namespace rdn {
 
-  bool isValidPort(uint8_t port) {
-    return port != NOT_A_PIN;
+  bool isValidPin(uint8_t pin) {
+    return digitalPinToPort(pin) != NOT_A_PIN;
   }
 
   void pinModeUnchecked(uint8_t bit, uint8_t port, uint8_t mode) {

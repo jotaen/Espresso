@@ -4,9 +4,13 @@
 class DigitalOutput: public DigitalPin {
 public:
   DigitalOutput(uint8_t pin)
-  : DigitalPin(pin, OUTPUT)
+  : DigitalPin(pin)
+  , bit_(digitalPinToBitMask(pin))
+  , port_(digitalPinToPort(pin))
   , value_(0)
-  {}
+  {
+    rdn::pinModeUnchecked(this->bit_, this->port_, OUTPUT);
+  }
 
   int value() {
     return value_;
@@ -30,6 +34,8 @@ public:
   }
 
 protected:
+  const uint8_t bit_;
+  const uint8_t port_;
   int value_;
 };
 

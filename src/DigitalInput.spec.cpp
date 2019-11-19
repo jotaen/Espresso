@@ -14,7 +14,7 @@ TEST_CASE("[DigitalInput]") {
     DigitalPin& d = di; // The “assertion” is that this compiles
   }
 
-  SECTION("It sets the pin mode correctly") {
+  SECTION("It defaults the pin mode to `INPUT`") {
     DigitalInput di(12);
     REQUIRE(Virtuino::checkPinMode(di.pin()) == INPUT);
   }
@@ -24,9 +24,8 @@ TEST_CASE("[DigitalInput]") {
     REQUIRE(Virtuino::checkPinMode(di.pin()) == INPUT_PULLUP);
   }
 
-  SECTION("Pin mode defaults to `INPUT` if funny value is given") {
-    DigitalInput di(5, 42);
-    REQUIRE(Virtuino::checkPinMode(di.pin()) == INPUT);
+  SECTION("It throws when pin mode is invalid") {
+    REQUIRE_THROWS(DigitalInput(8, 172)); // `172` is never valid for mode
   }
 
   SECTION("The value should be `low` initially") {

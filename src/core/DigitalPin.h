@@ -5,24 +5,18 @@
 
 class DigitalPin {
 public:
-  DigitalPin(uint8_t pin, uint8_t mode)
-  : pin_(pin)
-  , bit_(digitalPinToBitMask(pin))
-  , port_(digitalPinToPort(pin))
-  {
-    ASSERT(rdn::isValidPort(this->pin_), "Invalid PIN number")
-    rdn::pinModeUnchecked(this->bit_, this->port_, mode);
-  }
-
   uint8_t pin() {
     return this->pin_;
   }
 
 protected:
+  DigitalPin(uint8_t pin)
+  : pin_(pin)
+  {
+    ASSERT(rdn::isValidPin(this->pin_), "Invalid PIN number");
+  }
+
   const uint8_t pin_;
-  const uint8_t bit_;
-  const uint8_t port_;
 };
-  
 
 #endif
