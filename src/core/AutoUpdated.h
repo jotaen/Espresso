@@ -11,18 +11,22 @@ public:
     if (root == 0) {
       root = this;
       this->next = this;
-      this->prev = this;
     } else {
-      this->prev = root->prev;
-      root->prev->next = this;
+      AutoUpdated* last = root;
+      while (last->next != root) {
+        last = last->next;
+      }
+      last->next = this;
       this->next = root;
-      root->prev = this;
     }
   }
 
   virtual ~AutoUpdated() {
-    this->prev->next = next;
-    this->next = 0;
+    AutoUpdated* predecessor = root;
+    while (predecessor->next != this) {
+      predecessor = predecessor->next;
+    }
+    predecessor->next = this->next;
     if (root == this) {
       root = 0;
     }
@@ -36,7 +40,6 @@ protected:
 
   static AutoUpdated* root;
   AutoUpdated* next = 0;
-  AutoUpdated* prev = 0;
 };
 
 #endif
