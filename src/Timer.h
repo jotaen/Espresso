@@ -1,10 +1,10 @@
 #ifndef __ESPRESSO_TIMER_H__
 #define __ESPRESSO_TIMER_H__
 
-#include "core/Device.h"
+#include "core/AutoUpdated.h"
 #include "util/fn.h"
 
-class Timer: public Device {
+class Timer: public AutoUpdated {
 public:
   Timer()
   : handler_(0)

@@ -1,10 +1,10 @@
 #ifndef __ESPRESSO_OBSERVER_H__
 #define __ESPRESSO_OBSERVER_H__
 
-#include "core/Device.h"
+#include "core/AutoUpdated.h"
 #include "util/fn.h"
 
-class Observer: public Device {
+class Observer: public AutoUpdated {
 public:
   Observer(fn::Predicate p)
   : predicate(p)

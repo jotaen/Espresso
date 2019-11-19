@@ -2,7 +2,7 @@
 #include <Virtuino.h>
 #include <Espresso.h>
 
-#include "../src/core/Device.spec.cpp"
+#include "../src/core/AutoUpdated.spec.cpp"
 #include "../src/core/DigitalPin.spec.cpp"
 #include "../src/Observer.spec.cpp"
 #include "../src/Timer.spec.cpp"
@@ -11,7 +11,7 @@
 #include "../src/DigitalOutput.spec.cpp"
 
 void Virtuino::clear() {
-  Device::rootDevice = 0;
+  AutoUpdated::root = 0;
   Virtuino::start();
 }
 

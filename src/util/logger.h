@@ -4,8 +4,6 @@
 #include <Arduino.h>
 #include <memory>
 
-class Device;
-
 namespace logger {
 
   void init(long serialSpeed = 9600) {

@@ -9,9 +9,9 @@ TEST_CASE("[Timer]") {
   callspy::reset();
   Virtuino::clear();
 
-  SECTION("A Timer is a Device") {
+  SECTION("A Timer is AutoUpdated") {
     Timer t;
-    Device& d = t; // The “assertion” is that this compiles
+    AutoUpdated& au = t; // The “assertion” is that this compiles
   }
 
   SECTION("The handler function should not be invoked without the timer being started") {

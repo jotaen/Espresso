@@ -9,9 +9,9 @@ TEST_CASE("[Metronome]") {
   callspy::reset();
   Virtuino::clear();
 
-  SECTION("A Metronome is a Device") {
+  SECTION("A Metronome is AutoUpdated") {
     Metronome m;
-    Device& d = m; // The “assertion” is that this compiles
+    AutoUpdated& au = m; // The “assertion” is that this compiles
   }
 
   SECTION("The handler function invocation should begin immediately") {

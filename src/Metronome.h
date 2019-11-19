@@ -1,10 +1,10 @@
 #ifndef __ESPRESSO_METRONOME_H__
 #define __ESPRESSO_METRONOME_H__
 
-#include "core/Device.h"
+#include "core/AutoUpdated.h"
 #include "util/fn.h"
 
-class Metronome: public Device {
+class Metronome: public AutoUpdated {
 public:
   Metronome()
   : handler(0)

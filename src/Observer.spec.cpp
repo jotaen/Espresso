@@ -13,9 +13,9 @@ TEST_CASE("[Observer]") {
   Virtuino::clear();
   predicateValue = false;
 
-  SECTION("An Observer is a Device") {
+  SECTION("An Observer is AutoUpdated") {
     Observer o(fn::alwaysTrue);
-    Device& d = o; // The “assertion” is that this compiles
+    AutoUpdated& au = o; // The “assertion” is that this compiles
   }
 
   SECTION("Absence of handlers is dealt with gracefully") {
