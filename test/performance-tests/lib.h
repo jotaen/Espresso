@@ -1,35 +1,40 @@
-#define CHECK(...) Result* results[] = { __VA_ARGS__ };
-
 struct Result {
   String name;
-  uint8_t actual_size;
-  uint8_t expected_size;
-  bool ok;
+  uint8_t actualSize;
+  uint8_t expectedSize;
+
+  bool ok() {
+    return this->expectedSize == this->actualSize;
+  }
 };
 
 template<class T>
-Result* test(String name, uint8_t expected_size) {
-  Result* r = new Result;
-  r->name = name;
-  r->actual_size = sizeof(T);
-  r->expected_size = expected_size;
-  r->ok = (r->actual_size == r->expected_size);
-  return r;
-}
+struct Test: public Result {
+  Test(String name)
+  {
+    this->name = name;
+  }
 
-void printout(Result* r) {
+  Test& expectSize(uint8_t s) {
+    this->expectedSize = s;
+    this->actualSize = sizeof(T);
+    return *this;
+  }
+};
+
+void printout(Result& r) {
   const String _ = "          ";
-  Serial.print(r->ok ? "[OK]      " : "[ERROR]   ");
+  Serial.print(r.ok() ? "[OK]      " : "[ERROR]   ");
   Serial.print("# ");
-  Serial.print(r->name);
+  Serial.print(r.name);
   Serial.print(": ");
   Serial.println();
 
   Serial.print(_);
   Serial.print("Size: ");
-  Serial.print(r->actual_size);
+  Serial.print(r.actualSize);
   Serial.print(" bytes (");
-  Serial.print(r->expected_size);
+  Serial.print(r.expectedSize);
   Serial.print(")");
   Serial.println();
 
