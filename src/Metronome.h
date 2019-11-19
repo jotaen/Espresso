@@ -6,8 +6,6 @@
 
 class Metronome: public AutoUpdated {
 public:
-  Metronome() {}
-
   void onTrigger(fn::Handler h) {
     this->handler_ = h;
   }

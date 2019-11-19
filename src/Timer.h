@@ -6,8 +6,6 @@
 
 class Timer: public AutoUpdated {
 public:
-  Timer() {}
-
   void onTrigger(fn::Handler h) {
     this->handler_ = h;
   }
