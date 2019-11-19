@@ -7,4 +7,3 @@
 - Support for Wiring Analog
 - Optimise `loop` mechanic
 - PIN check
-- Error handling (`ASSERT` macro)

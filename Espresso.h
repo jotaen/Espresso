@@ -9,6 +9,7 @@
 
 #include "config.h"
 #include "src/util/logger.h"
+#include "src/util/macros.h"
 
 #include "src/Observer.h"
 #include "src/Timer.h"
