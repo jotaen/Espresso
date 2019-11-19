@@ -89,7 +89,7 @@ struct SoftwareSerial {
   // size_t print(int, int = DEC);
   // size_t print(unsigned int, int = DEC);
   // size_t print(long, int = DEC);
-  // size_t print(unsigned long, int = DEC);
+  size_t print(unsigned long, int = DEC);
   // size_t print(double, int = 2);
 
   size_t println(const String &s);
@@ -113,6 +113,11 @@ size_t SoftwareSerial::print(const String& s) {
 
 size_t SoftwareSerial::print(const char* s) {
   std::cout << s;
+  return 0;
+}
+
+size_t SoftwareSerial::print(unsigned long x, int base) {
+  std::cout << x;
   return 0;
 }
 

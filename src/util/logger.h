@@ -6,38 +6,47 @@
 namespace logger {
 
   template<class T>
-  inline void info(T* origin, const char* message);
+  inline void info(const char* message, T* origin);
+  inline void info(const char* message);
 
   template<class T>
-  inline void warning(T* origin, const char* message);
+  inline void warning(const char* message, T* origin);
+  inline void warning(const char* message);
 
   template<class T>
-  inline void error(T* origin, const char* message);
+  inline void error(const char* message, T* origin);
+  inline void error(const char* message);
 
   inline void init(long serialSpeed = 9600);
 
   template<class T>
-  String addressToString(T* ptr);
-
-  template<class T>
-  void log(const char* level, T* origin, const char* message);
+  void log(const char* level, const char* message, T* origin = 0);
 }
 
   #ifdef ESPRESSO_LOGGING
 
   template<class T>
-  inline void logger::info(T* origin, const char* message) {
-    log("INFO", origin, message);
+  inline void logger::info(const char* message, T* origin) {
+    log("INFO", message, origin);
+  }
+  inline void logger::info(const char* message) {
+    info(message, (void*)0);
   }
 
   template<class T>
-  inline void logger::warning(T* origin, const char* message) {
-    log("WARNING", origin, message);
+  inline void logger::warning(const char* message, T* origin) {
+    log("WARNING", message, origin);
+  }
+  inline void logger::warning(const char* message) {
+    warning(message, (void*)0);
   }
 
   template<class T>
-  inline void logger::error(T* origin, const char* message) {
-    log("ERROR", origin, message);
+  inline void logger::error(const char* message, T* origin) {
+    log("ERROR", message, origin);
+  }
+  inline void logger::error(const char* message) {
+    error(message, (void*)0);
   }
 
   inline void logger::init(long serialSpeed) {
@@ -45,18 +54,26 @@ namespace logger {
   }
 
   template<class T>
-  String logger::addressToString(T* ptr) {
-    std::ostringstream address;
-    address << (void const *)ptr;
-    return address.str();
-  }
+  void logger::log(const char* level, const char* message, T* origin) {
+    // format: "hh:mm:ss.xxx"
+    const unsigned long now = millis();
+    char timestamp [13];
+    sprintf (timestamp, "%02lu:%02lu:%02lu.%03lu"
+      , (now / 60 / 60 / 1000) % 24 // hour
+      , (now / 60 / 1000) % 60 // minute
+      , (now / 1000) % 60 // seconds
+      , (now % 1000)
+    );
 
-  template<class T>
-  void logger::log(const char* level, T* origin, const char* message) {
+    Serial.print(timestamp);
+    Serial.print(" ");
     Serial.print(level);
-    Serial.print(" [");
-    Serial.print(addressToString(origin));
-    Serial.print("]: ");
+    if (origin != 0) {
+      Serial.print(" [");
+      Serial.print((uintptr_t) origin, 16);
+      Serial.print("]");
+    }
+    Serial.print(": ");
     Serial.print(message);
     Serial.println("");
   }
@@ -64,21 +81,21 @@ namespace logger {
   #else
 
   template<class T>
-  inline void logger::info(T* origin, const char* message) {}
+  inline void logger::info(const char* message, T* origin) {}
+  inline void logger::info(const char* message) {}
 
   template<class T>
-  inline void logger::warning(T* origin, const char* message) {}
+  inline void logger::warning(const char* message, T* origin) {}
+  inline void logger::warning(const char* message) {}
 
   template<class T>
-  inline void logger::error(T* origin, const char* message) {}
+  inline void logger::error(const char* message, T* origin) {}
+  inline void logger::error(const char* message) {}
 
   inline void logger::init(long serialSpeed) {}
 
   template<class T>
-  String logger::addressToString(T* ptr) {}
-
-  template<class T>
-  void logger::log(const char* level, T* origin, const char* message) {}
+  void logger::log(const char* level, const char* message, T* origin) {}
 
   #endif
 

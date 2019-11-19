@@ -8,6 +8,8 @@
 #include <Arduino.h>
 
 #include "config.h"
+#include "src/util/logger.h"
+
 #include "src/Observer.h"
 #include "src/Timer.h"
 #include "src/Metronome.h"
