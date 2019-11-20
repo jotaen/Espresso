@@ -5,12 +5,12 @@ Test tests[] = {
 
   Test("DigitalInput")
     .sizeOf<DigitalInput>(4)
-    .benchmark("value()", 2, [](){ di.value(); })
+    .benchmark("value()", 1.7, [](){ di.value(); })
 
   ,Test("DigitalOutput")
     .sizeOf<DigitalOutput>(6)
-    .benchmark("write()", 3, [](){ dt.write(HIGH); })
-    .benchmark("toggle()", 4, [](){ dt.toggle(); })
+    .benchmark("write()", 2.7, [](){ dt.write(HIGH); })
+    .benchmark("toggle()", 3.3, [](){ dt.toggle(); })
 
   ,Test("Observer")
     .sizeOf<Observer>(14)

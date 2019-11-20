@@ -13,7 +13,7 @@ struct Test {
     return *this;
   }
 
-  Test& benchmark(String name, unsigned long expectedRuntimeMicros, Case c) {
+  Test& benchmark(String name, double expectedRuntimeMicros, Case c) {
     this->benchmarkName[this->benchmarkCount] = name;
     this->benchmarkExpected[this->benchmarkCount] = expectedRuntimeMicros;
     this->benchmarkCase[this->benchmarkCount] = c;
@@ -24,7 +24,7 @@ struct Test {
   String name = "";
   uint8_t actualSize = 0;
   uint8_t expectedSize = 0;
-  unsigned long benchmarkExpected[8] = {0};
+  double benchmarkExpected[8] = {0};
   String benchmarkName[8] = {""};
   Case benchmarkCase[8] = {0};
   uint8_t benchmarkCount = 0;
@@ -49,7 +49,7 @@ public:
 private:
   const Test t;
 
-  double benchmark(Case benchmarkCase) {
+  double benchmark(const Case& benchmarkCase) {
     const unsigned long start = micros();
     const unsigned long iterations = 100000;
     for (unsigned long i=iterations; i!=0; --i) {
