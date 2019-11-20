@@ -46,7 +46,7 @@ Test tests[] = {
 
   ,Test("Timer")
     .sizeOf<Timer>(15)
-    .benchmark("update()", 3.97*m, [](){ timer.update(); })
+    .benchmark("update()", 2.77*m, [](){ timer.update(); })
 
   ,Test("Loop")
     .sizeOf<Loop>(7)

@@ -38,8 +38,7 @@ public:
   }
 
   void update() override {
-    unsigned long now = millis();
-    if (!this->flags_[ACTIVE] || now < this->nextTrigger_) {
+    if (!this->flags_[ACTIVE] || millis() < this->nextTrigger_) {
       return;
     }
     fn::invoke(this->handler_);
