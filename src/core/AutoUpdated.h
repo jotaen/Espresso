@@ -42,4 +42,6 @@ protected:
   AutoUpdated* next = 0;
 };
 
+AutoUpdated* AutoUpdated::root = 0;
+
 #endif

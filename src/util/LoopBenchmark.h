@@ -1,6 +1,8 @@
 #ifndef __ESPRESSO_LOOPBENCHMARK_H__
 #define __ESPRESSO_LOOPBENCHMARK_H__
 
+#include "../core/AutoUpdated.h"
+
 class LoopBenchmark: public AutoUpdated {
 public:
   LoopBenchmark(unsigned long interval = 1000)

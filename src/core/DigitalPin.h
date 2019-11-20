@@ -29,4 +29,6 @@ protected:
   static bool pinRegistry[64];
 };
 
+bool DigitalPin::pinRegistry[64] = {false};
+
 #endif
