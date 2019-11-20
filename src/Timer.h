@@ -37,8 +37,7 @@ public:
     return this->flags_[ACTIVE];
   }
 
-protected:
-  void onLoop() override {
+  void update() override {
     unsigned long now = millis();
     if (!this->flags_[ACTIVE] || now < this->nextTrigger_) {
       return;
@@ -47,6 +46,7 @@ protected:
     this->flags_[ACTIVE] = false;
   }
 
+protected:
   enum Flags { ACTIVE };
   bool flags_[1] = {false};
   unsigned long delay_ = 0;

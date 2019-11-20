@@ -32,11 +32,11 @@ public:
     }
   }
 
-protected:
-  friend void Virtuino::clear();
-  friend void loop();
+  virtual void update() = 0;
 
-  virtual void onLoop() = 0;
+protected:
+  friend void loop();
+  friend void Virtuino::clear();
 
   static AutoUpdated* root;
   AutoUpdated* next = 0;

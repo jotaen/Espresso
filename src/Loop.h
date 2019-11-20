@@ -22,14 +22,14 @@ public:
     return this->flags_[ACTIVE];
   }
 
-protected:
-  void onLoop() override {
+  void update() override {
     if (!this->flags_[ACTIVE]) {
       return;
     }
     fn::invoke(this->handler_);
   }
 
+protected:
   enum Flags { ACTIVE };
   bool flags_[1] = { true };
   fn::Handler handler_ = 0;

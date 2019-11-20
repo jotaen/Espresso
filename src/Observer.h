@@ -39,8 +39,7 @@ public:
     return this->flags_[ACTIVE];
   }
 
-protected:
-  void onLoop() override {
+  void update() override {
     if (!this->flags_[ACTIVE]) {
       return;
     }
@@ -54,6 +53,7 @@ protected:
     this->flags_[LAST_STATE] = isTrue;
   }
 
+protected:
   enum Flags { ACTIVE, LAST_STATE, ONTRUE_MODE, ONFALSE_MODE };
   bool flags_[4] = {true, false, ONCE, ONCE};
   const fn::Predicate predicate;

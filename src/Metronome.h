@@ -29,8 +29,7 @@ public:
     return this->flags_[ACTIVE];
   }
 
-protected:
-  void onLoop() override {
+  void update() override {
     if (!this->flags_[ACTIVE] || millis() < this->nextLoop_) {
       return;
     }
@@ -38,6 +37,7 @@ protected:
     this->nextLoop_ += this->interval_;
   }
 
+protected:
   enum Flags { ACTIVE };
   bool flags_[1] = { false };
   unsigned long interval_ = 0;

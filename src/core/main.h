@@ -16,7 +16,7 @@ void loop() {
     return;
   }
   do {
-    (*it).onLoop();
+    (*it).update();
     it = (*it).next;
   }
   #ifdef VIRTUINO

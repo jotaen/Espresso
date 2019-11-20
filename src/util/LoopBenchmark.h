@@ -10,8 +10,7 @@ public:
   , lastMillis(0) 
   , loopCounter(0) {}
 
-protected:
-  void onLoop() {
+  void update() {
     const unsigned long now = millis();
     this->loopCounter++;
 
@@ -27,6 +26,7 @@ protected:
     }
   }
 
+protected:
   unsigned long interval;
   unsigned long lastMillis;
   unsigned long loopCounter;

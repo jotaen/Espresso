@@ -4,13 +4,9 @@
 #include "AutoUpdated.h"
 #include "../util/callspy.h"
 
-class AutoUpdated_: public AutoUpdated {
-public:
-  AutoUpdated* getNext() {
-    return this->next;
-  }
-protected:
-  void onLoop() {}
+struct AutoUpdated_: public AutoUpdated {
+  AutoUpdated* getNext() { return this->next; }
+  void update() {}
 };
 
 TEST_CASE("[AutoUpdated]") {
