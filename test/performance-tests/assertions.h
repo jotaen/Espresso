@@ -1,24 +1,26 @@
-DigitalInput di(1);
+DigitalInput di(2);
+DigitalOutput dt(4);
 
-Result results[] = {
+Test tests[] = {
 
-  Test<DigitalInput>("DigitalInput")
-    .expectSize(4)
-    .benchmark("digitalRead", [](){ di.value(); }),
+  Test("DigitalInput")
+    .sizeOf<DigitalInput>(4)
+    .benchmark("value()", 2, [](){ di.value(); }),
 
-  Test<DigitalOutput>("DigitalOutput")
-    .expectSize(6),
+  Test("DigitalOutput")
+    .sizeOf<DigitalOutput>(6)
+    .benchmark("write()", 3, [](){ dt.write(HIGH); }),
 
-  Test<Observer>("Observer")
-    .expectSize(14),
+  Test("Observer")
+    .sizeOf<Observer>(14),
 
-  Test<Metronome>("Metronome")
-    .expectSize(15),
+  Test("Metronome")
+    .sizeOf<Metronome>(15),
 
-  Test<Timer>("Timer")
-    .expectSize(15),
+  Test("Timer")
+    .sizeOf<Timer>(15),
 
-  Test<Loop>("Loop")
-    .expectSize(7),
+  Test("Loop")
+    .sizeOf<Loop>(7),
 
 };
