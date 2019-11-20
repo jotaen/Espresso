@@ -72,37 +72,10 @@ TEST_CASE("[Timer]") {
     REQUIRE(callspy::hasBeenCalled() == false);
   }
 
-  SECTION("`delay` sets and gets the delay value") {
-    Timer t;
-    t.onTrigger(callspy::Void);
-    t.delay(50);
-    REQUIRE(t.delay() == 50);
-    Virtuino::elapseMillis(30); // make sure `delay` doesn’t set other internal state
-    t.start();
-    Virtuino::elapseMillis(49);
-    REQUIRE(callspy::hasBeenCalled() == false);
-    Virtuino::elapseMillis(1);
-    REQUIRE(callspy::hasBeenCalled());
-  }
-
-  SECTION("Calling `delay` on a running timer resets the value after the fact") {
-    Timer t;
-    t.onTrigger(callspy::Void);
-    t.start(10);
-    Virtuino::elapseMillis(9);
-    t.delay(20);
-    Virtuino::elapseMillis(10);
-    REQUIRE(callspy::hasBeenCalled() == false);
-    Virtuino::elapseMillis(1);
-    REQUIRE(callspy::hasBeenCalled());
-  }
-
   SECTION("Calling `start()` or `start(long)` restarts the timer") {
     Timer t;
     t.onTrigger(callspy::Void);
     t.start(10);
-    Virtuino::elapseMillis(9);
-    t.start();
     Virtuino::elapseMillis(9);
     t.start(20);
     Virtuino::elapseMillis(19);

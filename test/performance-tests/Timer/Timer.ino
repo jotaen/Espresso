@@ -5,7 +5,7 @@
 Timer timer;
 
 Test test = Test("Timer")
-    .sizeOf<Timer>(15)
+    .sizeOf<Timer>(11)
     .benchmark("update()", 2.77*m, [](){ timer.update(); });
 
 void setup() {

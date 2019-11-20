@@ -11,22 +11,8 @@ public:
   }
 
   void start(unsigned long delayMillis) {
-    this->delay_ = delayMillis;
-    this->start();
-  }
-
-  void start() {
-    this->nextTrigger_ = millis() + this->delay_;
+    this->nextTrigger_ = millis() + delayMillis;
     this->flags_[ACTIVE] = true;
-  }
-
-  void delay(unsigned long delayMillis) {
-    this->nextTrigger_ = this->nextTrigger_ - this->delay_ + delayMillis;
-    this->delay_ = delayMillis;
-  }
-
-  unsigned long delay() {
-    return this->delay_;
   }
 
   void cancel() {
@@ -48,7 +34,6 @@ public:
 protected:
   enum Flags { ACTIVE };
   bool flags_[1] = {false};
-  unsigned long delay_ = 0;
   unsigned long nextTrigger_ = 0;
   fn::Handler handler_ = 0;
 };
