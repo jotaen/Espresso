@@ -32,7 +32,7 @@ public:
 
 protected:
   volatile uint8_t* outReg_;
-  int value_ = 0;
+  bool value_ = 0;
 };
 
 #endif
