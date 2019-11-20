@@ -50,9 +50,9 @@ private:
   const Test t;
 
   double benchmark(const Case& benchmarkCase) {
+    const unsigned int iterations = 65535;
     const unsigned long start = micros();
-    const unsigned long iterations = 100000;
-    for (unsigned long i=iterations; i!=0; --i) {
+    for (unsigned int i=iterations; i!=0; --i) {
       benchmarkCase();
     }
     const unsigned long stop = micros();
