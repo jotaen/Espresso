@@ -4,10 +4,15 @@ DigitalOutput digitalOutput(4);
 bool observerState = false;
 Observer observer([](){ return observerState; });
 
+Metronome metronome;
+
 void setup() {
   observerState = true; // change to trigger observer initially
   observer.onTrue([](){ observerState = !observerState; });
   observer.onFalse([](){ observerState = !observerState; });
+
+  metronome.onTrigger([](){});
+  metronome.run(0);
 }
 
 const double m = 1.03; // 3% margin for performance benchmarks
@@ -28,6 +33,7 @@ Test tests[] = {
 
   ,Test("Metronome")
     .sizeOf<Metronome>(15)
+    .benchmark("update()", 6.61*m, [](){ metronome.update(); })
 
   ,Test("Timer")
     .sizeOf<Timer>(15)
