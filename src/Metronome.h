@@ -12,7 +12,7 @@ public:
 
   void run(unsigned long interval) {
     this->interval_ = interval;
-    this->nextLoop_ = millis() + interval;
+    this->nextTrigger_ = millis() + interval;
     this->flags_[ACTIVE] = true;
     fn::invoke(this->handler_);
   }
@@ -26,18 +26,18 @@ public:
   }
 
   void update() override {
-    if (!this->flags_[ACTIVE] || millis() < this->nextLoop_) {
+    if (!this->flags_[ACTIVE] || millis() < this->nextTrigger_) {
       return;
     }
     fn::invoke(this->handler_);
-    this->nextLoop_ += this->interval_;
+    this->nextTrigger_ += this->interval_;
   }
 
 protected:
   enum Flags { ACTIVE };
   bool flags_[1] = { false };
+  unsigned long nextTrigger_ = 0;
   unsigned long interval_ = 0;
-  unsigned long nextLoop_ = 0;
   fn::Handler handler_ = 0;
 };
 

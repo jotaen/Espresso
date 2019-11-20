@@ -11,7 +11,7 @@ public:
   }
 
   void start(unsigned long delayMillis) {
-    this->nextTrigger_ = millis() + delayMillis;
+    this->trigger_ = millis() + delayMillis;
     this->flags_[ACTIVE] = true;
   }
 
@@ -24,7 +24,7 @@ public:
   }
 
   void update() override {
-    if (!this->flags_[ACTIVE] || millis() < this->nextTrigger_) {
+    if (!this->flags_[ACTIVE] || millis() < this->trigger_) {
       return;
     }
     fn::invoke(this->handler_);
@@ -34,7 +34,7 @@ public:
 protected:
   enum Flags { ACTIVE };
   bool flags_[1] = {false};
-  unsigned long nextTrigger_ = 0;
+  unsigned long trigger_ = 0;
   fn::Handler handler_ = 0;
 };
 
