@@ -1,6 +1,8 @@
 DigitalInput di(2);
 DigitalOutput dt(4);
 
+void setup() {
+}
 Test tests[] = {
 
   Test("DigitalInput")

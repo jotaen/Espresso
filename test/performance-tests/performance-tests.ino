@@ -3,11 +3,8 @@
 #include "lib.h"
 #include "assertions.h"
 
-void setup() {
-  Serial.begin(9600);
-}
-
 void loop() {
+  Serial.begin(9600);
   for(Test& t : tests) {
     Result r(t);
     const String _ = "         ";
