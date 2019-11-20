@@ -46,7 +46,7 @@ public:
     const bool isTrue = this->predicate();
     const bool hasStateChanged = this->flags_[LAST_STATE] != isTrue;
     const bool isOnceMode = (this->flags_[isTrue ? ONTRUE_MODE : ONFALSE_MODE] == ONCE);
-    if (isOnceMode && !hasStateChanged) {
+    if (!hasStateChanged && isOnceMode) {
       return;
     }
     fn::invoke(isTrue ? this->onTrue_ : this->onFalse_);
