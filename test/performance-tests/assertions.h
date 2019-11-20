@@ -3,16 +3,18 @@ DigitalOutput dt(4);
 
 void setup() {
 }
+
+const double m = 1.03; // 3% margin for performance benchmarks
 Test tests[] = {
 
   Test("DigitalInput")
     .sizeOf<DigitalInput>(4)
-    .benchmark("value()", 1.55, [](){ di.value(); })
+    .benchmark("value()", 1.45*m, [](){ di.value(); })
 
   ,Test("DigitalOutput")
     .sizeOf<DigitalOutput>(6)
-    .benchmark("write()", 2.55, [](){ dt.write(HIGH); })
-    .benchmark("toggle()", 3.20, [](){ dt.toggle(); })
+    .benchmark("write()", 2.46*m, [](){ dt.write(HIGH); })
+    .benchmark("toggle()", 3.11*m, [](){ dt.toggle(); })
 
   ,Test("Observer")
     .sizeOf<Observer>(14)
