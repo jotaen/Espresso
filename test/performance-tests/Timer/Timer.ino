@@ -9,8 +9,8 @@ Test test = Test("Timer")
     .benchmark("update()", 2.77*m, [](){ timer.update(); });
 
 void setup() {
-  timer.onTrigger([](){ timer.start(0); });
-  timer.start(0);
+  timer.onTrigger([](){ timer.start(1); });
+  timer.start(1);
 }
 
 void loop() {
