@@ -10,15 +10,11 @@ public:
     this->handler_ = h;
   }
 
-  void runMillis(unsigned long interval) {
+  void run(unsigned long interval) {
     this->interval_ = interval;
     this->nextLoop_ = millis() + interval;
     this->flags_[ACTIVE] = true;
     fn::invoke(this->handler_);
-  }
-
-  void run() {
-    runMillis(0);
   }
 
   void stop() {
