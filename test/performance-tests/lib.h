@@ -1,4 +1,5 @@
 typedef void (*Case)();
+const double m = 1.03; // 3% margin for performance benchmarks
 
 struct Test {
   Test(String name)
@@ -69,3 +70,39 @@ private:
     return size && benchmark;
   }
 };
+
+void run(const Test& t) {
+  Serial.begin(9600);
+  Result r(t);
+  String ___ = "            ";
+
+  Serial.print("# ");
+  Serial.println(t.name);
+  Serial.println();
+
+  Serial.print("Size:       ");
+  Serial.print(t.actualSize);
+  Serial.print(" bytes [");
+  Serial.print(t.expectedSize);
+  Serial.print(" bytes]");
+  Serial.println();
+  Serial.println();
+
+  Serial.print("Benchmark:  ");
+  for(uint8_t i=0; i<t.benchmarkCount; i++) {
+    Serial.print(t.benchmarkName[i]);
+    Serial.print(" ");
+    Serial.print(r.benchmarkActual[i]);
+    Serial.print(" μs [");
+    Serial.print(t.benchmarkExpected[i]);
+    Serial.print(" μs]");
+    Serial.println();
+    Serial.print(___);
+  }
+
+  Serial.println();
+  Serial.println();
+  Serial.print("=> ");
+  Serial.println(r.ok ? "OK" : "FAILED");
+  while(true);
+}
