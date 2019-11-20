@@ -46,7 +46,7 @@ namespace rdn {
     return portOutputRegister(port);
   }
 
-  void digitalWriteUnchecked(uint8_t bit, volatile uint8_t* out, uint8_t val) {
+  inline void digitalWriteUnchecked(uint8_t bit, volatile uint8_t* out, uint8_t val) {
     uint8_t oldSREG = SREG;
     cli();
 
@@ -59,7 +59,7 @@ namespace rdn {
     SREG = oldSREG;
   }
 
-  int digitalReadUnchecked(uint8_t bit, volatile uint8_t* in) {
+  inline int digitalReadUnchecked(uint8_t bit, volatile uint8_t* in) {
     if (*in & bit) {
       return HIGH;
     }

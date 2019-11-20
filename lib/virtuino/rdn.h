@@ -19,11 +19,11 @@ namespace rdn {
     return 0;
   }
 
-  void digitalWriteUnchecked(uint8_t bit, volatile uint8_t* out, uint8_t val) {
+  inline void digitalWriteUnchecked(uint8_t bit, volatile uint8_t* out, uint8_t val) {
     Virtuino::__digitalOutputs[bit] = val;
   }
 
-  int digitalReadUnchecked(uint8_t bit, volatile uint8_t* portInputRegister) {
+  inline int digitalReadUnchecked(uint8_t bit, volatile uint8_t* portInputRegister) {
     return Virtuino::__digitalInputs[bit];
   }
 
