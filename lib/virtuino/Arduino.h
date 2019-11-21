@@ -85,6 +85,10 @@ unsigned long millis(void);
 void setup(void);
 void loop(void);
 
+uint8_t digitalPinToBitMask(uint8_t pin);
+uint8_t analogPinToChannel(uint8_t pin);
+uint8_t digitalPinToTimer(uint8_t pin);
+
 #define NOT_A_PIN 0
 #define NOT_A_PORT 0
 

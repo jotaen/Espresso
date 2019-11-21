@@ -2,7 +2,6 @@ class Virtuino {
 public:
   Virtuino() {
     millis_ = 0;
-    pinModes_.clear();
     digitalOutputs_.clear();
     digitalInputs_.clear();
     analogInputs_.clear();
@@ -10,6 +9,10 @@ public:
     adcFinished_ = 0-1;
     adcValue_ = 0;
     setup();
+  }
+
+  ~Virtuino() {
+    pinModes_.clear();
   }
 
   void flush() {
