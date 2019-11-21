@@ -10,12 +10,16 @@ public:
     this->handler_ = h;
   }
 
-  void start(unsigned long delayMillis) {
-    this->trigger_ = millis() + delayMillis;
-    this->flags_[ACTIVE] = true;
+  void run(unsigned long interval) {
+    this->start(interval, true);
+    fn::invoke(this->handler_);
   }
 
-  void cancel() {
+  void runOnce(unsigned long delay) {
+    this->start(delay, false);
+  }
+
+  void stop() {
     this->flags_[ACTIVE] = false;
   }
 
@@ -24,18 +28,30 @@ public:
   }
 
   void update() override {
-    if (!this->flags_[ACTIVE] || millis() < this->trigger_) {
+    if (!this->flags_[ACTIVE] || millis() < this->nextTrigger_) {
       return;
     }
-    this->flags_[ACTIVE] = false;
+    if (this->flags_[LOOP_MODE]) {
+      this->nextTrigger_ += this->interval_;
+    } else {
+      this->flags_[ACTIVE] = false;
+    }
     fn::invoke(this->handler_);
   }
 
 protected:
-  enum Flags { ACTIVE };
-  bool flags_[1] = {false};
-  unsigned long trigger_ = 0;
+  enum Flags { ACTIVE, LOOP_MODE };
+  bool flags_[2] = { false };
+  unsigned long nextTrigger_ = 0;
+  unsigned long interval_ = 0;
   fn::Handler handler_ = 0;
+
+  void start(unsigned long interval, bool isInLoopMode) {
+    this->interval_ = interval;
+    this->nextTrigger_ = millis() + interval;
+    this->flags_[ACTIVE] = true;
+    this->flags_[LOOP_MODE] = isInLoopMode;
+  }
 };
 
 #endif

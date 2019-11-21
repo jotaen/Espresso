@@ -1,7 +1,7 @@
 #include "../../src/Timer.h"
 
 namespace TimerSpec {
-  Timer* t;
+  Timer* m;
 }
 
 TEST_CASE("[Timer]") {
@@ -14,35 +14,64 @@ TEST_CASE("[Timer]") {
     AutoUpdated& au = t; // The “assertion” is that this compiles
   }
 
-  SECTION("The handler function should not be invoked without the timer being started") {
+  SECTION("The handler function invocation should begin immediately") {
     Timer t;
     t.onTrigger(spy.Void);
-    virtuino.flush();
-    REQUIRE(spy.hasBeenCalled() == false);
+    t.run(5);
+    REQUIRE(spy.hasBeenCalled());
   }
 
-  SECTION("If there is no handler function, nothing happens") {
+  SECTION("If no handler function is given, nothing happens") {
     Timer t;
-    t.start(10);
-    REQUIRE_NOTHROW(virtuino.elapseMillis(11));
-    REQUIRE(t.isActive() == false);
+    REQUIRE_NOTHROW(t.run(123));
   }
 
-  SECTION("`isActive` should inform about the timer status") {
+  SECTION("`isActive`: Should inform about whether the timer is active or idling") {
     Timer t;
     REQUIRE(t.isActive() == false);
-    t.start(10);
-    REQUIRE(t.isActive() == true);
-    virtuino.elapseMillis(11);
+    t.run(10);
+    REQUIRE(t.isActive());
+    t.stop();
+    REQUIRE(t.isActive() == false);
+    virtuino.elapseMillis(50);
     REQUIRE(t.isActive() == false);
   }
 
-  SECTION("The handler function should not be invoked before the time is elapsed") {
+  SECTION("`run`: The handler function should be invoked after time has elapsed") {
+    const unsigned long interval = 50;
     Timer t;
     t.onTrigger(spy.Void);
-    t.start(10);
-    virtuino.flush();
-    REQUIRE(spy.hasBeenCalled() == false);
+    t.run(interval);
+    virtuino.elapseMillis(interval);
+    REQUIRE(spy.hasBeenCalled());
+    REQUIRE(spy.counter() == 2);
+  }
+
+  SECTION("`run`: The handler function should be invoked recurringly") {
+    const unsigned long interval = 50;
+    Timer t;
+    t.onTrigger(spy.Void);
+    t.run(interval);
+    virtuino.elapseMillis(3*interval);
+    REQUIRE(spy.hasBeenCalled());
+    REQUIRE(spy.counter() == 4);
+  }
+
+  SECTION("`run`: The handler should not be invoked anymore after the Timer was stopped") {
+    const unsigned long interval = 50;
+    Timer t;
+    t.onTrigger(spy.Void);
+    t.run(interval);
+    virtuino.elapseMillis(3*interval);
+    t.stop();
+    virtuino.elapseMillis(3*interval);
+    REQUIRE(spy.counter() == 4);
+  }
+
+  SECTION("`runOnce`: The handler should be invoked once after the time has elapsed") {
+    Timer t;
+    t.onTrigger(spy.Void);
+    t.runOnce(10);
     virtuino.elapseMillis(3);
     REQUIRE(spy.hasBeenCalled() == false);
     virtuino.elapseMillis(3);
@@ -53,51 +82,52 @@ TEST_CASE("[Timer]") {
     REQUIRE(spy.hasBeenCalled());
   }
 
-  SECTION("The handler should only be invoked once after the time has elapsed") {
+  SECTION("`runOnce`: The handler should only be invoked once") {
     Timer t;
     t.onTrigger(spy.Void);
-    t.start(1);
-    virtuino.elapseMillis(3);
+    t.runOnce(10);
+    virtuino.elapseMillis(50);
     REQUIRE(spy.counter() == 1);
   }
 
-  SECTION("The timer can be cancelled") {
+  SECTION("`runOnce`: It can be cancelled") {
     Timer t;
     t.onTrigger(spy.Void);
-    t.start(10);
+    t.runOnce(10);
     virtuino.elapseMillis(3);
-    t.cancel();
+    t.stop();
     REQUIRE(t.isActive() == false);
     virtuino.elapseMillis(50);
     REQUIRE(spy.hasBeenCalled() == false);
   }
 
-  SECTION("Calling `start()` or `start(long)` restarts the timer") {
+  SECTION("`runOnce`: Calling `runOnce` again restarts the timer from that point in time") {
     Timer t;
     t.onTrigger(spy.Void);
-    t.start(10);
+    t.runOnce(10);
     virtuino.elapseMillis(9);
-    t.start(20);
+    t.runOnce(20);
     virtuino.elapseMillis(19);
-    t.start(30);
+    t.runOnce(30);
     virtuino.elapseMillis(29);
     REQUIRE(spy.hasBeenCalled() == false);
     virtuino.elapseMillis(2);
     REQUIRE(spy.hasBeenCalled());
   }
 
-  SECTION("Timer can be restarted from within callback", "[Timer]") {
+  SECTION("`once`: It can be restarted from within callback") {
     // Cannot capture local object in `onTrigger` callback, hence the workaround
     // with a global pointer
     struct TimerSpecRAII {
-      TimerSpecRAII() { TimerSpec::t = new Timer(); }
-      ~TimerSpecRAII() { delete TimerSpec::t; }
-    } tsr;
-    TimerSpec::t->onTrigger([](){ TimerSpec::t->start(5); });
-    TimerSpec::t->start(5);
+      TimerSpecRAII() { TimerSpec::m = new Timer(); }
+      ~TimerSpecRAII() { delete TimerSpec::m; }
+    } msr;
+    TimerSpec::m->onTrigger([](){ TimerSpec::m->runOnce(5); });
+    TimerSpec::m->runOnce(5);
     virtuino.elapseMillis(6);
-    REQUIRE(TimerSpec::t->isActive());
+    REQUIRE(TimerSpec::m->isActive());
     virtuino.elapseMillis(6);
-    REQUIRE(TimerSpec::t->isActive());
+    REQUIRE(TimerSpec::m->isActive());
   }
+
 }

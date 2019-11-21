@@ -10,7 +10,6 @@
 #include "DigitalOutput.spec.cpp"
 #include "Observer.spec.cpp"
 #include "Timer.spec.cpp"
-#include "Metronome.spec.cpp"
 #include "Loop.spec.cpp"
 
 void onSetup() {}

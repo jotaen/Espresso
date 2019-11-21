@@ -5,12 +5,12 @@
 Timer timer;
 
 Test test = Test("Timer")
-    .sizeOf<Timer>(11)
-    .benchmark("update()", 2.77*m, [](){ timer.update(); });
+    .sizeOf<Timer>(16)
+    .benchmark("update()", 5.34*m, [](){ timer.update(); });
 
 void setup() {
-  timer.onTrigger([](){ timer.start(1); });
-  timer.start(1);
+  timer.onTrigger([](){});
+  timer.run(0);
 }
 
 void loop() {

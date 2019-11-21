@@ -10,7 +10,6 @@
 #include "src/DigitalOutput.h"
 #include "src/Observer.h"
 #include "src/Timer.h"
-#include "src/Metronome.h"
 #include "src/Loop.h"
 #include "src/LoopBenchmark.h"
 
