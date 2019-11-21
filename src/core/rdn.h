@@ -35,14 +35,14 @@ namespace rdn {
   volatile uint8_t* setupDigitalInputPin(uint8_t pin, uint8_t bit, uint8_t mode) {
     uint8_t port = digitalPinToPort(pin);
     rdn::pinModeUnchecked(bit, port, mode);
-    _BLACKLISTED_digitalRead_(pin); // only way of ensuring PWM is turned off
+    digitalRead(pin); // only way of ensuring PWM is turned off
     return portInputRegister(port);
   }
 
   volatile uint8_t* setupDigitalOutputPin(uint8_t pin, uint8_t bit, uint8_t mode) {
     uint8_t port = digitalPinToPort(pin);
     rdn::pinModeUnchecked(bit, port, mode);
-    _BLACKLISTED_digitalWrite_(pin, 0); // only way of ensuring PWM is turned off
+    digitalWrite(pin, 0); // only way of ensuring PWM is turned off
     return portOutputRegister(port);
   }
 
