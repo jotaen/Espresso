@@ -6,16 +6,15 @@
 
 class Observer: public AutoUpdated {
 public:
-  Observer(fn::Predicate p)
-  : predicate(p)
-  {
-    this->flags_[LAST_STATE] = this->predicate();
-  }
-
   enum RepeatMode {
     ONCE = false,
     WHILE = true
   };
+
+  void observe(fn::Predicate p) {
+    this->predicate_ = p;
+    this->flags_[LAST_STATE] = this->predicate_();
+  }
 
   void onTrue(fn::Handler h, RepeatMode mode = ONCE) {
     this->onTrue_ = h;
@@ -40,10 +39,10 @@ public:
   }
 
   void update() override {
-    if (!this->flags_[ACTIVE]) {
+    if (!this->flags_[ACTIVE] || this->predicate_ == 0) {
       return;
     }
-    const bool isTrue = this->predicate();
+    const bool isTrue = this->predicate_();
     const bool hasStateChanged = this->flags_[LAST_STATE] != isTrue;
     const bool isOnceMode = (this->flags_[isTrue ? ONTRUE_MODE : ONFALSE_MODE] == ONCE);
     if (!hasStateChanged && isOnceMode) {
@@ -56,7 +55,7 @@ public:
 protected:
   enum Flags { ACTIVE, LAST_STATE, ONTRUE_MODE, ONFALSE_MODE };
   bool flags_[4] = {true, false, ONCE, ONCE};
-  const fn::Predicate predicate;
+  fn::Predicate predicate_ = 0;
   fn::Handler onTrue_ = 0;
   fn::Handler onFalse_ = 0;
 };
