@@ -1,5 +1,3 @@
-#include "Arduino.h"
-
 typedef std::string String;
 #define String(x) std::to_string(x)
 

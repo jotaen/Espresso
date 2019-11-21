@@ -9,7 +9,7 @@
 
 #include "Arduino.h"
 #include "Virtuino.cpp"
-#include "rdn.h"
-#include "ArduinoFixtures.h"
+#include "rdn.cpp"
+#include "ArduinoFixtures.cpp"
 
 #endif
