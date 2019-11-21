@@ -27,6 +27,10 @@ public:
     return this->flags_[ACTIVE];
   }
 
+  unsigned long interval() {
+    return this->interval_;
+  }
+
   void update() override {
     if (!this->flags_[ACTIVE] || millis() < this->nextTrigger_) {
       return;

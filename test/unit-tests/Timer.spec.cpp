@@ -130,4 +130,13 @@ TEST_CASE("[Timer]") {
     REQUIRE(TimerSpec::m->isActive());
   }
 
+  SECTION("`interval` returns current interval") {
+    Timer t;
+    REQUIRE(t.interval() == 0);
+    t.run(10);
+    REQUIRE(t.interval() == 10);
+    t.runOnce(20);
+    REQUIRE(t.interval() == 20);
+  }
+
 }
