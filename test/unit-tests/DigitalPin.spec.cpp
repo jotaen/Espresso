@@ -1,8 +1,4 @@
-#define CATCH_CONFIG_MAIN
-#include <catch.hpp>
-#include <Virtuino.h>
-#include "DigitalPin.h"
-#include "../util/CallSpy.h"
+#include "../../src/core/DigitalPin.h"
 
 class DigitalPin_: public DigitalPin {
 public:

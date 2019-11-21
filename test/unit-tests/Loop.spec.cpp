@@ -1,8 +1,4 @@
-#define CATCH_CONFIG_MAIN
-#include <catch.hpp>
-#include <Virtuino.h>
-#include "Loop.h"
-#include "util/CallSpy.h"
+#include "../../src/Loop.h"
 
 TEST_CASE("[Loop]") {
 

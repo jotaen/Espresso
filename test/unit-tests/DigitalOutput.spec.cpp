@@ -1,7 +1,4 @@
-#define CATCH_CONFIG_MAIN
-#include <catch.hpp>
-#include <Virtuino.h>
-#include "DigitalOutput.h"
+#include "../../src/DigitalOutput.h"
 
 TEST_CASE("[DigitalOutput]") {
 

@@ -2,7 +2,7 @@
 #define __ESPRESSO_OBSERVER_H__
 
 #include "core/AutoUpdated.h"
-#include "util/fn.h"
+#include "core/fn.h"
 
 class Observer: public AutoUpdated {
 public:

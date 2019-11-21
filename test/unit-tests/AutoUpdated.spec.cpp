@@ -1,8 +1,4 @@
-#define CATCH_CONFIG_MAIN
-#include <catch.hpp>
-#include <Virtuino.h>
-#include "AutoUpdated.h"
-#include "../util/CallSpy.h"
+#include "../../src/core/AutoUpdated.h"
 
 struct AutoUpdated_: public AutoUpdated {
   AutoUpdated* getNext() { return this->next; }

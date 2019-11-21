@@ -2,7 +2,7 @@
 #define __ESPRESSO_TIMER_H__
 
 #include "core/AutoUpdated.h"
-#include "util/fn.h"
+#include "core/fn.h"
 
 class Timer: public AutoUpdated {
 public:

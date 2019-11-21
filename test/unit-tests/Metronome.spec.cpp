@@ -1,8 +1,4 @@
-#define CATCH_CONFIG_MAIN
-#include <catch.hpp>
-#include <Virtuino.h>
-#include "Metronome.h"
-#include "util/CallSpy.h"
+#include "../../src/Metronome.h"
 
 TEST_CASE("[Metronome]") {
 
