@@ -13,6 +13,8 @@ namespace rdn {
   volatile uint8_t* setupDigitalOutputPin(uint8_t, uint8_t, uint8_t);
   void digitalWriteUnchecked(uint8_t, volatile uint8_t*, uint8_t);
   int digitalReadUnchecked(uint8_t, volatile uint8_t*);
+  void analogReadInit(uint8_t);
+  int analogReadTryObtain();
 }
 
 typedef std::string String;
@@ -63,6 +65,11 @@ public:
     return digitalOutputs_[pin];
   }
 
+  void setAnalogInput(uint8_t pin, int val) {
+    analogInputs_[pin] = val;
+    flush();
+  }
+
 private:
   friend unsigned long millis(void);
   friend int digitalRead(uint8_t);
@@ -71,17 +78,25 @@ private:
   friend volatile uint8_t* rdn::setupDigitalOutputPin(uint8_t, uint8_t, uint8_t);
   friend void rdn::digitalWriteUnchecked(uint8_t, volatile uint8_t*, uint8_t);
   friend int rdn::digitalReadUnchecked(uint8_t, volatile uint8_t*);
+  friend void rdn::analogReadInit(uint8_t);
+  friend int rdn::analogReadTryObtain();
 
   static unsigned long millis_;
   static std::map<uint8_t, uint8_t> pinModes_;
   static std::map<uint8_t, int> digitalInputs_;
   static std::map<uint8_t, int> digitalOutputs_;
+  static std::map<uint8_t, int> analogInputs_;
+  static unsigned long adcFinished_;
+  static int adcValue_;
 };
 
 unsigned long Virtuino::millis_ = 0;
 std::map<uint8_t, uint8_t> Virtuino::pinModes_;
 std::map<uint8_t, int> Virtuino::digitalInputs_;
 std::map<uint8_t, int> Virtuino::digitalOutputs_;
+std::map<uint8_t, int> Virtuino::analogInputs_;
+unsigned long Virtuino::adcFinished_ = 0;
+int Virtuino::adcValue_ = -1;
 
 #include "rdn.h"
 
@@ -98,6 +113,10 @@ void digitalWrite(uint8_t pin, uint8_t val) {
 }
 
 uint8_t digitalPinToBitMask(uint8_t pin) {
+  return pin;
+}
+
+uint8_t analogPinToChannel(uint8_t pin) {
   return pin;
 }
 

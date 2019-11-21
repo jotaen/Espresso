@@ -27,6 +27,18 @@ namespace rdn {
     return Virtuino::digitalInputs_[bit];
   }
 
+  void analogReadInit(uint8_t channel) {
+    Virtuino::adcFinished_ = millis() + 1;
+    Virtuino::adcValue_ = Virtuino::analogInputs_[channel];
+  }
+
+  int analogReadTryObtain() {
+    if (millis() < Virtuino::adcFinished_) {
+      return -1;
+    }
+    return Virtuino::adcValue_;
+  }
+
 }
 
 #endif
