@@ -27,8 +27,8 @@ public:
     if (!this->flags_[ACTIVE] || millis() < this->trigger_) {
       return;
     }
-    fn::invoke(this->handler_);
     this->flags_[ACTIVE] = false;
+    fn::invoke(this->handler_);
   }
 
 protected:

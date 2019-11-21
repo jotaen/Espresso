@@ -34,6 +34,10 @@ public:
 
   virtual void update() = 0;
 
+  static AutoUpdated* getRoot() {
+    return root;
+  }
+
 protected:
   friend void loop();
   friend void Virtuino::clear();

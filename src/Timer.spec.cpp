@@ -4,6 +4,10 @@
 #include "Timer.h"
 #include "util/callspy.h"
 
+namespace TimerSpec {
+  Timer* t;
+}
+
 TEST_CASE("[Timer]") {
 
   callspy::reset();
@@ -84,5 +88,20 @@ TEST_CASE("[Timer]") {
     REQUIRE(callspy::hasBeenCalled() == false);
     Virtuino::elapseMillis(2);
     REQUIRE(callspy::hasBeenCalled());
+  }
+
+  SECTION("Timer can be restarted from within callback", "[Timer]") {
+    // Cannot capture local object in `onTrigger` callback, hence the workaround
+    // with a global pointer
+    struct TimerSpecRAII {
+      TimerSpecRAII() { TimerSpec::t = new Timer(); }
+      ~TimerSpecRAII() { delete TimerSpec::t; }
+    } tsr;
+    TimerSpec::t->onTrigger([](){ TimerSpec::t->start(5); });
+    TimerSpec::t->start(5);
+    Virtuino::elapseMillis(6);
+    REQUIRE(TimerSpec::t->isActive());
+    Virtuino::elapseMillis(6);
+    REQUIRE(TimerSpec::t->isActive());
   }
 }

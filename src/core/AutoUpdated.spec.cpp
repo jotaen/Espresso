@@ -44,8 +44,22 @@ TEST_CASE("[AutoUpdated]") {
     {
       AutoUpdated_ au1 = AutoUpdated_();
     }
-    AutoUpdated_ au2 = AutoUpdated_();
-    REQUIRE(au2.getNext() == &au2);
+    REQUIRE(AutoUpdated::getRoot() == 0);
+  }
+
+  SECTION("The root AU-object gets properly set according to AU lifecycles") {
+    Virtuino::flush();
+    REQUIRE(AutoUpdated::getRoot() == 0);
+    {
+      AutoUpdated_ au1 = AutoUpdated_();
+      Virtuino::flush();
+      REQUIRE(AutoUpdated::getRoot() == &au1);
+      AutoUpdated_ au2 = AutoUpdated_();
+      Virtuino::flush();
+      REQUIRE(AutoUpdated::getRoot() == &au1);
+    }
+    Virtuino::flush();
+    REQUIRE(AutoUpdated::getRoot() == 0);
   }
 
 }
