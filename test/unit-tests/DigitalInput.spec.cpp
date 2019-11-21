@@ -19,7 +19,7 @@ TEST_CASE("[DigitalInput]") {
     REQUIRE(virtuino.checkPinMode(di.pin()) == INPUT_PULLUP);
   }
 
-  SECTION("It throws when pin mode is invalid") {
+  SECTION("It errors when pin mode is invalid") {
     REQUIRE_THROWS(DigitalInput(8, 172)); // `172` is never valid for mode
   }
 

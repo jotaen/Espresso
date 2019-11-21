@@ -5,6 +5,7 @@ class DigitalOutput: public DigitalPin {
 public:
   DigitalOutput(uint8_t pin)
   : DigitalPin(pin)
+  , bit_(digitalPinToBitMask(pin))
   {
     this->outReg_ = rdn::setupDigitalOutputPin(this->pin_, this->bit_, OUTPUT);
   }
@@ -32,6 +33,7 @@ public:
 
 protected:
   volatile uint8_t* outReg_;
+  const uint8_t bit_;
   bool value_ = 0;
 };
 

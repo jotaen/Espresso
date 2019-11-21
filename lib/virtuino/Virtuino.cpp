@@ -2,9 +2,11 @@ class Virtuino {
 public:
   Virtuino() {
     millis_ = 0;
+    pinModes_.clear();
     digitalOutputs_.clear();
     digitalInputs_.clear();
     analogInputs_.clear();
+    analogOutputs_.clear();
     adcFinished_ = 0-1;
     adcValue_ = 0;
     setup();
@@ -43,12 +45,16 @@ public:
     if (checkPinMode(pin) != OUTPUT) {
       throw std::invalid_argument("`pin`");
     }
-    return digitalOutputs_[pin];
+    return digitalOutputs_.at(pin); // throws if key not set
   }
 
   void setAnalogInput(uint8_t pin, int val) {
     analogInputs_[pin] = val;
     flush();
+  }
+
+  int checkAnalogOutput(uint8_t pin) {
+    return analogOutputs_.at(pin); // throws if key not set
   }
 
 private:
@@ -62,6 +68,7 @@ private:
   static std::map<uint8_t, int> digitalInputs_;
   static std::map<uint8_t, int> digitalOutputs_;
   static std::map<uint8_t, int> analogInputs_;
+  static std::map<uint8_t, int> analogOutputs_;
   static unsigned long adcFinished_;
   static int adcValue_;
 };
@@ -71,5 +78,6 @@ std::map<uint8_t, uint8_t> Virtuino::pinModes_;
 std::map<uint8_t, int> Virtuino::digitalInputs_;
 std::map<uint8_t, int> Virtuino::digitalOutputs_;
 std::map<uint8_t, int> Virtuino::analogInputs_;
+std::map<uint8_t, int> Virtuino::analogOutputs_;
 unsigned long Virtuino::adcFinished_ = 0-1;
 int Virtuino::adcValue_ = -1;

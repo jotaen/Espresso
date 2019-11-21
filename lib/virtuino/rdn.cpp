@@ -37,6 +37,14 @@ struct rdn {
     return Virtuino::adcValue_;
   }
 
+  static void setupAnalogOutputPin(uint8_t pin) {
+    Virtuino::pinModes_[pin] = OUTPUT;
+  }
+
+  static void analogWriteUnchecked(uint8_t timer, int val) {
+    Virtuino::analogOutputs_[~timer] = val;
+  }
+
 };
 
 #endif

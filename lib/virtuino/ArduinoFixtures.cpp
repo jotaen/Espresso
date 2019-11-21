@@ -21,6 +21,10 @@ uint8_t analogPinToChannel(uint8_t pin) {
   return ~pin;
 }
 
+uint8_t digitalPinToTimer(uint8_t pin) {
+  return ~pin;
+}
+
 struct SoftwareSerial {
   static const int DEC = 10;
 
