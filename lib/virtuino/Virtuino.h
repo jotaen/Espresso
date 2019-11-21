@@ -113,11 +113,11 @@ void digitalWrite(uint8_t pin, uint8_t val) {
 }
 
 uint8_t digitalPinToBitMask(uint8_t pin) {
-  return pin;
+  return ~pin;
 }
 
 uint8_t analogPinToChannel(uint8_t pin) {
-  return pin;
+  return ~pin;
 }
 
 struct SoftwareSerial {
