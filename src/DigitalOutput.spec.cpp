@@ -2,11 +2,10 @@
 #include <catch.hpp>
 #include <Virtuino.h>
 #include "DigitalOutput.h"
-#include "util/callspy.h"
+#include "util/CallSpy.h"
 
 TEST_CASE("[DigitalOutput]") {
 
-  callspy::reset();
   Virtuino::clear();
 
   SECTION("A DigitalOutput is a DigitalPin") {

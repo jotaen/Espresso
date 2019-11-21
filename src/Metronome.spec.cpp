@@ -2,11 +2,11 @@
 #include <catch.hpp>
 #include <Virtuino.h>
 #include "Metronome.h"
-#include "util/callspy.h"
+#include "util/CallSpy.h"
 
 TEST_CASE("[Metronome]") {
 
-  callspy::reset();
+  CallSpy spy;
   Virtuino::clear();
 
   SECTION("A Metronome is AutoUpdated") {
@@ -16,9 +16,9 @@ TEST_CASE("[Metronome]") {
 
   SECTION("The handler function invocation should begin immediately") {
     Metronome m;
-    m.onTrigger(callspy::Void);
+    m.onTrigger(spy.Void);
     m.run(5);
-    REQUIRE(callspy::hasBeenCalled());
+    REQUIRE(spy.hasBeenCalled());
   }
 
   SECTION("If no handler function is given, nothing happens") {
@@ -40,32 +40,32 @@ TEST_CASE("[Metronome]") {
   SECTION("`run`: The handler function should be invoked after time has elapsed") {
     const unsigned long interval = 50;
     Metronome m;
-    m.onTrigger(callspy::Void);
+    m.onTrigger(spy.Void);
     m.run(interval);
     Virtuino::elapseMillis(interval);
-    REQUIRE(callspy::hasBeenCalled());
-    REQUIRE(callspy::counter() == 2);
+    REQUIRE(spy.hasBeenCalled());
+    REQUIRE(spy.counter() == 2);
   }
 
   SECTION("`run`: The handler function should be invoked recurringly") {
     const unsigned long interval = 50;
     Metronome m;
-    m.onTrigger(callspy::Void);
+    m.onTrigger(spy.Void);
     m.run(interval);
     Virtuino::elapseMillis(3*interval);
-    REQUIRE(callspy::hasBeenCalled());
-    REQUIRE(callspy::counter() == 4);
+    REQUIRE(spy.hasBeenCalled());
+    REQUIRE(spy.counter() == 4);
   }
 
   SECTION("`run`: The handler should not be invoked anymore after the metronome was stopped") {
     const unsigned long interval = 50;
     Metronome m;
-    m.onTrigger(callspy::Void);
+    m.onTrigger(spy.Void);
     m.run(interval);
     Virtuino::elapseMillis(3*interval);
     m.stop();
     Virtuino::elapseMillis(3*interval);
-    REQUIRE(callspy::counter() == 4);
+    REQUIRE(spy.counter() == 4);
   }
 
 }

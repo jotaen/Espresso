@@ -2,7 +2,7 @@
 #include <catch.hpp>
 #include <Virtuino.h>
 #include "DigitalPin.h"
-#include "../util/callspy.h"
+#include "../util/CallSpy.h"
 
 class DigitalPin_: public DigitalPin {
 public:

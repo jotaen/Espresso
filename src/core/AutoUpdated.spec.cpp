@@ -2,7 +2,7 @@
 #include <catch.hpp>
 #include <Virtuino.h>
 #include "AutoUpdated.h"
-#include "../util/callspy.h"
+#include "../util/CallSpy.h"
 
 struct AutoUpdated_: public AutoUpdated {
   AutoUpdated* getNext() { return this->next; }
