@@ -11,9 +11,4 @@
 #include "../src/Metronome.spec.cpp"
 #include "../src/Loop.spec.cpp"
 
-void Virtuino::clear() {
-  AutoUpdated::root = 0;
-  Virtuino::start();
-}
-
 void onSetup() {}

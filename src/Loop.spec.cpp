@@ -7,7 +7,7 @@
 TEST_CASE("[Loop]") {
 
   CallSpy spy;
-  Virtuino::clear();
+  Virtuino virtuino;
 
   SECTION("A Loop is AutoUpdated") {
     Loop l;
@@ -17,13 +17,13 @@ TEST_CASE("[Loop]") {
   SECTION("The handler function gets called without further ado") {
     Loop l;
     l.onTrigger(spy.Void);
-    Virtuino::flush();
+    virtuino.flush();
     REQUIRE(spy.hasBeenCalled());
   }
 
   SECTION("If no handler function is given, nothing happens") {
     Loop l;
-    REQUIRE_NOTHROW(Virtuino::flush());
+    REQUIRE_NOTHROW(virtuino.flush());
   }
 
   SECTION("Loop can be enabled/disabled") {
@@ -32,11 +32,11 @@ TEST_CASE("[Loop]") {
     l.onTrigger(spy.Void);
     l.disable();
     REQUIRE(l.isActive() == false);
-    Virtuino::flush();
+    virtuino.flush();
     REQUIRE(spy.hasBeenCalled() == false);
     l.enable();
     REQUIRE(l.isActive() == true);
-    Virtuino::flush();
+    virtuino.flush();
     REQUIRE(spy.hasBeenCalled());
   }
 }

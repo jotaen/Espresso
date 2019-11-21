@@ -12,7 +12,7 @@ public:
 
 TEST_CASE("[DigitalPin]") {
 
-  Virtuino::clear();
+  Virtuino virtuino;
 
   SECTION("It remembers its pin number") {
     DigitalPin_ dp(2);

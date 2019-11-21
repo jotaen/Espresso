@@ -10,21 +10,21 @@ namespace rdn {
   }
 
   volatile uint8_t* setupDigitalInputPin(uint8_t pin, uint8_t bit, uint8_t mode) {
-    Virtuino::__pinModes[bit] = mode;
+    Virtuino::pinModes_[bit] = mode;
     return 0;
   }
 
   volatile uint8_t* setupDigitalOutputPin(uint8_t pin, uint8_t bit, uint8_t mode) {
-    Virtuino::__pinModes[bit] = mode;
+    Virtuino::pinModes_[bit] = mode;
     return 0;
   }
 
-  inline void digitalWriteUnchecked(uint8_t bit, volatile uint8_t* out, uint8_t val) {
-    Virtuino::__digitalOutputs[bit] = val;
+  void digitalWriteUnchecked(uint8_t bit, volatile uint8_t* out, uint8_t val) {
+    Virtuino::digitalOutputs_[bit] = val;
   }
 
-  inline int digitalReadUnchecked(uint8_t bit, volatile uint8_t* portInputRegister) {
-    return Virtuino::__digitalInputs[bit];
+  int digitalReadUnchecked(uint8_t bit, volatile uint8_t* portInputRegister) {
+    return Virtuino::digitalInputs_[bit];
   }
 
 }

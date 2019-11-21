@@ -2,11 +2,10 @@
 #include <catch.hpp>
 #include <Virtuino.h>
 #include "DigitalOutput.h"
-#include "util/CallSpy.h"
 
 TEST_CASE("[DigitalOutput]") {
 
-  Virtuino::clear();
+  Virtuino virtuino;
 
   SECTION("A DigitalOutput is a DigitalPin") {
     DigitalOutput dt(1);
@@ -15,7 +14,7 @@ TEST_CASE("[DigitalOutput]") {
 
   SECTION("It sets the pin mode correctly") {
     DigitalOutput dt(12);
-    REQUIRE(Virtuino::checkPinMode(dt.pin()) == OUTPUT);
+    REQUIRE(virtuino.checkPinMode(dt.pin()) == OUTPUT);
   }
 
   SECTION("By default the value is `LOW`") {
@@ -31,7 +30,7 @@ TEST_CASE("[DigitalOutput]") {
     REQUIRE(dt.value() == HIGH);
     REQUIRE(!dt.isLow());
     REQUIRE(dt.isHigh());
-    REQUIRE(Virtuino::checkDigitalOutput(dt.pin()) == HIGH);
+    REQUIRE(virtuino.checkDigitalOutput(dt.pin()) == HIGH);
   }
 
   SECTION("`write` sets the value to LOW") {
@@ -41,7 +40,7 @@ TEST_CASE("[DigitalOutput]") {
     REQUIRE(dt.value() == LOW);
     REQUIRE(dt.isLow());
     REQUIRE(!dt.isHigh());
-    REQUIRE(Virtuino::checkDigitalOutput(dt.pin()) == LOW);
+    REQUIRE(virtuino.checkDigitalOutput(dt.pin()) == LOW);
   }
 
   SECTION("`toggle` flips the value") {

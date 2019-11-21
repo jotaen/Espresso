@@ -7,7 +7,7 @@
 TEST_CASE("[Metronome]") {
 
   CallSpy spy;
-  Virtuino::clear();
+  Virtuino virtuino;
 
   SECTION("A Metronome is AutoUpdated") {
     Metronome m;
@@ -33,7 +33,7 @@ TEST_CASE("[Metronome]") {
     REQUIRE(m.isActive());
     m.stop();
     REQUIRE(m.isActive() == false);
-    Virtuino::elapseMillis(50);
+    virtuino.elapseMillis(50);
     REQUIRE(m.isActive() == false);
   }
 
@@ -42,7 +42,7 @@ TEST_CASE("[Metronome]") {
     Metronome m;
     m.onTrigger(spy.Void);
     m.run(interval);
-    Virtuino::elapseMillis(interval);
+    virtuino.elapseMillis(interval);
     REQUIRE(spy.hasBeenCalled());
     REQUIRE(spy.counter() == 2);
   }
@@ -52,7 +52,7 @@ TEST_CASE("[Metronome]") {
     Metronome m;
     m.onTrigger(spy.Void);
     m.run(interval);
-    Virtuino::elapseMillis(3*interval);
+    virtuino.elapseMillis(3*interval);
     REQUIRE(spy.hasBeenCalled());
     REQUIRE(spy.counter() == 4);
   }
@@ -62,9 +62,9 @@ TEST_CASE("[Metronome]") {
     Metronome m;
     m.onTrigger(spy.Void);
     m.run(interval);
-    Virtuino::elapseMillis(3*interval);
+    virtuino.elapseMillis(3*interval);
     m.stop();
-    Virtuino::elapseMillis(3*interval);
+    virtuino.elapseMillis(3*interval);
     REQUIRE(spy.counter() == 4);
   }
 

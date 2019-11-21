@@ -2,11 +2,10 @@
 #include <catch.hpp>
 #include <Virtuino.h>
 #include "DigitalInput.h"
-#include "util/CallSpy.h"
 
 TEST_CASE("[DigitalInput]") {
 
-  Virtuino::clear();
+  Virtuino virtuino;
 
   SECTION("A DigitalInput is a DigitalPin") {
     DigitalInput di(1);
@@ -15,12 +14,12 @@ TEST_CASE("[DigitalInput]") {
 
   SECTION("It defaults the pin mode to `INPUT`") {
     DigitalInput di(12);
-    REQUIRE(Virtuino::checkPinMode(di.pin()) == INPUT);
+    REQUIRE(virtuino.checkPinMode(di.pin()) == INPUT);
   }
 
   SECTION("The pin mode can optionally be set to `INPUT_PULLUP` as well") {
     DigitalInput di(5, INPUT_PULLUP);
-    REQUIRE(Virtuino::checkPinMode(di.pin()) == INPUT_PULLUP);
+    REQUIRE(virtuino.checkPinMode(di.pin()) == INPUT_PULLUP);
   }
 
   SECTION("It throws when pin mode is invalid") {
@@ -36,7 +35,7 @@ TEST_CASE("[DigitalInput]") {
 
   SECTION("The value should be `high` according to pin") {
     DigitalInput di(7);
-    Virtuino::setDigitalInput(di.pin(), HIGH);
+    virtuino.setDigitalInput(di.pin(), HIGH);
     REQUIRE(di.isHigh());
     REQUIRE(!di.isLow());
     REQUIRE(di.value() == HIGH);
@@ -45,7 +44,7 @@ TEST_CASE("[DigitalInput]") {
   SECTION("They behave independently from one another") {
     DigitalInput di1(6);
     DigitalInput di2(11);
-    Virtuino::setDigitalInput(di2.pin(), HIGH);
+    virtuino.setDigitalInput(di2.pin(), HIGH);
     REQUIRE(di1.isLow());
     REQUIRE(di2.isHigh());
   }

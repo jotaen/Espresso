@@ -11,7 +11,7 @@ namespace TimerSpec {
 TEST_CASE("[Timer]") {
 
   CallSpy spy;
-  Virtuino::clear();
+  Virtuino virtuino;
 
   SECTION("A Timer is AutoUpdated") {
     Timer t;
@@ -21,14 +21,14 @@ TEST_CASE("[Timer]") {
   SECTION("The handler function should not be invoked without the timer being started") {
     Timer t;
     t.onTrigger(spy.Void);
-    Virtuino::flush();
+    virtuino.flush();
     REQUIRE(spy.hasBeenCalled() == false);
   }
 
   SECTION("If there is no handler function, nothing happens") {
     Timer t;
     t.start(10);
-    REQUIRE_NOTHROW(Virtuino::elapseMillis(11));
+    REQUIRE_NOTHROW(virtuino.elapseMillis(11));
     REQUIRE(t.isActive() == false);
   }
 
@@ -37,7 +37,7 @@ TEST_CASE("[Timer]") {
     REQUIRE(t.isActive() == false);
     t.start(10);
     REQUIRE(t.isActive() == true);
-    Virtuino::elapseMillis(11);
+    virtuino.elapseMillis(11);
     REQUIRE(t.isActive() == false);
   }
 
@@ -45,15 +45,15 @@ TEST_CASE("[Timer]") {
     Timer t;
     t.onTrigger(spy.Void);
     t.start(10);
-    Virtuino::flush();
+    virtuino.flush();
     REQUIRE(spy.hasBeenCalled() == false);
-    Virtuino::elapseMillis(3);
+    virtuino.elapseMillis(3);
     REQUIRE(spy.hasBeenCalled() == false);
-    Virtuino::elapseMillis(3);
+    virtuino.elapseMillis(3);
     REQUIRE(spy.hasBeenCalled() == false);
-    Virtuino::elapseMillis(3);
+    virtuino.elapseMillis(3);
     REQUIRE(spy.hasBeenCalled() == false);
-    Virtuino::elapseMillis(1);
+    virtuino.elapseMillis(1);
     REQUIRE(spy.hasBeenCalled());
   }
 
@@ -61,7 +61,7 @@ TEST_CASE("[Timer]") {
     Timer t;
     t.onTrigger(spy.Void);
     t.start(1);
-    Virtuino::elapseMillis(3);
+    virtuino.elapseMillis(3);
     REQUIRE(spy.counter() == 1);
   }
 
@@ -69,10 +69,10 @@ TEST_CASE("[Timer]") {
     Timer t;
     t.onTrigger(spy.Void);
     t.start(10);
-    Virtuino::elapseMillis(3);
+    virtuino.elapseMillis(3);
     t.cancel();
     REQUIRE(t.isActive() == false);
-    Virtuino::elapseMillis(50);
+    virtuino.elapseMillis(50);
     REQUIRE(spy.hasBeenCalled() == false);
   }
 
@@ -80,13 +80,13 @@ TEST_CASE("[Timer]") {
     Timer t;
     t.onTrigger(spy.Void);
     t.start(10);
-    Virtuino::elapseMillis(9);
+    virtuino.elapseMillis(9);
     t.start(20);
-    Virtuino::elapseMillis(19);
+    virtuino.elapseMillis(19);
     t.start(30);
-    Virtuino::elapseMillis(29);
+    virtuino.elapseMillis(29);
     REQUIRE(spy.hasBeenCalled() == false);
-    Virtuino::elapseMillis(2);
+    virtuino.elapseMillis(2);
     REQUIRE(spy.hasBeenCalled());
   }
 
@@ -99,9 +99,9 @@ TEST_CASE("[Timer]") {
     } tsr;
     TimerSpec::t->onTrigger([](){ TimerSpec::t->start(5); });
     TimerSpec::t->start(5);
-    Virtuino::elapseMillis(6);
+    virtuino.elapseMillis(6);
     REQUIRE(TimerSpec::t->isActive());
-    Virtuino::elapseMillis(6);
+    virtuino.elapseMillis(6);
     REQUIRE(TimerSpec::t->isActive());
   }
 }

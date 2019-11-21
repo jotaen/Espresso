@@ -1,10 +1,6 @@
 #ifndef __ESPRESSO_AUTOUPDATED_H__
 #define __ESPRESSO_AUTOUPDATED_H__
 
-namespace Virtuino {
-  void clear();
-}
-
 class AutoUpdated {
 public:
   AutoUpdated() {
@@ -40,7 +36,6 @@ public:
 
 protected:
   friend void loop();
-  friend void Virtuino::clear();
 
   static AutoUpdated* root;
   AutoUpdated* next = 0;

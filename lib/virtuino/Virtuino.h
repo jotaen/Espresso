@@ -4,55 +4,55 @@
 #include <iostream>
 #include <map>
 #include <string>
-
 #include <Arduino.h>
 
 #define VIRTUINO
 
+namespace rdn {
+  volatile uint8_t* setupDigitalInputPin(uint8_t, uint8_t, uint8_t);
+  volatile uint8_t* setupDigitalOutputPin(uint8_t, uint8_t, uint8_t);
+  void digitalWriteUnchecked(uint8_t, volatile uint8_t*, uint8_t);
+  int digitalReadUnchecked(uint8_t, volatile uint8_t*);
+}
+
 typedef std::string String;
 #define String(x) std::to_string(x)
 
-namespace Virtuino {
-  unsigned long __millis;
-  std::map<uint8_t, uint8_t> __pinModes;
-  std::map<uint8_t, int> __digitalInputs;
-  std::map<uint8_t, int> __digitalOutputs;
-
-  void start() {
-    __millis = 0;
-    __digitalOutputs.clear();
-    __digitalInputs.clear();
-    ::setup();
+class Virtuino {
+public:
+  Virtuino() {
+    millis_ = 0;
+    digitalOutputs_.clear();
+    digitalInputs_.clear();
+    setup();
   }
 
-  void clear();
-
   void flush() {
-    ::loop();
+    loop();
   }
 
   void elapseMillis(unsigned long m) {
-    const unsigned int target = __millis + m;
-    while(__millis < target) {
-      __millis += 1;
+    const unsigned int target = millis_ + m;
+    while(millis_ < target) {
+      millis_ += 1;
       flush();
     }
   }
 
   void freezeMillis(unsigned long m) {
-    __millis += m;
+    millis_ += m;
     flush();
   }
 
   uint8_t checkPinMode(uint8_t pin) {
-    return __pinModes.at(pin); // throws if key not set
+    return pinModes_.at(pin); // throws if key not set
   }
 
   void setDigitalInput(uint8_t pin, int val) {
     if (checkPinMode(pin) != INPUT) {
       throw std::invalid_argument("`pin`");
     }
-    __digitalInputs[pin] = val;
+    digitalInputs_[pin] = val;
     flush();
   }
 
@@ -60,22 +60,41 @@ namespace Virtuino {
     if (checkPinMode(pin) != OUTPUT) {
       throw std::invalid_argument("`pin`");
     }
-    return __digitalOutputs[pin];
+    return digitalOutputs_[pin];
   }
-}
+
+private:
+  friend unsigned long millis(void);
+  friend int digitalRead(uint8_t);
+  friend void digitalWrite(uint8_t, uint8_t);
+  friend volatile uint8_t* rdn::setupDigitalInputPin(uint8_t, uint8_t, uint8_t);
+  friend volatile uint8_t* rdn::setupDigitalOutputPin(uint8_t, uint8_t, uint8_t);
+  friend void rdn::digitalWriteUnchecked(uint8_t, volatile uint8_t*, uint8_t);
+  friend int rdn::digitalReadUnchecked(uint8_t, volatile uint8_t*);
+
+  static unsigned long millis_;
+  static std::map<uint8_t, uint8_t> pinModes_;
+  static std::map<uint8_t, int> digitalInputs_;
+  static std::map<uint8_t, int> digitalOutputs_;
+};
+
+unsigned long Virtuino::millis_ = 0;
+std::map<uint8_t, uint8_t> Virtuino::pinModes_;
+std::map<uint8_t, int> Virtuino::digitalInputs_;
+std::map<uint8_t, int> Virtuino::digitalOutputs_;
 
 #include "rdn.h"
 
 unsigned long millis(void) {
-  return Virtuino::__millis;
+  return Virtuino::millis_;
 }
 
 int digitalRead(uint8_t pin) {
-    return Virtuino::__digitalInputs[pin];
+    return Virtuino::digitalInputs_[pin];
 }
 
 void digitalWrite(uint8_t pin, uint8_t val) {
-  Virtuino::__digitalOutputs[pin] = val;
+  Virtuino::digitalOutputs_[pin] = val;
 }
 
 uint8_t digitalPinToBitMask(uint8_t pin) {

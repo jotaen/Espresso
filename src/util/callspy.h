@@ -4,7 +4,6 @@
 class CallSpy {
 public:
   CallSpy():Void(Void_) { counter_ = 0; }
-  ~CallSpy() { counter_ = 0; }
 
   bool hasBeenCalled() {
     return counter_ > 0;

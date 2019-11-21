@@ -11,7 +11,7 @@ struct AutoUpdated_: public AutoUpdated {
 
 TEST_CASE("[AutoUpdated]") {
 
-  Virtuino::clear();
+  Virtuino virtuino;
 
   SECTION("A single active AU-object points to itself") {
     AutoUpdated_ au = AutoUpdated_();
@@ -48,17 +48,17 @@ TEST_CASE("[AutoUpdated]") {
   }
 
   SECTION("The root AU-object gets properly set according to AU lifecycles") {
-    Virtuino::flush();
+    virtuino.flush();
     REQUIRE(AutoUpdated::getRoot() == 0);
     {
       AutoUpdated_ au1 = AutoUpdated_();
-      Virtuino::flush();
+      virtuino.flush();
       REQUIRE(AutoUpdated::getRoot() == &au1);
       AutoUpdated_ au2 = AutoUpdated_();
-      Virtuino::flush();
+      virtuino.flush();
       REQUIRE(AutoUpdated::getRoot() == &au1);
     }
-    Virtuino::flush();
+    virtuino.flush();
     REQUIRE(AutoUpdated::getRoot() == 0);
   }
 
