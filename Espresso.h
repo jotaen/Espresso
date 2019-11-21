@@ -16,11 +16,14 @@
 
 void onSetup();
 
-#define pinMode _BLACKLISTED_pinMode_
-#define digitalWrite _BLACKLISTED_digitalWrite_
-#define digitalRead _BLACKLISTED_digitalRead_
+#ifndef ESPRESSO_NOBLACKLISTING
+  #define pinMode _BLACKLISTED_pinMode_
+  #define digitalWrite _BLACKLISTED_digitalWrite_
+  #define digitalRead _BLACKLISTED_digitalRead_
+#endif
 
 #ifndef ESPRESSO_INCLUDES_ONLY
   #include "src/core/main.h"
 #endif
+
 #endif
