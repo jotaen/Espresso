@@ -6,10 +6,11 @@ public:
   AnalogOutput(uint8_t pin)
   : DigitalPin(pin)
   , timer_(digitalPinToTimer(pin))
+  , bit_(digitalPinToBitMask(pin))
   {
     // Warning: The following assertion is not unit-tested
     ASSERT((this->timer_ != NOT_ON_TIMER), "Invalid pin number");
-    rdn::setupAnalogOutputPin(this->pin_);
+    this->outReg_ = rdn::setupDigitalOutputPin(this->pin_, this->bit_);
   }
 
   int value() {
@@ -17,12 +18,14 @@ public:
   }
 
   void write(int val) {
-    rdn::analogWriteUnchecked(this->timer_, val);
+    rdn::analogWriteUnchecked(this->bit_, this->outReg_, this->timer_, val);
     this->value_ = val;
   }
 
 protected:
-  uint8_t timer_;
+  volatile uint8_t* outReg_;
+  const uint8_t bit_;
+  const uint8_t timer_;
   int value_ = 0;
 };
 
