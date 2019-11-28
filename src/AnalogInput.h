@@ -7,7 +7,7 @@ class AnalogInput: public AutoUpdated {
 public:
   AnalogInput(uint8_t pin)
   : pin_(pin)
-  , channel_(analogPinToChannel(pin))
+  , poc_(rdn::analogPinToPoc(pin))
   {}
 
   int value() {
@@ -30,25 +30,30 @@ public:
     }
   }
 
+  int valueBlocking() {
+    do {
+      this->update();
+    } while(adcAcquiredPin != FREE);
+    return this->value_;
+  }
+
 protected:
   inline void startRead() {
-    rdn::analogReadInit(this->channel_);
+    rdn::analogReadInit(this->poc_);
     adcAcquiredPin = this->pin_;
   }
 
   inline void tryReadFromADC() {
-    int newValue = rdn::analogReadTryObtain();
-    if (newValue == IN_PROGRESS) {
+    if (rdn::analogReadInProgress()) {
       return;
     }
-    this->value_ = newValue;
+    this->value_ = rdn::analogReadObtain();
     adcAcquiredPin = FREE;
   }
 
   int value_ = 0;
   uint8_t pin_ = 0;
-  uint8_t channel_ = 0;
-  static const int IN_PROGRESS = -1;
+  uint8_t poc_ = 0;
   static const uint8_t FREE = 255;
   static uint8_t adcAcquiredPin;
 };
