@@ -12,8 +12,8 @@ struct rdn {
     return 0;
   }
 
-  static volatile uint8_t* setupDigitalOutputPin(uint8_t pin, uint8_t bit, uint8_t mode) {
-    Virtuino::pinModes_[~bit] = mode;
+  static volatile uint8_t* setupDigitalOutputPin(uint8_t pin, uint8_t bit) {
+    Virtuino::pinModes_[~bit] = OUTPUT;
     return 0;
   }
 
@@ -25,24 +25,25 @@ struct rdn {
     return Virtuino::digitalInputs_[~bit];
   }
 
-  static void analogReadInit(uint8_t channel) {
+  static void analogReadInit(uint8_t poc) {
     Virtuino::adcFinished_ = millis() + 1;
-    Virtuino::adcValue_ = Virtuino::analogInputs_[~channel];
+    Virtuino::adcValue_ = Virtuino::analogInputs_[poc];
   }
 
-  static int analogReadTryObtain() {
-    if (millis() < Virtuino::adcFinished_) {
-      return -1;
-    }
+  static uint8_t analogPinToPoc(uint8_t pin) {
+    return pin;
+  }
+
+  static bool analogReadInProgress() {
+    return millis() < Virtuino::adcFinished_;
+  }
+
+  static int analogReadObtain() {
     return Virtuino::adcValue_;
   }
 
-  static void setupAnalogOutputPin(uint8_t pin) {
-    Virtuino::pinModes_[pin] = OUTPUT;
-  }
-
-  static void analogWriteUnchecked(uint8_t timer, int val) {
-    Virtuino::analogOutputs_[~timer] = val;
+  static void analogWriteUnchecked(uint8_t bit, volatile uint8_t* out, uint8_t timer, int val) {
+    Virtuino::analogOutputs_[~bit] = val;
   }
 
 };
