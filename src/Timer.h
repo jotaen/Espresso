@@ -10,9 +10,12 @@ public:
     this->handler_ = h;
   }
 
-  void run(unsigned long interval) {
+  enum StartBehaviour { START_NOW, START_DELAYED };
+  void run(unsigned long interval, StartBehaviour sb = START_NOW) {
     this->start(interval, true);
-    fn::invoke(this->handler_);
+    if (sb == START_NOW) {
+      fn::invoke(this->handler_);
+    }
   }
 
   void runOnce(unsigned long delay) {

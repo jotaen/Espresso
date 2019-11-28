@@ -149,4 +149,19 @@ TEST_CASE("[Timer]") {
     REQUIRE(t.interval() == 20);
   }
 
+  SECTION("`interval` adjusts the interval on a running timer after the fact") {
+    Timer t;
+    t.onTrigger(spy.Void);
+    t.runOnce(100);
+    virtuino.elapseMillis(90);
+    t.interval(200);
+    virtuino.elapseMillis(100);
+    t.interval(500);
+    virtuino.elapseMillis(300);
+    REQUIRE(spy.hasBeenCalled() == false);
+    t.interval(1);
+    virtuino.flush();
+    REQUIRE(spy.hasBeenCalled());
+  }
+
 }
