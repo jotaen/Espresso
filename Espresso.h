@@ -8,6 +8,8 @@
 #include "src/logger.h"
 #include "src/DigitalInput.h"
 #include "src/DigitalOutput.h"
+#include "src/AnalogInput.h"
+#include "src/AnalogOutput.h"
 #include "src/Observer.h"
 #include "src/Timer.h"
 #include "src/Loop.h"
