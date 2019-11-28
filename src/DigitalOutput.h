@@ -7,7 +7,7 @@ public:
   : DigitalPin(pin)
   , bit_(digitalPinToBitMask(pin))
   {
-    this->outReg_ = rdn::setupDigitalOutputPin(this->pin_, this->bit_, OUTPUT);
+    this->outReg_ = rdn::setupDigitalOutputPin(this->pin_, this->bit_);
   }
 
   int value() {

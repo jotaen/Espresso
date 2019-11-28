@@ -28,9 +28,9 @@ public:
     return portInputRegister(port);
   }
 
-  static volatile uint8_t* setupDigitalOutputPin(uint8_t pin, uint8_t bit, uint8_t mode) {
+  static volatile uint8_t* setupDigitalOutputPin(uint8_t pin, uint8_t bit) {
     uint8_t port = digitalPinToPort(pin);
-    rdn::pinModeUnchecked(bit, port, mode);
+    rdn::pinModeUnchecked(bit, port, OUTPUT);
     digitalWrite(pin, 0); // only way of ensuring PWM is turned off
     return portOutputRegister(port);
   }
