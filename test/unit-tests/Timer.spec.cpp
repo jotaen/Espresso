@@ -1,7 +1,7 @@
 #include "../../src/Timer.h"
 
 namespace TimerSpec {
-  Timer* m;
+  Timer* t;
 }
 
 TEST_CASE("[Timer]") {
@@ -42,9 +42,19 @@ TEST_CASE("[Timer]") {
     Timer t;
     t.onTrigger(spy.Void);
     t.run(interval);
+    REQUIRE(spy.counter() == 1);
     virtuino.elapseMillis(interval);
-    REQUIRE(spy.hasBeenCalled());
     REQUIRE(spy.counter() == 2);
+  }
+
+  SECTION("`run`: The first, immediate triggering can be spared out") {
+    const unsigned long interval = 50;
+    Timer t;
+    t.onTrigger(spy.Void);
+    t.run(interval, Timer::NEXT_TRIGGER);
+    REQUIRE(spy.hasBeenCalled() == false);
+    virtuino.elapseMillis(interval);
+    REQUIRE(spy.counter() == 1);
   }
 
   SECTION("`run`: The handler function should be invoked recurringly") {
@@ -119,15 +129,15 @@ TEST_CASE("[Timer]") {
     // Cannot capture local object in `onTrigger` callback, hence the workaround
     // with a global pointer
     struct TimerSpecRAII {
-      TimerSpecRAII() { TimerSpec::m = new Timer(); }
-      ~TimerSpecRAII() { delete TimerSpec::m; }
+      TimerSpecRAII() { TimerSpec::t = new Timer(); }
+      ~TimerSpecRAII() { delete TimerSpec::t; }
     } msr;
-    TimerSpec::m->onTrigger([](){ TimerSpec::m->runOnce(5); });
-    TimerSpec::m->runOnce(5);
+    TimerSpec::t->onTrigger([](){ TimerSpec::t->runOnce(5); });
+    TimerSpec::t->runOnce(5);
     virtuino.elapseMillis(6);
-    REQUIRE(TimerSpec::m->isActive());
+    REQUIRE(TimerSpec::t->isActive());
     virtuino.elapseMillis(6);
-    REQUIRE(TimerSpec::m->isActive());
+    REQUIRE(TimerSpec::t->isActive());
   }
 
   SECTION("`interval` returns current interval") {

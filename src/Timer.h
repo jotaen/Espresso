@@ -31,6 +31,11 @@ public:
     return this->interval_;
   }
 
+  void interval(unsigned long newInterval) {
+    this->nextTrigger_ = (this->nextTrigger_ - this->interval_) + newInterval;
+    this->interval_ = newInterval;
+  }
+
   void update() override {
     if (!this->flags_[ACTIVE] || millis() < this->nextTrigger_) {
       return;
