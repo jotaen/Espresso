@@ -29,6 +29,15 @@ TEST_CASE("[Observer]") {
     REQUIRE_NOTHROW(virtuino.flush());
   }
 
+  SECTION("A predicate can be optionally specified upon construction") {
+    Observer o([](){ return predicateValue; });
+    o.onTrue(spy.Void);
+    REQUIRE(spy.hasBeenCalled() == false);
+    predicateValue = true;
+    virtuino.flush();
+    REQUIRE(spy.hasBeenCalled());
+  }
+
   SECTION("`onTrue` gets called once when state changes (mode=ONCE)") {
     predicateValue = true;
     Observer o;

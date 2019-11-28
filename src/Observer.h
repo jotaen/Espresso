@@ -6,15 +6,19 @@
 
 class Observer: public AutoUpdated {
 public:
-  enum RepeatMode {
-    ONCE = false,
-    WHILE = true
-  };
+  Observer(fn::Predicate p = 0)
+  {
+    if (p != 0) {
+      this->observe(p);
+    }
+  }
 
   void observe(fn::Predicate p) {
     this->predicate_ = p;
     this->flags_[LAST_STATE] = this->predicate_();
   }
+
+  enum RepeatMode { ONCE = false, WHILE = true };
 
   void onTrue(fn::Handler h, RepeatMode mode = ONCE) {
     this->onTrue_ = h;
