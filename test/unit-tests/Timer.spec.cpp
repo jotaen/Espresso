@@ -7,7 +7,7 @@ namespace TimerSpec {
 TEST_CASE("[Timer]") {
 
   CallSpy spy;
-  Virtuino virtuino;
+  Virtuino virtuino(Virtuino::DESTROY);
 
   SECTION("A Timer is AutoUpdated") {
     Timer t;

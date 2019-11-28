@@ -4,7 +4,7 @@ bool predicateValue = false;
 
 TEST_CASE("[Observer]") {
 
-  Virtuino virtuino;
+  Virtuino virtuino(Virtuino::DESTROY);
   CallSpy spy;
   predicateValue = false;
 

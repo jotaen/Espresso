@@ -3,7 +3,7 @@
 TEST_CASE("[Loop]") {
 
   CallSpy spy;
-  Virtuino virtuino;
+  Virtuino virtuino(Virtuino::DESTROY);
 
   SECTION("A Loop is AutoUpdated") {
     Loop l;

@@ -2,7 +2,7 @@
 
 TEST_CASE("[DigitalOutput]") {
 
-  Virtuino virtuino;
+  Virtuino virtuino(Virtuino::DESTROY);
 
   SECTION("A DigitalOutput is a DigitalPin") {
     DigitalOutput dt(1);

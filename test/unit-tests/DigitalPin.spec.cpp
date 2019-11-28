@@ -8,7 +8,7 @@ public:
 
 TEST_CASE("[DigitalPin]") {
 
-  Virtuino virtuino;
+  Virtuino virtuino(Virtuino::DESTROY);
 
   SECTION("It remembers its pin number") {
     DigitalPin_ dp(2);

@@ -2,7 +2,7 @@
 
 TEST_CASE("[AnalogInput]") {
 
-  Virtuino virtuino;
+  Virtuino virtuino(Virtuino::DESTROY);
 
   SECTION("An AnalogInput is `AutoUpdated`") {
     AnalogInput ai(1);

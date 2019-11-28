@@ -1,6 +1,8 @@
 class Virtuino {
 public:
-  Virtuino() {
+  enum InitMode { RESET, DESTROY };
+
+  Virtuino(InitMode im) {
     millis_ = 0;
     digitalOutputs_.clear();
     digitalInputs_.clear();
@@ -9,10 +11,9 @@ public:
     adcFinished_ = 0-1;
     adcValue_ = 0;
     setup();
-  }
-
-  ~Virtuino() {
-    pinModes_.clear();
+    if (im == DESTROY) {
+      pinModes_.clear();
+    }
   }
 
   void flush() {

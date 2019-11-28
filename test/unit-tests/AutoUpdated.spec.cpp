@@ -7,7 +7,7 @@ struct AutoUpdated_: public AutoUpdated {
 
 TEST_CASE("[AutoUpdated]") {
 
-  Virtuino virtuino;
+  Virtuino virtuino(Virtuino::DESTROY);
 
   SECTION("A single active AU-object points to itself") {
     AutoUpdated_ au = AutoUpdated_();
