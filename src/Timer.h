@@ -10,16 +10,13 @@ public:
     this->handler_ = h;
   }
 
-  enum StartBehaviour { START_NOW, START_DELAYED };
-  void run(unsigned long interval, StartBehaviour sb = START_NOW) {
-    this->start(interval, true);
-    if (sb == START_NOW) {
-      fn::invoke(this->handler_);
-    }
+  enum StartOption { START_NOW = 0, START_DELAYED = 1 };
+  void run(unsigned long interval, StartOption sb = START_NOW) {
+    this->start(interval, sb, true);
   }
 
   void runOnce(unsigned long delay) {
-    this->start(delay, false);
+    this->start(delay, 1, false);
   }
 
   void stop() {
@@ -58,9 +55,9 @@ protected:
   unsigned long interval_ = 0;
   fn::Handler handler_ = 0;
 
-  void start(unsigned long interval, bool isInLoopMode) {
+  void start(unsigned long interval, unsigned short firstTriggerOffset, bool isInLoopMode) {
     this->interval_ = interval;
-    this->nextTrigger_ = millis() + interval;
+    this->nextTrigger_ = firstTriggerOffset * (millis() + interval);
     this->flags_[ACTIVE] = true;
     this->flags_[LOOP_MODE] = isInLoopMode;
   }

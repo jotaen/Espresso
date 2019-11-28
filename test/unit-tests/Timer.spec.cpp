@@ -18,6 +18,7 @@ TEST_CASE("[Timer]") {
     Timer t;
     t.onTrigger(spy.Void);
     t.run(5);
+    virtuino.flush();
     REQUIRE(spy.hasBeenCalled());
   }
 
@@ -37,24 +38,17 @@ TEST_CASE("[Timer]") {
     REQUIRE(t.isActive() == false);
   }
 
-  SECTION("`run`: The handler function should be invoked after time has elapsed") {
+  SECTION("`run`: The handler function should be invoked in the specified interval") {
     const unsigned long interval = 50;
     Timer t;
     t.onTrigger(spy.Void);
     t.run(interval);
+    virtuino.flush();
     REQUIRE(spy.counter() == 1);
     virtuino.elapseMillis(interval);
     REQUIRE(spy.counter() == 2);
-  }
-
-  SECTION("`run`: The first, immediate triggering can be spared out") {
-    const unsigned long interval = 50;
-    Timer t;
-    t.onTrigger(spy.Void);
-    t.run(interval, Timer::NEXT_TRIGGER);
-    REQUIRE(spy.hasBeenCalled() == false);
     virtuino.elapseMillis(interval);
-    REQUIRE(spy.counter() == 1);
+    REQUIRE(spy.counter() == 3);
   }
 
   SECTION("`run`: The handler function should be invoked recurringly") {
@@ -62,9 +56,19 @@ TEST_CASE("[Timer]") {
     Timer t;
     t.onTrigger(spy.Void);
     t.run(interval);
-    virtuino.elapseMillis(3*interval);
+    virtuino.elapseMillis(20*interval);
     REQUIRE(spy.hasBeenCalled());
-    REQUIRE(spy.counter() == 4);
+    REQUIRE(spy.counter() == 21);
+  }
+
+  SECTION("`run`: The first, immediate triggering can be postponed till the next trigger") {
+    const unsigned long interval = 50;
+    Timer t;
+    t.onTrigger(spy.Void);
+    t.run(interval, Timer::START_DELAYED);
+    REQUIRE(spy.hasBeenCalled() == false);
+    virtuino.elapseMillis(interval);
+    REQUIRE(spy.counter() == 1);
   }
 
   SECTION("`run`: The handler should not be invoked anymore after the Timer was stopped") {
@@ -74,6 +78,7 @@ TEST_CASE("[Timer]") {
     t.run(interval);
     virtuino.elapseMillis(3*interval);
     t.stop();
+    REQUIRE(spy.counter() == 4);
     virtuino.elapseMillis(3*interval);
     REQUIRE(spy.counter() == 4);
   }
