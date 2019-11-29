@@ -10,6 +10,12 @@ public:
   , poc_(rdn::analogPinToPoc(pin))
   {}
 
+  ~AnalogInput() {
+    if (currentlyReadingPin == this->pin_) {
+      currentlyReadingPin = NONE;
+    }
+  }
+
   int value() {
     return value_;
   }
@@ -19,45 +25,34 @@ public:
   }
 
   void update() {
-    if (adcAcquiredPin == FREE) {
-      startRead();
-      // We can return here already, as the ADC takes ~100μs, so it
-      // won’t be finished anytime soon.
-      return;
+    if (currentlyReadingPin == NONE) {
+      rdn::analogReadInit(this->poc_);
+      currentlyReadingPin = this->pin_;
+      return; // return right away, the next condition won’t be `true` yet
     }
-    if (adcAcquiredPin == this->pin_) {
-      tryReadFromADC();
+    if (currentlyReadingPin == this->pin_ && !rdn::isAnalogReadInProgress()) {
+      this->value_ = rdn::analogReadGetLastValue();
+      currentlyReadingPin = NONE;
     }
   }
 
   int valueBlocking() {
+    while (rdn::isAnalogReadInProgress()); // wait for previous analog-reads to finish first
+    currentlyReadingPin = NONE; // clear
     do {
       this->update();
-    } while(adcAcquiredPin != FREE);
+    } while (rdn::isAnalogReadInProgress());
     return this->value_;
   }
 
 protected:
-  inline void startRead() {
-    rdn::analogReadInit(this->poc_);
-    adcAcquiredPin = this->pin_;
-  }
-
-  inline void tryReadFromADC() {
-    if (rdn::analogReadInProgress()) {
-      return;
-    }
-    this->value_ = rdn::analogReadObtain();
-    adcAcquiredPin = FREE;
-  }
-
   int value_ = 0;
   uint8_t pin_ = 0;
   uint8_t poc_ = 0;
-  static const uint8_t FREE = 255;
-  static uint8_t adcAcquiredPin;
+  static const uint8_t NONE = 255;
+  static uint8_t currentlyReadingPin;
 };
 
-uint8_t AnalogInput::adcAcquiredPin = AnalogInput::FREE;
+uint8_t AnalogInput::currentlyReadingPin = AnalogInput::NONE;
 
 #endif

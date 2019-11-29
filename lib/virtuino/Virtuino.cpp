@@ -4,11 +4,10 @@ public:
 
   Virtuino(InitMode im) {
     millis_ = 0;
-    digitalOutputs_.clear();
     digitalInputs_.clear();
+    digitalOutputs_.clear();
     analogInputs_.clear();
     analogOutputs_.clear();
-    adcFinished_ = 0-1;
     adcValue_ = 0;
     setup();
     if (im == DESTROY) {
@@ -16,8 +15,10 @@ public:
     }
   }
 
-  void flush() {
-    loop();
+  void flush(unsigned short times = 2) {
+    for(unsigned short i=0; i<times; i++) {
+      loop();
+    }
   }
 
   void elapseMillis(unsigned long m) {
@@ -54,7 +55,7 @@ public:
 
   void setAnalogInput(uint8_t pin, int val) {
     analogInputs_[pin] = val;
-    flush();
+    flush(10); // TODO workaround to make sure that “slow” ADC has run on that pin
   }
 
   int checkAnalogOutput(uint8_t pin) {
@@ -73,7 +74,6 @@ private:
   static std::map<uint8_t, int> digitalOutputs_;
   static std::map<uint8_t, int> analogInputs_;
   static std::map<uint8_t, int> analogOutputs_;
-  static unsigned long adcFinished_;
   static int adcValue_;
 };
 
@@ -83,5 +83,4 @@ std::map<uint8_t, int> Virtuino::digitalInputs_;
 std::map<uint8_t, int> Virtuino::digitalOutputs_;
 std::map<uint8_t, int> Virtuino::analogInputs_;
 std::map<uint8_t, int> Virtuino::analogOutputs_;
-unsigned long Virtuino::adcFinished_ = 0-1;
-int Virtuino::adcValue_ = -1;
+int Virtuino::adcValue_ = 0;

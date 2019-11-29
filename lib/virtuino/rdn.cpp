@@ -25,20 +25,22 @@ struct rdn {
     return Virtuino::digitalInputs_[~bit];
   }
 
-  static void analogReadInit(uint8_t poc) {
-    Virtuino::adcFinished_ = millis() + 1;
-    Virtuino::adcValue_ = Virtuino::analogInputs_[poc];
-  }
-
   static uint8_t analogPinToPoc(uint8_t pin) {
     return pin;
   }
 
-  static bool analogReadInProgress() {
-    return millis() < Virtuino::adcFinished_;
+  static bool isAnalogReadInProgress() {
+    return false;
   }
 
-  static int analogReadObtain() {
+  static void analogReadInit(uint8_t poc) {
+    if (isAnalogReadInProgress()) {
+      throw std::runtime_error("Cannot start analog read while ADC is occupied");
+    }
+    Virtuino::adcValue_ = Virtuino::analogInputs_[poc];
+  }
+
+  static int analogReadGetLastValue() {
     return Virtuino::adcValue_;
   }
 

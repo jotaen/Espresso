@@ -94,7 +94,7 @@ public:
     #endif
   }
 
-  static inline bool analogReadInProgress() {
+  static inline bool isAnalogReadInProgress() {
     #if defined(ADCSRA) && defined(ADCL)
     return bit_is_set(ADCSRA, ADSC);
     #else
@@ -102,7 +102,7 @@ public:
     #endif
   }
 
-  static inline int analogReadObtain() {
+  static inline int analogReadGetLastValue() {
     uint8_t low, high;
     #if defined(ADCSRA) && defined(ADCL)
       low  = ADCL;
