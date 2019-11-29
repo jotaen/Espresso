@@ -291,6 +291,22 @@ public:
     }
   }
 
+  static bool checkForSerialEvent(uint8_t serialPort) {
+    #if defined(HAVE_HWSERIAL0)
+      if (serialPort == 0 && Serial0_available && Serial0_available()) return true;
+    #endif
+    #if defined(HAVE_HWSERIAL1)
+      if (serialPort == 1 && Serial1_available && Serial1_available()) return true;
+    #endif
+    #if defined(HAVE_HWSERIAL2)
+      if (serialPort == 2 && Serial2_available && Serial2_available()) return true;
+    #endif
+    #if defined(HAVE_HWSERIAL3)
+      if (serialPort == 3 && Serial3_available && Serial3_available()) return true;
+    #endif
+    return false;
+  }
+
 private:
   static void pinModeUnchecked(uint8_t port, uint8_t bit, uint8_t mode) {
     volatile uint8_t *reg, *out;

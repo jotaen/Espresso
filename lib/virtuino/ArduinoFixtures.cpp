@@ -25,7 +25,8 @@ uint8_t digitalPinToTimer(uint8_t pin) {
   return ~pin;
 }
 
-struct SoftwareSerial {
+class SoftwareSerial {
+public:
   static const int DEC = 10;
 
   void begin(long speed);
@@ -50,7 +51,14 @@ struct SoftwareSerial {
   // size_t println(unsigned long, int = DEC);
   // size_t println(double, int = 2);
   // size_t println(void);
-} Serial;
+
+  int read();
+  bool available();
+
+  SoftwareSerial(uint8_t serialPort): serialPort_(serialPort) {}
+private:
+  uint8_t serialPort_;
+} Serial(0), Serial1(1), Serial2(2), Serial3(3);
 
 void SoftwareSerial::begin(long speed) {}
 
@@ -77,4 +85,14 @@ size_t SoftwareSerial::println(const String& s) {
 size_t SoftwareSerial::println(const char* s) {
   std::cout << s << std::endl;
   return 0;
+}
+
+int SoftwareSerial::read() {
+  int byte = Virtuino::serialData_[this->serialPort_].front();
+  Virtuino::serialData_[this->serialPort_].pop_front();
+  return byte;
+}
+
+bool SoftwareSerial::available() {
+  return !Virtuino::serialData_[this->serialPort_].empty();
 }

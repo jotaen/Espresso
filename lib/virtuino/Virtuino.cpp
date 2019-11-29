@@ -8,6 +8,7 @@ public:
     digitalOutputs_.clear();
     analogInputs_.clear();
     analogOutputs_.clear();
+    serialData_.clear();
     adcValue_ = 0;
     setup();
     if (im == DESTROY) {
@@ -62,11 +63,18 @@ public:
     return analogOutputs_.at(pin); // throws if key not set
   }
 
+  void populateSerialData(uint8_t serialPort, std::deque<int>& data) {
+    for (unsigned int i=0; i<data.size(); i++) {
+      serialData_[serialPort].push_back(data[i]);
+    }
+  }
+
 private:
   friend unsigned long millis(void);
   friend int digitalRead(uint8_t);
   friend void digitalWrite(uint8_t, uint8_t);
   friend class rdn;
+  friend class SoftwareSerial;
 
   static unsigned long millis_;
   static std::map<uint8_t, uint8_t> pinModes_;
@@ -74,6 +82,7 @@ private:
   static std::map<uint8_t, int> digitalOutputs_;
   static std::map<uint8_t, int> analogInputs_;
   static std::map<uint8_t, int> analogOutputs_;
+  static std::map<uint8_t, std::deque<int>> serialData_;
   static int adcValue_;
 };
 
@@ -83,4 +92,5 @@ std::map<uint8_t, int> Virtuino::digitalInputs_;
 std::map<uint8_t, int> Virtuino::digitalOutputs_;
 std::map<uint8_t, int> Virtuino::analogInputs_;
 std::map<uint8_t, int> Virtuino::analogOutputs_;
+std::map<uint8_t, std::deque<int>> Virtuino::serialData_;
 int Virtuino::adcValue_ = 0;

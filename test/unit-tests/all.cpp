@@ -13,5 +13,6 @@
 #include "Observer.spec.cpp"
 #include "Timer.spec.cpp"
 #include "Loop.spec.cpp"
+#include "SerialEvent.spec.cpp"
 
 void onSetup() {}

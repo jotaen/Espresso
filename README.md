@@ -7,4 +7,3 @@
 - Documentation
     - Extract header files and annotate them
     - Document internal classes
-- Take care of `SerialEvent` functionality in main loop

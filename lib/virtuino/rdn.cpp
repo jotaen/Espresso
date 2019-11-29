@@ -48,6 +48,10 @@ struct rdn {
     Virtuino::analogOutputs_[~bit] = val;
   }
 
+  static bool checkForSerialEvent(uint8_t serialPort) {
+    return !Virtuino::serialData_[serialPort].empty();
+  }
+
 };
 
 #endif

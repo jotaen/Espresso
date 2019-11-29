@@ -6,6 +6,7 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include <queue>
 
 #include "Arduino.h"
 #include "Virtuino.cpp"

@@ -14,6 +14,7 @@
 #include "src/Timer.h"
 #include "src/Loop.h"
 #include "src/LoopBenchmark.h"
+#include "src/SerialEvent.h"
 
 void onSetup();
 
