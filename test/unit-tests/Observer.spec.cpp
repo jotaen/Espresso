@@ -57,8 +57,6 @@ TEST_CASE("[Observer]") {
     Observer o;
     o.observe(fn::alwaysTrue);
     o.onTrue(spy.Void, Observer::WHILE);
-    virtuino.flush();
-    REQUIRE(spy.counter() == 1);
     virtuino.elapseMillis(10);
     REQUIRE(spy.counter() > 2);
   }
@@ -81,8 +79,6 @@ TEST_CASE("[Observer]") {
     Observer o;
     o.observe(fn::alwaysFalse);
     o.onFalse(spy.Void, Observer::WHILE);
-    virtuino.flush();
-    REQUIRE(spy.counter() == 1);
     virtuino.elapseMillis(10);
     REQUIRE(spy.counter() > 2);
   }
