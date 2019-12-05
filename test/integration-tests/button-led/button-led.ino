@@ -5,11 +5,11 @@ const unsigned long duration = 1000;
 DigitalInput button(7);
 DigitalOutput led(13);
 Timer ledTimer;
-Observer buttonObserver;
+Observer<bool> buttonObserver;
 
 void onSetup() {
   buttonObserver.observe([](){ return button.isHigh(); });
-  buttonObserver.onTrue([](){
+  buttonObserver.onChange([](bool){
     led.write(HIGH);
     ledTimer.runOnce(duration);
   });

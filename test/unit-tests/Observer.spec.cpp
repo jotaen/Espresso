@@ -1,118 +1,82 @@
 #include "../../src/Observer.h"
 
-bool predicateValue = false;
+bool providerValue = false;
 
 TEST_CASE("[Observer]") {
 
   Virtuino virtuino(Virtuino::DESTROY);
   CallSpy spy;
-  predicateValue = false;
+  providerValue = false;
 
   SECTION("An Observer is AutoUpdated") {
-    Observer o;
-    o.observe(fn::alwaysTrue);
+    Observer<bool> o;
     AutoUpdated& au = o; // The “assertion” is that this compiles
   }
 
   SECTION("Absence of handlers is dealt with gracefully") {
-    Observer o;
-    o.observe([](){ return predicateValue; });
+    Observer<bool> o;
+    o.observe([](){ return providerValue; });
     REQUIRE_NOTHROW(virtuino.flush());
-    predicateValue = true;
-    REQUIRE_NOTHROW(virtuino.flush());
-  }
-
-  SECTION("Absence of predicate is dealt with gracefully") {
-    Observer o;
-    o.onTrue(fn::noop);
-    o.onFalse(fn::noop);
+    providerValue = true;
     REQUIRE_NOTHROW(virtuino.flush());
   }
 
-  SECTION("A predicate can be optionally specified upon construction") {
-    Observer o([](){ return predicateValue; });
-    o.onTrue(spy.Void);
+  SECTION("Absence of provider is dealt with gracefully") {
+    Observer<bool> o;
+    o.onChange([](bool){});
+    REQUIRE_NOTHROW(virtuino.flush());
+  }
+
+  SECTION("A provider can be optionally specified upon construction") {
+    Observer<bool> o([](){ return providerValue; });
+    o.onChange(spy.Bool);
     REQUIRE(spy.hasBeenCalled() == false);
-    predicateValue = true;
+    providerValue = true;
     virtuino.flush();
     REQUIRE(spy.hasBeenCalled());
   }
 
-  SECTION("`onTrue` gets called once when state changes (mode=ONCE)") {
-    predicateValue = true;
-    Observer o;
-    o.observe([](){ return predicateValue; });
-    o.onTrue(spy.Void);
-    virtuino.elapseMillis(10);
+  SECTION("Change handler gets called once when observed value changes") {
+    Observer<bool> o([](){ return providerValue; });
+    o.onChange(spy.Bool);
+    virtuino.flush();
     REQUIRE(spy.hasBeenCalled() == false); // since there was no change so far
-    predicateValue = false;
-    virtuino.elapseMillis(10);
-    REQUIRE(spy.hasBeenCalled() == false);
-    predicateValue = true;
-    virtuino.elapseMillis(10);
-    REQUIRE(spy.counter() == 1);
+    providerValue = true;
+    virtuino.flush();
+    REQUIRE(spy.hasBeenCalled() == true);
   }
 
-  SECTION("`onTrue` gets called repeatedly (mode=WHILE)") {
-    Observer o;
-    o.observe(fn::alwaysTrue);
-    o.onTrue(spy.Void, Observer::WHILE);
-    virtuino.elapseMillis(10);
-    REQUIRE(spy.counter() > 2);
-  }
-
-  SECTION("`onFalse` gets called once when state changes (mode=ONCE)") {
-    Observer o;
-    o.observe([](){ return predicateValue; });
-    o.onFalse(spy.Void);
-    virtuino.elapseMillis(10);
-    REQUIRE(spy.hasBeenCalled() == false); // since there was no change so far
-    predicateValue = true;
-    virtuino.elapseMillis(10);
-    REQUIRE(spy.hasBeenCalled() == false);
-    predicateValue = false;
-    virtuino.elapseMillis(10);
-    REQUIRE(spy.counter() == 1);
-  }
-
-  SECTION("`onFalse` gets called repeatedly (mode=WHILE)") {
-    Observer o;
-    o.observe(fn::alwaysFalse);
-    o.onFalse(spy.Void, Observer::WHILE);
-    virtuino.elapseMillis(10);
-    REQUIRE(spy.counter() > 2);
-  }
-
-  SECTION("For `true`: Only the matching handlers get invoked") {
-    Observer o1;
-    o1.observe(fn::alwaysTrue);
-    o1.onTrue(spy.Void);
-    o1.onFalse([](){ throw; });
-    REQUIRE_NOTHROW(virtuino.flush());
-
-    Observer o2;
-    o1.observe(fn::alwaysFalse);
-    o2.onFalse(spy.Void);
-    o2.onTrue([](){ throw; });
+  SECTION("Change handler gets invoked with the current value") {
+    Observer<bool> o([](){ return providerValue; });
+    o.onChange([](bool val){ if (val != providerValue) throw "Wrong argument"; });
+    providerValue = true;
     REQUIRE_NOTHROW(virtuino.flush());
   }
 
-  SECTION("Observer can be disabled") {
-    Observer o;
-    o.observe([](){ return predicateValue; });
-    o.onTrue(spy.Void);
+  SECTION("Change handler gets called once upon change") {
+    Observer<bool> o([](){ return providerValue; });
+    o.onChange(spy.Bool);
+    virtuino.elapseMillis(10);
+    providerValue = true;
+    virtuino.elapseMillis(100);
+    REQUIRE(spy.counter() == 1);
+    REQUIRE(spy.hasBeenCalled() == true);
+  }
+
+  SECTION("Observer can be enabled and disabled") {
+    Observer<bool> o([](){ return providerValue; });
+    o.onChange(spy.Bool);
     o.disable();
-    predicateValue = true;
     virtuino.flush();
-    REQUIRE(spy.hasBeenCalled() == false);
-    o.onTrue(spy.Void, Observer::WHILE);
-    virtuino.flush();
-    REQUIRE(spy.hasBeenCalled() == false);
     REQUIRE(o.isActive() == false);
+    REQUIRE(spy.hasBeenCalled() == false);
+    providerValue = true;
+    virtuino.flush();
+    REQUIRE(spy.hasBeenCalled() == false);
 
     o.enable();
-    REQUIRE(o.isActive() == true);
     virtuino.flush();
+    REQUIRE(o.isActive() == true);
     REQUIRE(spy.hasBeenCalled());
   }
 

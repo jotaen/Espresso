@@ -5,7 +5,7 @@ DigitalOutput yellow(2);
 DigitalOutput green(3);
 Timer switcher;
 DigitalInput button(4);
-Observer buttonObserver;
+Observer<bool> buttonObserver;
 
 void toRed();
 void toGreen();
@@ -13,7 +13,7 @@ void toGreen();
 void onSetup() {
   green.write(HIGH);
   buttonObserver.observe([](){ return button.isHigh(); });
-  buttonObserver.onTrue(toRed);
+  buttonObserver.onChange([](bool high) { if (high) toRed(); });
 }
 
 void toRed() {
@@ -21,9 +21,9 @@ void toRed() {
   green.write(LOW);
   yellow.write(HIGH);
   switcher.onTrigger([](){
-    yellow.write(LOW);
     red.write(HIGH);
-    buttonObserver.onTrue(toGreen);
+    yellow.write(LOW);
+    buttonObserver.onChange([](bool high) { if (high) toGreen(); });
     buttonObserver.enable();
   });
   switcher.runOnce(1000);
@@ -36,7 +36,7 @@ void toGreen() {
     red.write(LOW);
     yellow.write(LOW);
     green.write(HIGH);
-    buttonObserver.onTrue(toRed);
+    buttonObserver.onChange([](bool high) { if (high) toRed(); });
     buttonObserver.enable();
   });
   switcher.runOnce(1000);

@@ -3,7 +3,10 @@
 
 class CallSpy {
 public:
-  CallSpy():Void(Void_) { counter_ = 0; }
+  CallSpy()
+  : Void(Void_)
+  , Bool(Bool_)
+  { counter_ = 0; }
 
   bool hasBeenCalled() {
     return counter_ > 0;
@@ -14,9 +17,13 @@ public:
   }
 
   const fn::Handler Void;
+  const fn::BoolHandler Bool;
 
 private:
   static void Void_() {
+    counter_++;
+  }
+  static void Bool_(bool) {
     counter_++;
   }
   static unsigned int counter_;

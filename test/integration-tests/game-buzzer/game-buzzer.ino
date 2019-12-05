@@ -9,8 +9,8 @@ DigitalOutput lightTeam1(11);
 DigitalOutput lightTeam2(12);
 DigitalOutput sound(13);
 Timer soundTimer;
-Observer buzzerObserver;
-Observer resetObserver;
+Observer<bool> buzzerObserver;
+Observer<bool> resetObserver;
 
 void reset() {
   lightTeam1.write(LOW);
@@ -32,7 +32,7 @@ void buzzer() {
 
 void onSetup() {
   buzzerObserver.observe([](){ return buzzer1.isHigh() || buzzer2.isHigh(); });
-  buzzerObserver.onTrue(buzzer);
+  buzzerObserver.onChange([](bool high){ if (high) buzzer(); });
   resetObserver.observe([](){ return resetButton.isHigh(); });
-  resetObserver.onTrue(reset);
+  resetObserver.onChange([](bool high){ if (high) reset(); });
 }

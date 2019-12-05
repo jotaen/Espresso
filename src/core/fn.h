@@ -5,6 +5,7 @@ namespace fn {
 
   typedef bool (*Predicate)();
   typedef void (*Handler)();
+  typedef void (*BoolHandler)(bool);
 
   bool alwaysTrue() { return true; }
 
