@@ -292,16 +292,16 @@ public:
   }
 
   static bool checkForSerialEvent(uint8_t serialPort) {
-    #if defined(HAVE_HWSERIAL0)
+    #if defined(HAVE_HWSERIAL0) && defined(Serial0_available)
       if (serialPort == 0 && Serial0_available && Serial0_available()) return true;
     #endif
-    #if defined(HAVE_HWSERIAL1)
+    #if defined(HAVE_HWSERIAL1) && defined(Serial1_available)
       if (serialPort == 1 && Serial1_available && Serial1_available()) return true;
     #endif
-    #if defined(HAVE_HWSERIAL2)
+    #if defined(HAVE_HWSERIAL2) && defined(Serial2_available)
       if (serialPort == 2 && Serial2_available && Serial2_available()) return true;
     #endif
-    #if defined(HAVE_HWSERIAL3)
+    #if defined(HAVE_HWSERIAL3) && defined(Serial3_available)
       if (serialPort == 3 && Serial3_available && Serial3_available()) return true;
     #endif
     return false;
