@@ -27,6 +27,13 @@ TEST_CASE("[Multiplexing]") {
     virtuino.setDigitalInput(col3.pin(), LOW);
 
     REQUIRE(number == "249");
-  }
 
+    // Press `cancel`:
+    virtuino.setDigitalInput(row4.pin(), HIGH);
+    virtuino.setDigitalInput(col1.pin(), HIGH);
+    virtuino.setDigitalInput(row4.pin(), LOW);
+    virtuino.setDigitalInput(col1.pin(), LOW);
+
+    REQUIRE(number == "");
+  }
 }
