@@ -1,11 +1,13 @@
-#!/bin/sh
+#!/bin/bash
 
 ESPRESSO_PATH=$1
 ESPRESSO_FILE=${ESPRESSO_PATH##*/}
 ESPRESSO_NAME=${ESPRESSO_FILE%.*}
 ESPRESSO_OUT="build/$ESPRESSO_NAME"
 
-clang++ \
+mkdir -p build
+
+g++ \
   -std=c++11 \
   --include-directory=. \
   --include-directory=lib/virtuino \
