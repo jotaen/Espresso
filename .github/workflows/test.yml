@@ -8,20 +8,22 @@ on:
 
 jobs:
   build:
-    runs-on: gcc:9.3.0
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Build environment
+      run: docker build -t espresso .
     - name: Unit Tests
-      run: ./runtest test/unit-tests/all.cpp
+      run: docker run --rm espresso test/unit-tests/all.cpp
     - name: Integration Test - Blinker
-      run: ./runtest test/integration-tests/blinker/blinker.spec.cpp
+      run: docker run --rm espresso test/integration-tests/blinker/blinker.spec.cpp
     - name: Integration Test - Button LED
-      run: ./runtest test/integration-tests/button-led/button-led.spec.cpp
+      run: docker run --rm espresso test/integration-tests/button-led/button-led.spec.cpp
     - name: Integration Test - Debouncing
-      run: ./runtest test/integration-tests/debouncing/debouncing.spec.cpp
+      run: docker run --rm espresso test/integration-tests/debouncing/debouncing.spec.cpp
     - name: Integration Test - Game Buzzer
-      run: ./runtest test/integration-tests/game-buzzer/game-buzzer.spec.cpp
+      run: docker run --rm espresso test/integration-tests/game-buzzer/game-buzzer.spec.cpp
     - name: Integration Test - Multiplexing
-      run: ./runtest test/integration-tests/multiplexing/multiplexing.spec.cpp
+      run: docker run --rm espresso test/integration-tests/multiplexing/multiplexing.spec.cpp
     - name: Integration Test - Traffic Lights
-      run: ./runtest test/integration-tests/traffic-lights/traffic-lights.spec.cpp
+      run: docker run --rm espresso test/integration-tests/traffic-lights/traffic-lights.spec.cpp
