@@ -28,10 +28,19 @@ TEST_CASE("[Button-LED]") {
   SECTION("Keeping the button pressed switches the LED off anyway") {
     virtuino.setDigitalInput(button.pin(), HIGH);
     REQUIRE(led.isHigh());
+    virtuino.elapseMillis(duration/2);
+    REQUIRE(led.isHigh());
+    virtuino.setDigitalInput(button.pin(), LOW);
+    virtuino.elapseMillis(duration/2 + 1);
+    REQUIRE(led.isLow());
+  }
+  
+  SECTION("Releasing the button late doesn’t trigger") {
+    virtuino.setDigitalInput(button.pin(), HIGH);
+    REQUIRE(led.isHigh());
     virtuino.elapseMillis(duration);
     REQUIRE(led.isLow());
     virtuino.setDigitalInput(button.pin(), LOW);
-    virtuino.elapseMillis(duration);
     REQUIRE(led.isLow());
   }
 
@@ -39,7 +48,7 @@ TEST_CASE("[Button-LED]") {
     virtuino.setDigitalInput(button.pin(), HIGH);
     virtuino.setDigitalInput(button.pin(), LOW);
     REQUIRE(led.isHigh());
-    virtuino.elapseMillis(duration * 0.5);
+    virtuino.elapseMillis(duration/2);
     virtuino.setDigitalInput(button.pin(), HIGH);
     virtuino.setDigitalInput(button.pin(), LOW);
     REQUIRE(led.isHigh());

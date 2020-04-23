@@ -9,9 +9,11 @@ Observer<bool> buttonObserver;
 
 void onSetup() {
   buttonObserver.observe([](){ return button.isHigh(); });
-  buttonObserver.onChange([](bool){
-    led.write(HIGH);
-    ledTimer.runOnce(duration);
+  buttonObserver.onChange([](bool isHigh){
+    if (isHigh) {
+      led.write(HIGH);
+      ledTimer.runOnce(duration);
+    }
   });
   ledTimer.onTrigger([](){ led.write(LOW); });
 }
