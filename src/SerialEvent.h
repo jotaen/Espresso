@@ -4,11 +4,17 @@
 #include "core/AutoUpdated.h"
 #include "core/fn.h"
 
+/**
+ * Handler for Serial Events
+ */
 class SerialEvent: public AutoUpdated {
 public:
   SerialEvent(uint8_t serialPort = 0)
   : serialPort_(serialPort) {}
 
+  /**
+   * Register handler function
+   */
   void onEvent(fn::Handler h) {
     this->handler_ = h;
   }

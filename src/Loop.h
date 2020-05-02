@@ -4,20 +4,37 @@
 #include "core/AutoUpdated.h"
 #include "core/fn.h"
 
+/**
+ * A handler that gets called over and over again,
+ * similarly to the `loop` function
+ */
 class Loop: public AutoUpdated {
 public:
+  /**
+   * A callback that is supposed to be invoked on each loop
+   * (Doesn’t enable it though, in case object had been disabled before)
+   */
   void onTrigger(fn::Handler h) {
     this->handler_ = h;
   }
 
+  /**
+   * Suspend callback invocation
+   */
   void disable() {
     this->flags_[ACTIVE] = false;
   }
 
+  /**
+   * Re-enable callback invocation
+   */
   void enable() {
     this->flags_[ACTIVE] = true;
   }
 
+  /**
+   * Checks whether object is enabled
+   */
   bool isActive() {
     return this->flags_[ACTIVE];
   }

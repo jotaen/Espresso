@@ -3,6 +3,9 @@
 
 #include "core/AutoUpdated.h"
 
+/**
+ * Represents an Analog Input Pin
+ */
 class AnalogInput: public AutoUpdated {
 public:
   AnalogInput(uint8_t pin)
@@ -16,10 +19,17 @@ public:
     }
   }
 
+  /**
+   * Returns current value in the same way that `analogRead` would do
+   * Value is cached and might be behind by some 0.1 milliseconds
+   */
   int value() {
     return value_;
   }
 
+  /**
+   * Returns configured pin number
+   */
   int pin() {
     return this->pin_;
   }
@@ -36,6 +46,9 @@ public:
     }
   }
 
+  /**
+   * Returns freshly read value in a blocking fashion
+   */
   int valueBlocking() {
     while (rdn::isAnalogReadInProgress()); // wait for previous analog-reads to finish first
     currentlyReadingPin = NONE; // clear

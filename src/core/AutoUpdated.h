@@ -28,6 +28,11 @@ public:
     }
   }
 
+  /**
+   * Triggers internal update
+   * This is safe to do at any time, but it usually is not necessary,
+   * because the Event Loop takes care of doing it regularly
+   */
   virtual void update() = 0;
 
   static AutoUpdated* getRoot() {

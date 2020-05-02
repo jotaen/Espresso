@@ -3,6 +3,10 @@
 
 #include "core/AutoUpdated.h"
 
+/**
+ * Utility that outputs performance diagnostic
+ * information to the serial port.
+ */
 class LoopBenchmark: public AutoUpdated {
 public:
   LoopBenchmark(unsigned long interval = 1000)

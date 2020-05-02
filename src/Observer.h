@@ -4,6 +4,9 @@
 #include "core/AutoUpdated.h"
 #include "core/fn.h"
 
+/**
+ * Observe any value and trigger callback if that value changes
+ */
 template<typename T>
 class Observer: public AutoUpdated {
 public:
@@ -11,6 +14,9 @@ public:
   typedef T (*Provider)();
   typedef void (*Handler)(T);
 
+  /**
+   * Provider (optional): a function that provides the value to observe
+   */
   Observer(Provider p = 0)
   {
     if (p != 0) {
@@ -18,23 +24,38 @@ public:
     }
   }
 
+  /**
+   * A function that provides the value to observe
+   */
   void observe(Provider p) {
     this->provider_ = p;
     this->lastValue_ = this->provider_();
   }
 
+  /**
+   * A handler that is supposed to be triggered if the value changes
+   */
   void onChange(Handler h) {
     this->onChange_ = h;
   }
 
+  /**
+   * Resume callback invocation (if applicable)
+   */
   void enable() {
     this->flags_[ACTIVE] = true;
   }
 
+  /**
+   * Suspend callback invocation
+   */
   void disable() {
     this->flags_[ACTIVE] = false;
   }
 
+  /**
+   * Check whether object is enabled
+   */
   bool isActive() {
     return this->flags_[ACTIVE];
   }

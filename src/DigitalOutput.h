@@ -1,6 +1,9 @@
 #ifndef __ESPRESSO_DIGITALOUTPUT_H__
 #define __ESPRESSO_DIGITALOUTPUT_H__
 
+/**
+ * Represents a Digital Output Pin
+ */
 class DigitalOutput: public DigitalPin {
 public:
   DigitalOutput(uint8_t pin)
@@ -10,6 +13,9 @@ public:
     this->outReg_ = rdn::setupDigitalOutputPin(this->pin_, this->bit_);
   }
 
+  /**
+   * Returns last value that was being written
+   */
   int value() {
     return value_;
   }
@@ -22,11 +28,17 @@ public:
     return value_ == LOW;
   }
 
+  /**
+   * Writes value to Pin
+   */
   void write(int val) {
     rdn::digitalWriteUnchecked(this->bit_, this->outReg_, val);
     this->value_ = val;
   }
 
+  /**
+   * Toggles value (from HIGH to LOW or vice versa)
+   */
   void toggle() {
     this->write(!this->value());
   }

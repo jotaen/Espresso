@@ -3,6 +3,9 @@
 
 #include "core/DigitalPin.h"
 
+/**
+ * Represents a Digital Input Pin
+ */
 class DigitalInput: public DigitalPin {
 public:
   DigitalInput(uint8_t pin, uint8_t mode = INPUT)
@@ -21,6 +24,9 @@ public:
     return value() == LOW;
   }
 
+  /**
+   * Returns current value on Pin (freshly read)
+   */
   int value() {
     return rdn::digitalReadUnchecked(this->bit_, this->inReg_);
   }

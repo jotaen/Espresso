@@ -1,6 +1,9 @@
 #ifndef __ESPRESSO_ANALOGOUTPUT_H__
 #define __ESPRESSO_ANALOGOUTPUT_H__
 
+/**
+ * Represents an Analog Output Pin
+ */
 class AnalogOutput: public DigitalPin {
 public:
   AnalogOutput(uint8_t pin)
@@ -13,10 +16,16 @@ public:
     this->outReg_ = rdn::setupDigitalOutputPin(this->pin_, this->bit_);
   }
 
+  /**
+   * Returns last value that was being written
+   */
   int value() {
     return this->value_;
   }
 
+  /**
+   * Writes value to pin
+   */
   void write(int val) {
     rdn::analogWriteUnchecked(this->bit_, this->outReg_, this->timer_, val);
     this->value_ = val;
